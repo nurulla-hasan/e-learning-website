@@ -1,0 +1,125 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "courses": "Courses",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "Header": {
+    "profile": "My Profile",
+    "learning": "My Learning",
+    "history": "Learning History",
+    "orders": "My Orders",
+    "contact": "Contact Us",
+    "about": "About",
+    "terms": "Terms & Condition",
+    "privacy": "Privacy Policy",
+    "faqs": "FAQs",
+    "help": "Help Center",
+    "favorites": "Favorites",
+    "cart": "Cart",
+    "checkout": "Check Out"
+  },
+  "Hero": {
+    "title": "Learn, Grow, and Achieve Anytime, Anywhere",
+    "subtitle": "Access expert-led courses, track your progress, and earn recognized certificates. Start your learning journey today with Poland's trusted e-learning platform.",
+    "button": "Start Learning"
+  },
+  "DropDown": {
+    "profile": "Profile",
+    "my_learning": "My Learning",
+    "learning_history": "Learning History",
+    "my_orders": "My Orders",
+    "sign_in": "Sign In",
+    "logout": "Logout"
+  },
+  "HomePage": {
+    "our_top_categories": "Our Top Categories",
+    "popular_courses": "Popular Courses",
+    "platform": {
+      "title": "Why Choose Our Platform?",
+      "subtitle": "Everything you need to learn, succeed, and certify — all in one place."
+    },
+    "testimonials": {
+      "title": "What Our Learners Say",
+      "description": "Real voices. Real experiences. Discover how Blue Oak is shaping confident, capable, and compassionate learners."
+    }
+  },
+  "Footer": {
+    "subscribe_title": "Subscribe to our Newsletter",
+    "email_placeholder": "Your email",
+    "subscribe_button": "Subscribe",
+    "find_us_on": "Find Us On",
+    "contact_info": "Contact Info",
+    "about_and_legal": "About & Legal",
+    "help_and_support": "Help & Support",
+    "copyright": "© 2025 E-learning platform. All rights reserved."
+  },
+   "ContactPage": {
+    "contact_info_title": "Contact Info",
+    "contact_info_subtitle": "Get in touch with our team for legal support, inquiries, or consultation appointments.",
+    "location_title": "Location",
+    "email_title": "Email",
+    "phone_title": "Phone",
+    "contact_us_form_title": "Contact Us",
+    "email_label": "Email",
+    "email_placeholder": "Enter your email",
+    "phone_label": "Phone Number",
+    "phone_placeholder": "Enter your phone number",
+    "message_label": "Message",
+    "message_placeholder": "Write here...",
+    "send_message_button": "Send Message"
+  },
+  "CoursesPage": {
+    "course_bradcramb": "Home / Courses",
+    "search_placeholder": "Search courses...",
+    "showing": "Showing",
+    "results": "results",
+    "sort_by": "Sort by",
+    "price_sort": "Price: Low to High",
+    "filter_by": "Filter By",
+    "category_title": "Category",
+    "level_title": "Level",
+    "price_range_title": "Price Range",
+    "rating_title": "Rating"
+  },
+  "CartPage": {
+    "cart_title": "courses in cart",
+    "order_overview": "Order Overview",
+    "total_courses": "Total courses",
+    "subtotal": "Sub Total",
+    "checkout_button": "Check out",
+    "no_items": "No items in cart"
+  },
+   "CheckoutPage": {
+    "page_title": "Courses",
+    "payment_details": "Payment Details",
+    "subtotal": "Sub Total:",
+    "total": "Total:",
+    "payment_options": "Payment Options",
+    "pay_button": "Pay Now"
+  },
+  "ProfilePage": {
+    "loginDetails": "Login Details",
+    "editAccount": "Edit Account",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "dateOfBirth": "Date of Birth",
+    "password": "Password",
+    "currentPassword": "Current Password",
+    "changePassword": "Change Password",
+    "ChangePasswordModal": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmNewPassword": "Confirm New Password",
+      "changePasswordButton": "Change Password"
+    }
+  },
+  "OrdersPage": {
+    "title": "Orders Dashboard",
+    "subtitle": "Manage and track your course orders"
+  }
+  
+}

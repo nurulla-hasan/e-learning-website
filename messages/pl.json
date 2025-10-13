@@ -1,0 +1,131 @@
+{
+  "Navbar": {
+    "home": "Dom",
+    "courses": "Kursy",
+    "about": "O",
+    "contact": "Kontakt"
+  },
+  "Header": {
+    "profile": "Mój Profil",
+    "learning": "Moja Nauka",
+    "history": "Historia Nauki",
+    "orders": "Moje Zamówienia",
+    "contact": "Skontaktuj się z nami",
+    "about": "O nas",
+    "terms": "Zasady i Warunki",
+    "privacy": "Polityka Prywatności",
+    "faqs": "FAQ",
+    "help": "Centrum Pomocy",
+    "favorites": "Ulubione",
+    "cart": "Koszyk",
+    "checkout": "Do kasy"
+  },
+  "Hero": {
+    "title": "Ucz się, rozwijaj i osiągaj w każdej chwili, w każdym miejscu",
+    "subtitle": "Uzyskaj dostęp do kursów prowadzonych przez ekspertów, śledź swoje postępy i zdobywaj uznane certyfikaty. Rozpocznij swoją podróż edukacyjną już dziś z zaufaną platformą e-learningową w Polsce.",
+    "button": "Rozpocznij naukę"
+  },
+  "DropDown": {
+    "profile": "Profil",
+    "my_learning": "Moja Nauka",
+    "learning_history": "Historia Nauki",
+    "my_orders": "Moje Zamówienia",
+    "sign_in": "Zaloguj się",
+    "logout": "Wyloguj się"
+  },
+  "HomePage": {
+    "our_top_categories": "Nasze Najlepsze Kategorie",
+    "popular_courses": "Popularne Kursy",
+    "platform": {
+      "title": "Dlaczego Wybrać Naszą Platformę?",
+      "subtitle": "Wszystko, czego potrzebujesz, aby się uczyć, odnieść sukces i uzyskać certyfikat - wszystko w jednym miejscu."
+    },
+    "testimonials": {
+      "title": "Co mówią nasi uczniowie",
+      "description": "Prawdziwe głosy. Prawdziwe doświadczenia. Odkryj, jak Blue Oak kształtuje pewnych siebie, zdolnych i współczujących uczniów."
+    }
+  },
+  "Footer": {
+    "subscribe_title": "Zapisz się do naszego Newslettera",
+    "email_placeholder": "Twój email",
+    "subscribe_button": "Zapisz się",
+    "find_us_on": "Znajdź nas na",
+    "contact_info": "Dane Kontaktowe",
+    "about_and_legal": "O nas i prawne",
+    "help_and_support": "Pomoc i Wsparcie",
+    "copyright": "© 2025 Platforma e-learningowa. Wszelkie prawa zastrzeżone."
+  },
+  "ContactPage": {
+    "contact_info_title": "Informacje kontaktowe",
+    "contact_info_subtitle": "Skontaktuj się z naszym zespołem w celu uzyskania wsparcia prawnego, pytań lub umówienia się na konsultację.",
+    "location_title": "Lokalizacja",
+    "email_title": "Email",
+    "phone_title": "Telefon",
+    "contact_us_form_title": "Skontaktuj się z nami",
+    "email_label": "Email",
+    "email_placeholder": "Wpisz swój email",
+    "phone_label": "Numer telefonu",
+    "phone_placeholder": "Wpisz swój numer telefonu",
+    "message_label": "Wiadomość",
+    "message_placeholder": "Napisz tutaj...",
+    "send_message_button": "Wyślij wiadomość"
+  },
+  "CoursesPage": {
+    "course_bradcramb": "Dom / Kursy",
+    "search_placeholder": "Szukaj kursów...",
+    "showing": "Pokazywanie",
+    "results": "wyników",
+    "sort_by": "Sortuj według",
+    "price_sort": "Cena: od najniższej do najwyższej",
+    "filter_by": "Filtruj według",
+    "category_title": "Kategoria",
+    "level_title": "Poziom",
+    "price_range_title": "Zakres cen",
+    "rating_title": "Ocena"
+  },
+  "CartPage": {
+    "cart_title": "kursów w koszyku",
+    "course_details": {
+      "by_author": "Autor: {author}",
+      "rating": "{rating} ({count} Ocen)",
+      "total_hours": "łącznie {hours} godzin",
+      "total_lessons": "łącznie {lessons} lekcji"
+    },
+    "order_overview": "Podsumowanie zamówienia",
+    "total_courses": "Łącznie kursów:",
+    "subtotal": "Suma częściowa:",
+    "checkout_button": "Do kasy",   
+    "remove_button": "Usuń",
+    "no_items": "Brak przedmiotów w koszyku"
+  },
+  "CheckoutPage": {
+    "page_title": "Kursy",
+    "payment_details": "Szczegóły płatności",
+    "subtotal": "Suma częściowa",
+    "total": "Suma",
+    "payment_options": "Opcje płatności",
+    "pay_button": "Zapłać teraz"
+  },
+  "ProfilePage": {
+    "loginDetails": "Dane logowania",
+    "editAccount": "Edytuj konto",
+    "fullName": "Imię i nazwisko",
+    "email": "E-mail",
+    "phoneNumber": "Numer telefonu",
+    "dateOfBirth": "Data urodzenia",
+    "password": "Hasło",
+    "currentPassword": "Obecne hasło",
+    "changePassword": "Zmień hasło",
+    "ChangePasswordModal": {
+      "title": "Zmień hasło",
+      "currentPassword": "Obecne hasło",
+      "newPassword": "Nowe hasło",
+      "confirmNewPassword": "Potwierdź nowe hasło",
+      "changePasswordButton": "Zmień hasło"
+    }
+  },
+  "OrdersPage": {
+    "title": "Panel zamówień",
+    "subtitle": "Zarządzaj i śledź swoje zamówienia kursów"
+  }
+}

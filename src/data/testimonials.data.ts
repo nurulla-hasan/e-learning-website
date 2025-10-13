@@ -1,0 +1,42 @@
+export const testimonials = [
+  {
+    id: 1,
+    rating: 4,
+    text: "Blue Oak has exceeded our expectations in every way. The teachers genuinely care about each student, and the international curriculum is both challenging and inspiring. Our daughter has grown in confidence and creativity.",
+    name: "Daniel Martin",
+    role: "Parent of Grade 5 Student",
+    avatar: "/images/testimonials/professional-man-portrait.png",
+  },
+  {
+    id: 2,
+    rating: 4,
+    text: "I love how every subject is taught in a way that makes sense to me. The school gives us chances to express our ideas, join fun activities, and even try coding and science experiments. I feel excited to come to school every day.",
+    name: "Eleanor Pena",
+    role: "Grade 7 Student",
+    avatar: "/images/testimonials/young-student-girl-portrait.png",
+  },
+  {
+    id: 3,
+    rating: 4,
+    text: "From the admissions process to the classroom experience, Blue Oak has been incredibly professional and warm. My son receives personal attention, and we've seen great improvement in his communication.",
+    name: "Ronald Richards",
+    role: "Parent of Kindergarten Student",
+    avatar: "/images/testimonials/professional-woman-portrait.png",
+  },
+  {
+    id: 4,
+    rating: 5,
+    text: "The holistic approach to education at Blue Oak is remarkable. My child not only excels academically but has also developed strong social skills and emotional intelligence through their comprehensive programs.",
+    name: "Sarah Johnson",
+    role: "Parent of Grade 3 Student",
+    avatar: "/images/testimonials/professional-woman-smiling.png",
+  },
+  {
+    id: 5,
+    rating: 5,
+    text: "Blue Oak's commitment to innovation in education is evident in every classroom. The integration of technology with traditional learning methods has helped me understand complex concepts much better.",
+    name: "Michael Chen",
+    role: "Grade 9 Student",
+    avatar: "/images/testimonials/teenage-boy-student-portrait.png",
+  },
+]
