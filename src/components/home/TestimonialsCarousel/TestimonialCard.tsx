@@ -1,6 +1,6 @@
-import StarRating from "@/components/common/StarRating";
 import { Card } from "@/components/ui/card";
 import { testimonials } from "@/data/testimonials.data";
+import { StarRating } from "@/tools/StarRating";
 import { motion } from "framer-motion"
 import Image from "next/image";
 
@@ -13,7 +13,13 @@ const TestimonialCard = ({ testimonial, isActive }: { testimonial: (typeof testi
       className="w-full"
     >
       <Card className="p-6 h-full bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-        <StarRating rating={testimonial.rating} />
+        <StarRating 
+          rating={testimonial.rating} 
+          totalStars={5}
+          size={18}
+          gap={1}
+          className="mb-2"
+        />
 
         <motion.p
           className="text-gray-600 leading-relaxed mb-6 text-sm md:text-base"

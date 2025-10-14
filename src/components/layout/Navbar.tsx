@@ -28,7 +28,6 @@ const Navbar = () => {
 
   const token = useSelector((state: RootState) => state.auth.accessToken);
   const user = useSelector((state: RootState) => state.profile.profile);
-  console.log(user);
   const isAuthenticated = Boolean(token && user);
 
   const { isLoading } = useGetUserProfileQuery(undefined,{

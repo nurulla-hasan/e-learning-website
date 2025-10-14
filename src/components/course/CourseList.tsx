@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Filter } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { coursesData } from "@/data/course.data"
 import CourseListItem from "./CourseListItem"
 import FilterSidebar from "./FilterSidebar"
 import SearchForm from "./SearchForm"
@@ -14,36 +13,26 @@ import { useTranslations } from "next-intl"
 
 const CourseList = () =>{
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [selectedLevels, setSelectedLevels] = useState<string[]>([])
-  //const [priceRange, setPriceRange] = useState([50, 2500])
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [selectedLevel, setSelectedLevel] = useState<string | null>(null)
+  const [priceRange, setPriceRange] = useState<number[]>([50, 2500])
+  const [minRating, setMinRating] = useState<number>(0)
   const [sortBy, setSortBy] = useState("price-low")
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
    const t = useTranslations('CoursesPage');
 
-  const filteredCourses = coursesData.filter((course) => {
-    const matchesSearch =
-      course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      course.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(course.category)
-    const matchesLevel = selectedLevels.length === 0 || selectedLevels.includes(course.level)
-    //const matchesPrice = course.price >= priceRange[0] && course.price <= priceRange[1]
+  useEffect(() => {
+    console.log("Course filters changed:", {
+      searchTerm,
+      selectedCategory,
+      selectedLevel,
+      priceRange,
+      minRating,
+      sortBy,
+    })
+  }, [searchTerm, selectedCategory, selectedLevel, priceRange, minRating, sortBy])
 
-    return matchesSearch && matchesCategory && matchesLevel
-  })
-
-  const sortedCourses = [...filteredCourses].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return a.price - b.price
-      case "price-high":
-        return b.price - a.price
-      case "rating":
-        return b.rating - a.rating
-      default:
-        return 0
-    }
-  })
+  const sortedCourses: any[] = []
 
 
 
@@ -65,14 +54,32 @@ const CourseList = () =>{
               </Button>
               {isMobileFilterOpen && (
                 <div className="mb-6">
-                  <FilterSidebar selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} selectedLevels={selectedLevels} setSelectedLevels={setSelectedLevels}/>
+                  <FilterSidebar 
+                    selectedCategory={selectedCategory} 
+                    setSelectedCategory={setSelectedCategory} 
+                    selectedLevel={selectedLevel} 
+                    setSelectedLevel={setSelectedLevel}
+                    priceRange={priceRange}
+                    setPriceRange={setPriceRange}
+                    minRating={minRating}
+                    setMinRating={setMinRating}
+                  />
                 </div>
               )}
             </div>
 
             {/* Desktop Sidebar */}
             <div className="hidden lg:block">
-              <FilterSidebar selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} selectedLevels={selectedLevels} setSelectedLevels={setSelectedLevels}/>
+              <FilterSidebar 
+                selectedCategory={selectedCategory} 
+                setSelectedCategory={setSelectedCategory} 
+                selectedLevel={selectedLevel} 
+                setSelectedLevel={setSelectedLevel}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                minRating={minRating}
+                setMinRating={setMinRating}
+              />
             </div>
 
             {/* Main Content */}
