@@ -14,6 +14,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/feature/auth/authSlice";
+import { getInitials } from "@/lib/utils";
 
 interface UserProfile {
   id: string;
@@ -66,10 +67,10 @@ const NavDropDown = ({
               className="flex items-center space-x-2 ml-4 hover:bg-gray-50"
             >
               <Avatar className="h-8 w-8">
-                <AvatarImage src="/images/profile.png" alt={user?.fullName} />
-                <AvatarFallback className="text-gray-700">MM</AvatarFallback>
+                <AvatarImage src={user?.image} alt={user?.fullName} />
+                <AvatarFallback>{getInitials(user?.fullName || "")}</AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-medium">
                 {user?.fullName}
               </span>
             </Button>
