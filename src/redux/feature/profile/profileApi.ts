@@ -17,7 +17,7 @@ const profileApi = baseApi.injectEndpoints({
           if (data?.data) {
             dispatch(SetUserProfile(data?.data));
           }
-        } catch (error: unknown) {
+        } catch {
           // silently ignore; UI can read error from hook if needed
         }
       },
@@ -56,9 +56,8 @@ const profileApi = baseApi.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           SuccessToast(data?.message);
-        } catch (error: unknown) {
-          const err = error as { message?: string };
-          ErrorToast(err?.message || "Failed to change password.");
+        } catch {
+          ErrorToast("Failed to change password.");
         }
       },
     }),
@@ -86,7 +85,7 @@ const profileApi = baseApi.injectEndpoints({
           if (data?.data) {
             dispatch(SetUserProfile(data?.data));
           }
-        } catch (error: unknown) {
+        } catch {
           // silently ignore; UI can read error from hook if needed
         }
       },

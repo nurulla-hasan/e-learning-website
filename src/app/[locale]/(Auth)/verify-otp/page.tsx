@@ -106,8 +106,8 @@ const VerifyOtp = () => {
         }).unwrap();
         router.push("/login");
       }
-    } catch (error) {
-      // console.log(error);
+    } catch {
+      // Error handling if needed
     }
   };
 

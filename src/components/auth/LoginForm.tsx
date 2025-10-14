@@ -17,7 +17,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useLoginMutation } from "@/redux/feature/auth/authApi";
-import { useRouter } from "@/i18n/navigation";
 
 const loginSchema = z.object({
   email: z
@@ -30,7 +29,6 @@ const loginSchema = z.object({
 });
 
 const LoginForm = () => {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const [login, { isLoading }] = useLoginMutation();
