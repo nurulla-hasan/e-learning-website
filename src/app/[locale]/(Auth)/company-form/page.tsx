@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useSelector } from "react-redux";
 import { useRouter } from "@/i18n/navigation";
 import { useRegisterMutation } from "@/redux/feature/auth/authApi";
@@ -22,14 +22,21 @@ import { ArrowLeft, AlertCircle } from "lucide-react";
 
 const companySchema = z.object({
   companyName: z.string().min(1, { message: "Company name is required." }),
-  companyEmail: z.string().min(1, { message: "Company email is required." }).email({ message: "Invalid email address." }),
-  companyAddress: z.string().min(1, { message: "Company address is required." }),
+  companyEmail: z
+    .string()
+    .min(1, { message: "Company email is required." })
+    .email({ message: "Invalid email address." }),
+  companyAddress: z
+    .string()
+    .min(1, { message: "Company address is required." }),
   companyVatId: z.string().min(1, { message: "VAT ID is required." }),
 });
 
 const CompanyForm = () => {
   const router = useRouter();
-  const registerData = useSelector((state: RootState) => state.auth.registerData);
+  const registerData = useSelector(
+    (state: RootState) => state.auth.registerData
+  );
   const [register, { isLoading }] = useRegisterMutation();
 
   const form = useForm({
@@ -44,7 +51,7 @@ const CompanyForm = () => {
 
   const onSubmit = async (data: z.infer<typeof companySchema>) => {
     if (!registerData) {
-      router.push('/sign-up');
+      router.push("/sign-up");
       return;
     }
     const payload = {
@@ -57,18 +64,12 @@ const CompanyForm = () => {
       companyAddress: data.companyAddress,
       companyVatId: data.companyVatId,
     };
-    console.log(payload);
-    try {
-      await register(payload).unwrap();
-      // Success handling
-    } catch (error) {
-      console.log(error);
-    }
+    register(payload);
   };
 
   const onSkip = async () => {
     if (!registerData) {
-      router.push('/sign-up');
+      router.push("/sign-up");
       return;
     }
     const payload = {
@@ -77,13 +78,7 @@ const CompanyForm = () => {
       dateOfBirth: registerData.dateOfBirth,
       password: registerData.password,
     };
-    console.log(payload);
-    try {
-      await register(payload).unwrap();
-      // Success handling
-    } catch (error) {
-      console.log(error);
-    }
+    register(payload);
   };
 
   if (!registerData) {
@@ -100,9 +95,7 @@ const CompanyForm = () => {
                 No register data found. Please go back and fill the form again.
               </p>
               <Link href="/sign-up">
-                <Button className="w-full">
-                  Go Back to Sign Up
-                </Button>
+                <Button className="w-full">Go Back to Sign Up</Button>
               </Link>
             </div>
           </CardContent>

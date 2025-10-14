@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
   accessToken: string | null;
-  registerData: any | null;
+  registerData: Record<string, unknown> | null;
 }
 
 const initialState: AuthState = {
@@ -17,7 +17,7 @@ const authSlice = createSlice({
     SetAccessToken: (state, action: PayloadAction<string | null>) => {
       state.accessToken = action.payload;
     },
-    SetRegisterData: (state, action: PayloadAction<any | null>) => {
+    SetRegisterData: (state, action: PayloadAction<Record<string, unknown> | null>) => {
       state.registerData = action.payload;
     },
   },

@@ -1,84 +1,130 @@
 "use client"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { useResetPasswordMutation } from "@/redux/feature/auth/authApi";
+import { Link } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 
-import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Eye, EyeOff } from "lucide-react"
-import { useRouter } from "next/navigation"
+const resetPasswordSchema = z.object({
+    newPassword: z.string().min(6, { message: "New password must be at least 6 characters." }),
+    confirmNewPassword: z.string().min(6, { message: "Confirm new password must be at least 6 characters." }),
+}).refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords don't match.",
+    path: ["confirmNewPassword"],
+});
 
 const ResetPasswordForm = () => {
-  const [newPassword, setNewPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [showNewPassword, setShowNewPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const router = useRouter();
+    const searchParams = useSearchParams();
+    const email = decodeURIComponent(searchParams.get("email") || "");
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+    const toggleNewPasswordVisibility = () => setShowNewPassword(!showNewPassword);
+    const toggleConfirmNewPasswordVisibility = () => setShowConfirmNewPassword(!showConfirmNewPassword);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle password reset logic here
-    console.log("Password reset submitted")
-  }
+    const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
-  return (
-    <>
-        <form onSubmit={handleSubmit} className="space-y-6 p-6">
-          <div className="space-y-2">
-            <Label htmlFor="new-password" className="text-sm font-medium text-foreground">
-              New Password
-            </Label>
-            <div className="relative">
-              <Input
-                id="new-password"
-                type={showNewPassword ? "text" : "password"}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="••••••••"
-                className="pr-10"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
-            </div>
-          </div>
+    const form = useForm({
+        resolver: zodResolver(resetPasswordSchema),
+        defaultValues: {
+            newPassword: "",
+            confirmNewPassword: "",
+        },
+    });
 
-          <div className="space-y-2">
-            <Label htmlFor="confirm-password" className="text-sm font-medium text-foreground">
-              Confirm Password
-            </Label>
-            <div className="relative">
-              <Input
-                id="confirm-password"
-                type={showConfirmPassword ? "text" : "password"}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="••••••••"
-                className="pr-10"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
-            </div>
-          </div>
+    const onSubmit = (data: z.infer<typeof resetPasswordSchema>) => {
+        const payload = {
+            email,
+            password: data.confirmNewPassword
+        }
+        resetPassword(payload)
+    };
 
-          <Button onClick={()=>router.push("/login")} type="submit" className="w-full bg-sky-500 hover:bg-sky-600 text-white font-medium py-2.5">
-            Reset Password
-          </Button>
-        </form>
-    </>
-  )
+    return (
+        <div className="w-full max-w-sm md:max-w-lg">
+            <Card className="overflow-hidden p-0">
+                <CardContent className="p-0">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
+                            <Link href="/login">
+                                <ArrowLeft className="cursor-pointer" />
+                            </Link>
+                            <div className="flex flex-col gap-6 mt-6">
+                                <div className="flex flex-col items-center text-center">
+                                    <h1 className="text-2xl font-semibold text-title">Reset Your Password</h1>
+                                    <p className="text-sm text-subtitle">Enter your new password below.</p>
+                                </div>
+
+                                <FormField
+                                    control={form.control}
+                                    name="newPassword"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>New Password</FormLabel>
+                                            <FormControl>
+                                                <div className="relative">
+                                                    <Input
+                                                        type={showNewPassword ? "text" : "password"}
+                                                        placeholder="********"
+                                                        {...field}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
+                                                        onClick={toggleNewPasswordVisibility}
+                                                    >
+                                                        {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                                    </button>
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="confirmNewPassword"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Confirm New Password</FormLabel>
+                                            <FormControl>
+                                                <div className="relative">
+                                                    <Input
+                                                        type={showConfirmNewPassword ? "text" : "password"}
+                                                        placeholder="********"
+                                                        {...field}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
+                                                        onClick={toggleConfirmNewPasswordVisibility}
+                                                    >
+                                                        {showConfirmNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                                    </button>
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <Button loading={isLoading} type="submit" className="w-full" >
+                                    Reset Password
+                                </Button>
+                            </div>
+                        </form>
+                    </Form>
+                </CardContent>
+            </Card>
+        </div>
+    )
 }
 
 export default ResetPasswordForm;

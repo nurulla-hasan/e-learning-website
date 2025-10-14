@@ -91,8 +91,13 @@ const VerifyOtp = () => {
     const OTP = Number(data.code);
     try {
       if (type === "forget-password") {
-        await verifyOTPForResetPassword({ code: OTP, email }).unwrap();
+        await verifyOTPForResetPassword({ 
+          otp: OTP,
+          email,
+          otpToken,
+        }).unwrap();
         router.push(`/reset-password?email=${encodeURIComponent(email)}`);
+        
       } else if (type === "signup") {
         await verifyOTPForSignup({
           otp: OTP,
@@ -102,8 +107,7 @@ const VerifyOtp = () => {
         router.push("/login");
       }
     } catch (error) {
-      console.log(error);
-      // ErrorToast(error?.data?.message || "Verification failed. Please try again.");
+      // console.log(error);
     }
   };
 
@@ -117,8 +121,9 @@ const VerifyOtp = () => {
         await resendSignupOTP({ email });
       }
       setCooldown(60);
-    } catch (error: any) {
-      ErrorToast(error?.data?.message || "Failed to resend OTP");
+    } catch (error: unknown) {
+      const err = error as { data?: { message?: string } };
+      ErrorToast(err?.data?.message || "Failed to resend OTP");
     }
   };
 
