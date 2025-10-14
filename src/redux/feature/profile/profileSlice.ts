@@ -9,12 +9,10 @@ interface UserProfile {
 
 interface ProfileState {
   profile: UserProfile | null;
-  favoriteRecipes: string[];
 }
 
 const initialState: ProfileState = {
   profile: null,
-  favoriteRecipes: [],
 };
 
 const profileSlice = createSlice({
@@ -24,11 +22,8 @@ const profileSlice = createSlice({
     SetUserProfile: (state, action: PayloadAction<UserProfile | null>) => {
       state.profile = action.payload;
     },
-    SetFavoriteRecipes: (state, action: PayloadAction<string[]>) => {
-      state.favoriteRecipes = action.payload;
-    },
   },
 });
 
-export const { SetUserProfile, SetFavoriteRecipes } = profileSlice.actions;
+export const { SetUserProfile } = profileSlice.actions;
 export default profileSlice.reducer;

@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
   accessToken: string | null;
+  registerData: any | null;
 }
 
 const initialState: AuthState = {
-  accessToken: null,
+  accessToken: typeof window !== 'undefined' ? localStorage.getItem("accessToken") || null : null,
+  registerData: null,
 };
 
 const authSlice = createSlice({
@@ -15,8 +17,11 @@ const authSlice = createSlice({
     SetAccessToken: (state, action: PayloadAction<string | null>) => {
       state.accessToken = action.payload;
     },
+    SetRegisterData: (state, action: PayloadAction<any | null>) => {
+      state.registerData = action.payload;
+    },
   },
 });
 
-export const { SetAccessToken } = authSlice.actions;
+export const { SetAccessToken, SetRegisterData } = authSlice.actions;
 export default authSlice.reducer;

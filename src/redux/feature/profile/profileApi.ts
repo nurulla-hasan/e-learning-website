@@ -1,5 +1,5 @@
 import { baseApi } from "../baseApi";
-import { SetFavoriteRecipes, SetUserProfile } from "./profileSlice";
+import { SetUserProfile } from "./profileSlice";
 
 const profileApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -64,7 +64,7 @@ const profileApi = baseApi.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     if (data?.data) {
-                        dispatch(SetFavoriteRecipes(data?.data?.recipes?.map((r: any) => r._id) || []));
+                        dispatch(SetUserProfile(data?.data));
                     }
                 } catch (error: any) {
                     // silently ignore; UI can read error from hook if needed
@@ -79,6 +79,5 @@ const profileApi = baseApi.injectEndpoints({
 export const {
     useGetUserProfileQuery,
     useUpdateUserProfileMutation,
-    useUpdateProfilePictureMutation,
-    useGetUserFavoriteRecipesQuery,
+    useUpdateProfilePictureMutation
 } = profileApi

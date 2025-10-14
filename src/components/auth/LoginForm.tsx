@@ -1,137 +1,127 @@
 "use client"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { useLoginMutation } from "@/redux/feature/auth/authApi";
+import { useRouter } from "@/i18n/navigation";
 
-import type React from "react"
+const loginSchema = z.object({
+    email: z.string().min(1, { message: "Email is required." }).email({ message: "Invalid email address." }),
+    password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+});
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { CardContent, CardFooter } from "@/components/ui/card"
-import { Eye, EyeOff, Lock, Mail } from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-
-export function LoginForm() {
-    const [email, setEmail] = useState("user@gmail.com")
-    const [password, setPassword] = useState("123456")
-    const [showPassword, setShowPassword] = useState(false)
-    const [isLoading, setIsLoading] = useState(false);
+const LoginForm = () => {
     const router = useRouter();
-   // const [err, setError] = useState("")
+    const [showPassword, setShowPassword] = useState(false);
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
+    const [login, { isLoading }] = useLoginMutation();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        router.push("/")
-        setIsLoading(true)
-        // setError("")
+    const form = useForm({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    });
 
-        // // Simulate API call
-        // try {
-        //     await new Promise((resolve) => setTimeout(resolve, 1000))
-        //     // Add your authentication logic here
-        //     console.log("Login attempt:", { email, password })
-        // } catch (err) {
-        //     setError("Invalid email or password. Please try again.")
-        // } finally {
-        //     setIsLoading(false)
-        // }
-    }
+    const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+        try {
+            await login(data).unwrap();
+            router.push('/')
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
-        <>
-            <form onSubmit={handleSubmit} className="pb-4">
-                <CardContent className="space-y-4 py-4">
-                    {/* {error && (
-                        <Alert variant="destructive">
-                            <AlertDescription>{error}</AlertDescription>
-                        </Alert>
-                    )} */}
+        <div className="w-full max-w-sm md:max-w-lg">
+            <Card className="overflow-hidden p-0">
+                <CardContent className="p-0">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
+                            <Link href="/">
+                                <ArrowLeft className="cursor-pointer" />
+                            </Link>
+                            <div className="flex flex-col gap-6 mt-6">
+                                <div className="flex flex-col items-center text-center">
+                                    <h1 className="text-2xl font-semibold text-title">Welcome back</h1>
+                                </div>
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="email"
+                                                    placeholder="Enter your email"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                    <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm font-medium">
-                            Email address
-                        </Label>
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="Enter your email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="pl-10 bg-input border-border focus:ring-2 focus:ring-ring focus:border-transparent"
-                                required
-                                disabled={isLoading}
-                            />
-                        </div>
-                    </div>
+                                <FormField
+                                    control={form.control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <div className="flex items-center">
+                                                <FormLabel>Password</FormLabel>
+                                                <Link
+                                                    href="forgot-password"
+                                                    className="ml-auto text-sm underline-offset-2 hover:underline"
+                                                >
+                                                    Forgot your password?
+                                                </Link>
+                                            </div>
+                                            <FormControl>
+                                                <div className="relative">
+                                                    <Input
+                                                        type={showPassword ? "text" : "password"}
+                                                        placeholder="********"
+                                                        {...field}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
+                                                        onClick={togglePasswordVisibility}
+                                                    >
+                                                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                                    </button>
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                    <div className="space-y-2">
-                        <Label htmlFor="password" className="text-sm font-medium">
-                            Password
-                        </Label>
-                        <div className="relative">
-                            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                id="password"
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Enter your password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="pl-10 pr-10 bg-input border-border focus:ring-2 focus:ring-ring focus:border-transparent"
-                                required
-                                disabled={isLoading}
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-3 text-muted-foreground hover:text-foreground transition-colors"
-                                disabled={isLoading}
-                            >
-                                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pb-3">
-                        <div className="flex items-center space-x-2">
-                            <input
-                                id="remember"
-                                type="checkbox"
-                                className="h-4 w-4 rounded border-border text-primary focus:ring-2 focus:ring-ring"
-                                disabled={isLoading}
-                            />
-                            <Label htmlFor="remember" className="text-sm text-muted-foreground">
-                                Remember me
-                            </Label>
-                        </div>
-                        <Link
-                            href="/forgot-password"
-                            className="text-sm text-blue-500 hover:text-blue-600 hover:underline cursor-pointer transition-colors font-medium duration-200"
-                        >
-                            Forgot password?
-                        </Link>
-                    </div>
-                </CardContent>
-
-                <CardFooter className="flex flex-col space-y-4">
-                    <Button
-                        type="submit"
-                        className="w-full bg-cyan-500 hover:bg-cyan-600 duration-200 font-semibold py-2.5 transition-colors"
-                        disabled={isLoading}
-                    >
-                        {isLoading ? (
-                            <div className="flex items-center space-x-2">
-                                <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
-                                <span>Signing in...</span>
+                                <Button loading={isLoading} type="submit" className="w-full">
+                                    Login
+                                </Button>
                             </div>
-                        ) : (
-                            "Sign in"
-                        )}
-                    </Button>
-
-                </CardFooter>
-            </form>
-        </>
+                            <div className="text-center text-sm mt-6">
+                                Don&apos;t have an account?{" "}
+                                <Link href="sign-up" className="text-primary">
+                                    Sign up
+                                </Link>
+                            </div>
+                        </form>
+                    </Form>
+                </CardContent>
+            </Card>
+        </div>
     )
 }
+
+export default LoginForm;

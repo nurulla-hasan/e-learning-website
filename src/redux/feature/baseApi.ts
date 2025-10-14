@@ -5,11 +5,10 @@ import { RootState } from '../store';
 
 const rawBaseQuery = fetchBaseQuery({
     baseUrl: 'https://paulina-e-learning-platform.vercel.app/api/v1',
-    // baseUrl: 'http://10.10.20.11:5005',
 
     prepareHeaders: (headers, { getState }) => {
         const state = getState() as RootState;
-        const token = state?.auth.accessToken;
+        const token = state.auth?.accessToken;
 
         if (token) {
             headers.set('Authorization', `Bearer ${token}`)
@@ -36,6 +35,6 @@ export const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery,
 
-    tagTypes: ["USER", "RECIPE", "REVIEW", "FAVORITE", "PROFILE", "GROCERY", "MEAL_PLAN", "LEGAL", "FEATURED", "SUBSCRIPTION"],
+    tagTypes: ["PROFILE", "FAVORITE"],
     endpoints: () => ({})
 })

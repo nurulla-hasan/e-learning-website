@@ -1,7 +1,6 @@
 import { ErrorToast, SuccessToast } from "@/lib/utils";
 import { SetAccessToken } from "../auth/authSlice";
 import { baseApi } from "../baseApi";
-import { jwtDecode } from "jwt-decode";
 
 const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -17,21 +16,22 @@ const authApi = baseApi.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     const accessToken = data?.data?.accessToken;
-                    const user = data?.data?.user;
+                    const user = data?.data;
 
                     if (!accessToken || !user) {
                         ErrorToast("Invalid login response.");
                         return;
                     }
 
-                    const decoded = jwtDecode(accessToken) as any;
-                    if (decoded?.role !== "USER") {
+                    if (user?.role !== "STUDENT" && user?.role !== "COMPANY") {
                         ErrorToast("You are not authorized to login.");
                         return;
                     }
 
                     // Set access token first
+                    localStorage.setItem("accessToken", accessToken);
                     dispatch(SetAccessToken(accessToken));
+                    SuccessToast("Login successful.");
                 } catch (error: any) {
                     ErrorToast(error?.error?.data?.message || error?.message || "Login failed.");
                 }
@@ -41,46 +41,28 @@ const authApi = baseApi.injectEndpoints({
         // Register Endpoint (Mutation)
         register: builder.mutation({
             query: (credentials) => ({
-                url: "/auth/register",
+                url: "/users/register",
                 method: "POST",
                 body: credentials,
             }),
             async onQueryStarted({ email }, { queryFulfilled }) {
                 try {
-                    await queryFulfilled;
-                    window.location.href = `/auth/verify-otp?type=signup&email=${encodeURIComponent(email)}`;
-                    SuccessToast("Registration successful! Please check your email for OTP verification.");
+                    const { data } = await queryFulfilled;
+                    const otpToken = data?.data || data;
+                    if (otpToken) {
+                        window.location.href = `/verify-otp?type=signup&email=${encodeURIComponent(email)}&otpToken=${encodeURIComponent(otpToken)}`;
+                    }
                 } catch (error: any) {
                     ErrorToast(error?.error?.data?.message || error?.message || "Registration failed.");
                 }
             },
         }),
 
-        // FORGET PASSWORD
-        forgetPassword: builder.mutation({
-            query: (email) => {
-                return {
-                    url: '/auth/forgot-password',
-                    method: 'POST',
-                    body: email
-                }
-            },
-            async onQueryStarted({ email }, { queryFulfilled }) {
-                try {
-                    await queryFulfilled;
-                    SuccessToast("OTP sent successfully!");
-                    window.location.href = `/auth/verify-otp?type=forget-password&email=${encodeURIComponent(email)}`;
-                } catch (error: any) {
-                    ErrorToast(error?.error?.data?.message || error?.message || "Failed to send new OTP.");
-                }
-            }
-        }),
-
         // OTP VERIFY FOR SIGNUP
         verifyOTPForSignup: builder.mutation({
             query: (data) => ({
-                url: '/auth/activate-user',
-                method: 'POST',
+                url: '/users/verify-otp',
+                method: 'PUT',
                 body: data
             }),
             async onQueryStarted(arg, { queryFulfilled }) {
@@ -93,10 +75,31 @@ const authApi = baseApi.injectEndpoints({
             },
         }),
 
+
+        // FORGET PASSWORD
+        forgetPassword: builder.mutation({
+            query: (email) => {
+                return {
+                    url: '/users/forgot-password',
+                    method: 'POST',
+                    body: email
+                }
+            },
+            async onQueryStarted({ email }, { queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    SuccessToast("OTP sent successfully!");
+                    window.location.href = `/verify-otp?type=forget-password&email=${encodeURIComponent(email)}`;
+                } catch (error: any) {
+                    ErrorToast(error?.error?.data?.message || error?.message || "Failed to send new OTP.");
+                }
+            }
+        }),
+
         // OTP VERIFY FOR RESET PASSWORD
         verifyOTPForResetPassword: builder.mutation({
             query: (data) => ({
-                url: '/auth/verify-otp',
+                url: '/users/verify-otp-forgot-password',
                 method: 'POST',
                 body: data
             }),
@@ -113,7 +116,7 @@ const authApi = baseApi.injectEndpoints({
         // RESEND SIGNUP OTP
         resendSignupOTP: builder.mutation({
             query: (email) => ({
-                url: '/auth/active-resend',
+                url: '/users/resend-verification-email',
                 method: 'POST',
                 body: email
             }),
@@ -130,7 +133,7 @@ const authApi = baseApi.injectEndpoints({
         // RESEND RESET OTP
         resendResetOTP: builder.mutation({
             query: (email) => ({
-                url: '/auth/forgot-resend',
+                url: '/users/resend-otp',
                 method: 'POST',
                 body: email
             }),
@@ -146,9 +149,9 @@ const authApi = baseApi.injectEndpoints({
 
         // RESET PASSWORD
         resetPassword: builder.mutation({
-            query: ({ email, ...data }) => {
+            query: (data) => {
                 return {
-                    url: `/auth/reset-password?email=${email}`,
+                    url: `/users/update-password`,
                     method: 'POST',
                     body: data,
                 }
@@ -169,7 +172,7 @@ const authApi = baseApi.injectEndpoints({
         changePassword: builder.mutation({
             query: (data) => {
                 return {
-                    url: "/auth/change-password",
+                    url: "/users/change-password",
                     method: 'PATCH',
                     body: data
                 }

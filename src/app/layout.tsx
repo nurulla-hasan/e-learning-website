@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Poppins } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
+import { ReduxProvider } from "@/components/provider/ReduxProvider";
 import "./globals.css";
 
 // const geistSans = Geist({
@@ -36,15 +37,17 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <ReduxProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster richColors/>
+          </ThemeProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
