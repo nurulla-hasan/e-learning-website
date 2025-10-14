@@ -2,9 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserProfile {
   id: string;
-  name: string;
+  fullName: string;
   email: string;
-  // Add other fields as needed
+  role: string;
+  dateOfBirth: string;
+  phoneNumber: string;
+  address: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ProfileState {

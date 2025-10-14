@@ -20,8 +20,13 @@ const authSlice = createSlice({
     SetRegisterData: (state, action: PayloadAction<Record<string, unknown> | null>) => {
       state.registerData = action.payload;
     },
+    logout: (state) => {
+      state.accessToken = null;
+      state.registerData = null;
+      localStorage.removeItem("accessToken");
+    },
   },
 });
 
-export const { SetAccessToken, SetRegisterData } = authSlice.actions;
+export const { SetAccessToken, SetRegisterData, logout } = authSlice.actions;
 export default authSlice.reducer;

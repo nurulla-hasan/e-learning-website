@@ -4,17 +4,18 @@ import { SetUserProfile } from "./profileSlice";
 
 const profileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+
     // GET USER PROFILE
     getUserProfile: builder.query({
       query: () => ({
-        url: "/auth/profile",
+        url: "/users/me",
         method: "GET",
       }),
       providesTags: ["PROFILE"],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          if (data?.data) {
+          if (data) {
             dispatch(SetUserProfile(data?.data));
           }
         } catch {
@@ -26,7 +27,7 @@ const profileApi = baseApi.injectEndpoints({
     // UPDATE USER PROFILE
     updateUserProfile: builder.mutation({
       query: (data) => ({
-        url: "/auth/edit-profile",
+        url: "/users/edit-profile",
         method: "PATCH",
         body: data,
       }),
@@ -36,7 +37,7 @@ const profileApi = baseApi.injectEndpoints({
     // UPDATE USER PROFILE PICTURE
     updateProfilePicture: builder.mutation({
       query: (data) => ({
-        url: "/auth/edit-profile",
+        url: "/users/edit-profile",
         method: "PATCH",
         body: data,
       }),
@@ -74,7 +75,7 @@ const profileApi = baseApi.injectEndpoints({
           });
         }
         return {
-          url: "/dashboard/get_user_favorites",
+          url: "/users/dashboard/get_user_favorites",
           method: "GET",
           params,
         };
