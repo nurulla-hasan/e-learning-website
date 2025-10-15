@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Bookmark, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -29,6 +29,7 @@ interface CourseListItemProps {
     instructorImage: string;
     totalLessons: number;
     totalDuration: number;
+    isBookmarked: boolean;
   };
 }
 
@@ -36,14 +37,6 @@ const CourseListItem = ({ course }: CourseListItemProps) => {
   return (
     <Card className="overflow-hidden h-full flex flex-col pt-0 gap-3">
       <div className="relative">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute top-2 right-2 z-10 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background"
-        >
-          <Bookmark className="h-4 w-4" />
-          <span className="sr-only">Save</span>
-        </Button>
         <Link
           href={`/courses/${course?.id}`}
           className="aspect-video relative overflow-hidden block"
@@ -65,7 +58,9 @@ const CourseListItem = ({ course }: CourseListItemProps) => {
           </CardTitle>
           <div className="flex items-center gap-1">
             <Star className="h-4 w-4 text-yellow-400" />
-            <span className="text-muted-foreground text-sm">{course?.avgRating}</span>
+            <span className="text-muted-foreground text-sm">
+              {course?.avgRating}
+            </span>
           </div>
         </div>
       </CardHeader>
@@ -85,9 +80,11 @@ const CourseListItem = ({ course }: CourseListItemProps) => {
       <CardFooter className="pt-0">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
-            <span className="text-xl font-bold text-primary">
-              ${course?.discountPrice || course?.price}
-            </span>
+            {course?.discountPrice > 0 && (
+              <span className="text-xl font-bold text-primary">
+                ${course?.discountPrice || course?.price}
+              </span>
+            )}
             {course?.discountPrice && course?.discountPrice < course?.price && (
               <span className="text-sm text-muted-foreground line-through">
                 ${course?.price}

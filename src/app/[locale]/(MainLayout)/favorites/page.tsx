@@ -1,32 +1,43 @@
-import PageHeader from "@/components/common/PageHeader"
-import FavouriteCourseCard from "@/components/favorite/FavouriteCourseCard"
-import { favoriteCourses } from "@/data/course.data"
-import { getTranslations } from "next-intl/server";
+"use client";
+import PageHeader from "@/components/common/PageHeader";
+import { useTranslations } from "next-intl";
+import { useGetBookmarkedCoursesQuery } from "@/redux/feature/course/courseApi";
+import CourseCardSkeleton from "@/skeleton/course/CourseCardSkeleton";
+import Error from "@/tools/Error";
+import NoData from "@/tools/NoData";
+import PageLayout from "@/tools/PageLayout";
+import FavouriteCourseCard from "@/components/favorite/FavouriteCourseCard";
 
+const FavoritesPage = () => {
+  const t = useTranslations("Header");
+  const title = t("favorites");
 
-interface TProps {
-  params: {
-    locale: string;
-  };
-}
-
-const FavoritesPage = async ({ params }: TProps) => {
-  const {locale} = params;
-  const t = await getTranslations({locale});
-  const title = t("Header.favorites");
+const {data, isLoading, isError} = useGetBookmarkedCoursesQuery({})
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
       <PageHeader title={title}/>
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <PageLayout
+        paddingSize="compact"
+      >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {favoriteCourses?.map((course, index) => (
-            <FavouriteCourseCard key={index} course={course} />
-          ))}
+          {isLoading ? (
+            Array.from({ length: 6 }).map((_, index) => (
+              <CourseCardSkeleton key={index} />
+            ))
+          ) : isError ? (
+            <Error msg="An error occurred while loading courses." />
+          ) : data?.data?.length === 0 ? (
+            <NoData msg="No courses found matching your criteria." />
+          ) : (
+            data?.data?.map((favorite: any, index: number) => (
+              <FavouriteCourseCard key={index} favorite={favorite} />
+            ))
+          )}
         </div>
-      </div>
-    </div>
+      </PageLayout>
+    </>
   )
 }
 

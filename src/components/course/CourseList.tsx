@@ -144,7 +144,7 @@ const CourseList = () => {
             {/* Results Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
               <p className="text-muted-foreground">
-                {t("showing")} {items?.length} {t("results")}
+                {t("showing")} {items?.data?.length} {t("results")}
               </p>
               <CourseSorting sortBy={sortBy} setSortBy={setSortBy} />
             </div>
@@ -157,10 +157,10 @@ const CourseList = () => {
                 ))
               ) : isError ? (
                 <Error msg="An error occurred while loading courses." />
-              ) : items?.length === 0 ? (
+              ) : items?.data?.length === 0 ? (
                 <NoData msg="No courses found matching your criteria." />
               ) : (
-                items?.map((course: any, index: number) => (
+                items?.data?.map((course: any, index: number) => (
                   <CourseListItem key={index} course={course} />
                 ))
               )}

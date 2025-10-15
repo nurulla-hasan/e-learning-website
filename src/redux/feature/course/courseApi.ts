@@ -1,3 +1,4 @@
+import { id } from "date-fns/locale";
 import { baseApi } from "../baseApi";
 
 
@@ -83,9 +84,48 @@ const recipeApi = baseApi.injectEndpoints({
             providesTags: ["COURSE"],
         }),
 
+        // GET BOOKMARKED COURSES
+        getBookmarkedCourses: builder.query({
+            query: (args) => {
+                const params = new URLSearchParams();
+                if (args) {
+                    Object.entries(args).forEach(([key, value]) => {
+                        if (value) {
+                            params.append(key, value as string);
+                        }
+                    });
+                }
+                return {
+                    url: "/favorite-courses",
+                    method: "GET",
+                    params,
+                };
+            },
+            providesTags: ["COURSE"],
+        }),
+
         // ===================================END GET QUERY============================================
 
         // ===================================START MUTATION===========================================
+
+        // ADD TO BOOKMARK
+        addToBookmark: builder.mutation({
+            query: (data) => ({
+                url: "/favorite-courses",
+                method: "POST",
+                body: data
+            }),
+            invalidatesTags: ["COURSE"],
+        }),
+
+        // REMOVE FROM BOOKMARK
+        removeFromBookmark: builder.mutation({
+            query: (id) => ({
+                url: `/favorite-courses/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["COURSE"],
+        }),
 
         // SEND REVIEW
         sendReview: builder.mutation({
@@ -106,5 +146,8 @@ export const {
     useGetMyCoursesQuery,
     useGetCourseReviewsQuery,
     useGetCourseByIdQuery,
+    useGetBookmarkedCoursesQuery,
+    useAddToBookmarkMutation,
+    useRemoveFromBookmarkMutation,
     useSendReviewMutation,
 } = recipeApi

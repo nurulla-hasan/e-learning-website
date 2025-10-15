@@ -1,49 +1,108 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { IFavoriteCourse } from "@/types/course.type";
-import { Heart, Star } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Bookmark, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import useFavorite from "@/hooks/useFavorite";
 
+// Define the type for the nested course object
+interface Course {
+  id: string;
+  courseTitle: string;
+  courseShortDescription?: string;
+  courseLevel: string;
+  price: number;
+  discountPrice?: number;
+  courseThumbnail: string;
+  category: {
+    name: string;
+  };
+}
+
+// Define the type for the favorite object, which contains the course
+interface Favorite {
+  id: string; // This is the ID of the bookmark/favorite entry itself
+  courseId: string;
+  course: Course;
+}
 
 type TProps = {
-  course: IFavoriteCourse
-}
+  favorite: Favorite;
+};
 
-const FavouriteCourseCard = ({ course }: TProps) => {
+const FavouriteCourseCard = ({ favorite }: TProps) => {
+  const router = useRouter();
+  // A course on the favorite page is always favorited initially.
+  const { isFavorite, onFavoriteToggle } = useFavorite(true);
+
+  // If the item is no longer a favorite, don't render it.
+  if (!isFavorite) {
+    return null;
+  }
+
+  const { course } = favorite;
+
   return (
-    <>
-      <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg pt-0">
-        <div className="relative">
-          <Image
-            src={course.image || "/placeholder.svg"}
-            alt={course.title}
-            width={600}
-            height={600}
-            className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
+    <Card className="overflow-hidden h-full flex flex-col pt-0 gap-3 hover:shadow-lg transition-shadow relative">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="absolute top-2 right-2 z-10 h-8 w-8 p-0 bg-white/80 hover:bg-white/90 rounded-full shadow-sm"
+        onClick={() => onFavoriteToggle(favorite.id)} // Use the course ID to toggle favorite status
+      >
+        <Bookmark className={"fill-red-500 text-red-500"} />
+      </Button>
+      <Link href={`/courses/${course.id}`} className="aspect-video relative overflow-hidden block">
+        <Image
+          src={course.courseThumbnail || "/images/categoryImages/abstract-geometric-shapes.png"}
+          alt={course.courseTitle}
+          className="w-full h-full object-cover"
+          width={500}
+          height={280}
+          priority
+        />
+      </Link>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg leading-tight">{course.courseTitle}</CardTitle>
+      </CardHeader>
+      <CardContent className="pb-3 flex-1">
+        {course.courseShortDescription && (
+            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{course.courseShortDescription}</p>
+        )}
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="text-xs">
+            {course.category.name}
+          </Badge>
+          <Badge variant="outline" className="text-xs">
+            {course.courseLevel}
+          </Badge>
+        </div>
+      </CardContent>
+      <CardFooter className="pt-0">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-bold text-primary">
+              ${course.discountPrice || course.price}
+            </span>
+            {course.discountPrice && course.discountPrice < course.price && (
+              <span className="text-sm text-muted-foreground line-through">
+                ${course.price}
+              </span>
+            )}
+          </div>
           <Button
-            size="icon"
-            variant="ghost"
-            className="absolute right-2 top-2 h-8 w-8 bg-white/80 backdrop-blur-sm hover:bg-white"
+            size="sm"
+            className="bg-primary hover:bg-primary/90"
+            onClick={() => router.push(`/courses/${course.id}`)}
           >
-            <Heart className={`h-4 w-4 ${course.isFavorited ? "fill-red-500 text-red-500" : "text-gray-600"}`} />
+            View Details
           </Button>
         </div>
-        <CardContent className="p-4">
-          <h3 className="font-semibold text-lg leading-tight mb-3 text-balance">{course.title}</h3>
-          <div className="flex items-center gap-2 mb-3">
-            <span className="font-bold text-xl text-foreground">${course.currentPrice.toFixed(2)}</span>
-            <span className="text-sm text-muted-foreground line-through">${course.originalPrice.toFixed(2)}</span>
-          </div>
-          <div className="flex items-center gap-1 mb-3">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span className="font-medium text-sm">{course.rating}</span>
-          </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">{course.description}</p>
-        </CardContent>
-      </Card>
-    </>
-  )
-}
+      </CardFooter>
+    </Card>
+  );
+};
 
-export default FavouriteCourseCard
+export default FavouriteCourseCard;

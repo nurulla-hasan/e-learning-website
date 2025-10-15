@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
 import { ReduxProvider } from "@/components/provider/ReduxProvider";
 import "./globals.css";
-
+import NextTopLoader from "nextjs-toploader";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -34,6 +34,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <NextTopLoader color="#3bc0d8" height={2} showSpinner={false} />
             {children}
             <Toaster richColors/>
           </ThemeProvider>

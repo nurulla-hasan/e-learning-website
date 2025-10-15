@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingCart, BarChart3 } from "lucide-react";
+import { Heart, ShoppingCart, BarChart3, Bookmark } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
@@ -95,7 +95,7 @@ const Navbar = () => {
                         size="icon"
                         className="rounded-full"
                       >
-                        <Heart />
+                        <Bookmark />
                       </Button>
                       <Button
                         onClick={() => handleNavigate("/cart")}

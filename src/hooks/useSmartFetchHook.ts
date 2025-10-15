@@ -8,14 +8,18 @@ interface QueryHookParams {
   [key: string]: unknown;
 }
 
+interface Meta {
+  total?: number;
+  totalPages?: number;
+  totalPage?: number;
+  limit?: number;
+}
+
 interface QueryHookResult<T = unknown> {
   data?: {
-    data?: {
-      [key: string]: T[] | unknown;
-    } & {
-      meta?: {
-        totalPage?: number;
-      };
+    data: {
+      data: T[];
+      meta: Meta;
     };
   };
   isLoading: boolean;
@@ -32,7 +36,10 @@ interface UseSmartFetchHookReturn<T = unknown> {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   totalPages: number;
-  items: T[];
+  items: {
+    data: T[];
+    meta: Meta;
+  };
   isLoading: boolean;
   isError: boolean;
   filterParams: Record<string, unknown>;
@@ -75,9 +82,9 @@ const useSmartFetchHook = <T = unknown>(
     setCurrentPage(1);
   }, [debouncedSearchTerm, stringifiedDebouncedParams]);
 
-  const rawResults = data?.data?.data || [];
-  const items = Array.isArray(rawResults) ? rawResults : [];
-  const meta: any = (data as any)?.data?.meta;
+  const items = data?.data || { data: [], meta: {} };
+  const meta = items.meta;
+  
   const total = meta?.total || 0;
   const limit = (queryParams as any)?.limit || meta?.limit;
   const totalPages = limit > 0 ? Math.ceil(total / limit) : 1;

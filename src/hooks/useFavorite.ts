@@ -1,4 +1,5 @@
-// import { useToggleFavoriteRecipeMutation } from "@/redux/feature/recipe/recipeApi";
+
+import { useAddToBookmarkMutation, useRemoveFromBookmarkMutation } from "@/redux/feature/course/courseApi";
 import { useEffect, useState } from "react";
 
 interface UseFavoriteReturn {
@@ -8,7 +9,8 @@ interface UseFavoriteReturn {
 
 const useFavorite = (initialState: boolean): UseFavoriteReturn => {
   const [isFavorite, setIsFavorite] = useState<boolean>(initialState);
-//   const [toggleFavoriteRecipe] = useToggleFavoriteRecipeMutation(isFavorite);
+  const [addToBookmarkMutation] = useAddToBookmarkMutation();
+  const [removeFromBookmarkMutation] = useRemoveFromBookmarkMutation();
 
   useEffect(() => {
     setIsFavorite(initialState || false);
@@ -17,7 +19,11 @@ const useFavorite = (initialState: boolean): UseFavoriteReturn => {
   const onFavoriteToggle = async (id: string | number): Promise<void> => {
     setIsFavorite(!isFavorite);
     try {
-    //   await toggleFavoriteRecipe(id);
+      if (isFavorite) {
+        await removeFromBookmarkMutation(id);
+      } else {
+        await addToBookmarkMutation({courseId: id});
+      }
     } catch (error) {
       console.log(error);
     }

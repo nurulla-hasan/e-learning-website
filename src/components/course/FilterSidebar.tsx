@@ -73,7 +73,6 @@ const FilterSidebar = ({selectedCategories, setSelectedCategories, selectedLevel
                           id={`cat-${category.id}`}
                           checked={selectedCategories.includes(category.name)}
                           onCheckedChange={(checked) => toggleCategory(category.name, Boolean(checked))}
-                          className="data-[state=checked]:border-[#46BEF2] data-[state=checked]:bg-[#46BEF2] data-[state=checked]:text-white dark:data-[state=checked]:border-[#46BEF2] dark:data-[state=checked]:bg-[#46BEF2]"
                         />
                         <label htmlFor={`cat-${category.id}`} className="text-sm text-muted-foreground cursor-pointer">
                           {category.name}
@@ -81,7 +80,7 @@ const FilterSidebar = ({selectedCategories, setSelectedCategories, selectedLevel
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-muted-foreground">{t("no_categories") || "No categories found"}</p>
+                    <p className="text-sm text-muted-foreground">No categories found</p>
                   )}
                 </CollapsibleContent>
             </Collapsible>
@@ -99,7 +98,6 @@ const FilterSidebar = ({selectedCategories, setSelectedCategories, selectedLevel
                           id={`lvl-${level}`}
                           checked={selectedLevels.includes(level)}
                           onCheckedChange={(checked) => toggleLevel(level, Boolean(checked))}
-                          className="data-[state=checked]:border-[#46BEF2] data-[state=checked]:bg-[#46BEF2] data-[state=checked]:text-white dark:data-[state=checked]:border-[#46BEF2] dark:data-[state=checked]:bg-[#46BEF2]"
                         />
                         <label htmlFor={`lvl-${level}`} className="text-sm text-muted-foreground cursor-pointer">
                           {level}
