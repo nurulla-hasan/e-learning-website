@@ -18,7 +18,7 @@ const CourseSorting = ({sortBy, setSortBy}: TSortingProps) => {
                     <SelectContent>
                         <SelectItem value="price-low">Price: Low to High</SelectItem>
                         <SelectItem value="price-high">Price: High to Low</SelectItem>
-                        <SelectItem value="rating">Highest Rated</SelectItem>
+
                     </SelectContent>
                 </Select>
             </div>

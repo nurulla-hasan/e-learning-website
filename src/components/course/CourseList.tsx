@@ -49,7 +49,15 @@ const CourseList = () => {
     if (selectedLevels.length > 0)
       params.courseLevel = selectedLevels.join(",");
     if (minRating > 0) params.rating = minRating;
-    if (sortBy && sortBy !== "price-low") params.sortBy = sortBy;
+    if (sortBy === 'price-high') {
+      params.sortBy = 'price';
+      params.sortOrder = 'desc';
+    } else if (sortBy === 'price-low') {
+      params.sortBy = 'price';
+      params.sortOrder = 'asc';
+    } else if (sortBy) {
+      params.sortBy = sortBy;
+    }
 
     // Only include price range if it's not the default
     if (priceRange[0] !== 0 || priceRange[1] !== 2000) {

@@ -1,4 +1,5 @@
 import { ChevronDown, Filter } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { levels } from "@/data/course.data";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -116,14 +117,37 @@ const FilterSidebar = ({selectedCategories, setSelectedCategories, selectedLevel
                   min={0}
                   max={5000}
                   step={50}
-                  onValueChange={(val) => {
-                    const v = val as number[]
-                    setPriceRange(v)
-                  }}
+                  onValueChange={setPriceRange}
                 />
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>${priceRange[0]}</span>
-                  <span>${priceRange[1]}</span>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">$</span>
+                    <Input
+                      type="number"
+                      value={priceRange[0]}
+                      onChange={(e) => {
+                        const newMin = Number(e.target.value);
+                        if (!isNaN(newMin)) {
+                          setPriceRange([newMin, priceRange[1]]);
+                        }
+                      }}
+                      className="w-24"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">$</span>
+                    <Input
+                      type="number"
+                      value={priceRange[1]}
+                      onChange={(e) => {
+                        const newMax = Number(e.target.value);
+                        if (!isNaN(newMax)) {
+                          setPriceRange([priceRange[0], newMax]);
+                        }
+                      }}
+                      className="w-24"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
