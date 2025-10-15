@@ -1,32 +1,41 @@
 import { ChevronDown, Filter } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { categories, levels } from "@/data/course.data";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Dispatch, SetStateAction } from "react";
 import { useTranslations } from "next-intl";
 import { StarRating } from "@/tools/StarRating";
 
 type TProps = {
-    selectedCategory: string | null;
-    setSelectedCategory: Dispatch<SetStateAction<string | null>>;
-    selectedLevel: string | null;
-    setSelectedLevel: Dispatch<SetStateAction<string | null>>;
+    selectedCategories: string[];
+    setSelectedCategories: Dispatch<SetStateAction<string[]>>;
+    selectedLevels: string[];
+    setSelectedLevels: Dispatch<SetStateAction<string[]>>;
     priceRange: number[];
     setPriceRange: Dispatch<SetStateAction<number[]>>;
     minRating: number;
     setMinRating: Dispatch<SetStateAction<number>>;
+    categories: any[];
 }
 
-const FilterSidebar = ({selectedCategory, setSelectedCategory, selectedLevel, setSelectedLevel, priceRange, setPriceRange, minRating, setMinRating}: TProps) => {
+const FilterSidebar = ({selectedCategories, setSelectedCategories, selectedLevels, setSelectedLevels, priceRange, setPriceRange, minRating, setMinRating, categories}: TProps) => {
      const t = useTranslations('CoursesPage');
     
-    const handleCategoryChange = (val: string) => {
-      setSelectedCategory(val || null)
+    const toggleCategory = (category: string, checked: boolean) => {
+      if (checked) {
+        setSelectedCategories([...selectedCategories, category])
+      } else {
+        setSelectedCategories(selectedCategories.filter(c => c !== category))
+      }
     }
 
-    const handleLevelChange = (val: string) => {
-      setSelectedLevel(val || null)
+    const toggleLevel = (level: string, checked: boolean) => {
+      if (checked) {
+        setSelectedLevels([...selectedLevels, level])
+      } else {
+        setSelectedLevels(selectedLevels.filter(l => l !== level))
+      }
     }
 
 
@@ -45,16 +54,19 @@ const FilterSidebar = ({selectedCategory, setSelectedCategory, selectedLevel, se
                     <ChevronDown className="h-4 w-4" />
                 </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-3 mt-3">
-                  <RadioGroup value={selectedCategory ?? ""} onValueChange={handleCategoryChange}>
-                    {categories.map((category) => (
-                      <div key={category} className="flex items-center space-x-2">
-                        <RadioGroupItem id={`cat-${category}`} value={category} />
-                        <label htmlFor={`cat-${category}`} className="text-sm text-muted-foreground cursor-pointer">
-                          {category}
+                    {categories?.map((category) => (
+                      <div key={category.id} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`cat-${category.id}`}
+                          checked={selectedCategories.includes(category.name)}
+                          onCheckedChange={(checked) => toggleCategory(category.name, Boolean(checked))}
+                          className="data-[state=checked]:border-[#46BEF2] data-[state=checked]:bg-[#46BEF2] data-[state=checked]:text-white dark:data-[state=checked]:border-[#46BEF2] dark:data-[state=checked]:bg-[#46BEF2]"
+                        />
+                        <label htmlFor={`cat-${category.id}`} className="text-sm text-muted-foreground cursor-pointer">
+                          {category.name}
                         </label>
                       </div>
                     ))}
-                  </RadioGroup>
                 </CollapsibleContent>
             </Collapsible>
 
@@ -65,16 +77,19 @@ const FilterSidebar = ({selectedCategory, setSelectedCategory, selectedLevel, se
                     <ChevronDown className="h-4 w-4" />
                 </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-3 mt-3">
-                  <RadioGroup value={selectedLevel ?? ""} onValueChange={handleLevelChange}>
                     {levels.map((level) => (
                       <div key={level} className="flex items-center space-x-2">
-                        <RadioGroupItem id={`lvl-${level}`} value={level} />
+                        <Checkbox
+                          id={`lvl-${level}`}
+                          checked={selectedLevels.includes(level)}
+                          onCheckedChange={(checked) => toggleLevel(level, Boolean(checked))}
+                          className="data-[state=checked]:border-[#46BEF2] data-[state=checked]:bg-[#46BEF2] data-[state=checked]:text-white dark:data-[state=checked]:border-[#46BEF2] dark:data-[state=checked]:bg-[#46BEF2]"
+                        />
                         <label htmlFor={`lvl-${level}`} className="text-sm text-muted-foreground cursor-pointer">
                           {level}
                         </label>
                       </div>
                     ))}
-                  </RadioGroup>
                 </CollapsibleContent>
             </Collapsible>
             {/* Price Range (shadcn Slider) */}

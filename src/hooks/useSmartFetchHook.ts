@@ -75,9 +75,10 @@ const useSmartFetchHook = <T = unknown>(
     setCurrentPage(1);
   }, [debouncedSearchTerm, stringifiedDebouncedParams]);
 
-  const rawResults = data?.data;
+  const rawResults = data?.data?.data || [];
   const items = Array.isArray(rawResults) ? rawResults : [];
-  const totalPages = data?.data?.meta?.totalPage || 1;
+  const meta: any = (data as any)?.data?.meta;
+  const totalPages = (meta?.totalPages ?? meta?.totalPage) || 1;
 
   return {
     searchTerm,

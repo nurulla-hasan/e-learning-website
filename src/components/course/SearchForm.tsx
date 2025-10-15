@@ -1,15 +1,21 @@
-import { Search } from 'lucide-react'
-import React, { Dispatch, SetStateAction } from 'react'
-import { Input } from '../ui/input';
-import { useTranslations } from 'next-intl';
+// src/components/course/SearchForm.tsx
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { ChangeEvent } from "react";
 
-type TSearchFormProps = {
-    searchTerm: string;
-    setSearchTerm: Dispatch<SetStateAction<string>>
+interface SearchFormProps {
+  searchTerm: string;
+  setSearchTerm: (value: string) => void;
+  className?: string;
 }
 
-const SearchForm = ({searchTerm, setSearchTerm}: TSearchFormProps) => {
-    const t = useTranslations('CoursesPage');
+const SearchForm = ({ searchTerm, setSearchTerm, className = "" }: SearchFormProps) => {
+  const t = useTranslations('CoursesPage');
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
     return (
         <>
@@ -25,7 +31,7 @@ const SearchForm = ({searchTerm, setSearchTerm}: TSearchFormProps) => {
                             <Input
                                 placeholder={t("search_placeholder")}
                                 value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onChange={handleSearch}
                                 className="pl-10"
                             />
                         </div>
