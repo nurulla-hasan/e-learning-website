@@ -1,87 +1,111 @@
 {
     "success": true,
     "statusCode": 200,
-    "message": "Favorite courses retrieved successfully",
-    "data": [
-        {
-            "id": "68ef4e9f06ee8f22256c0764",
-            "userId": "68c656890ce5ec82b3563b35",
-            "courseId": "68ca2e049043bcfafae98e9b",
-            "createdAt": "2025-10-15T07:34:55.346Z",
-            "updatedAt": "2025-10-15T07:34:55.346Z",
-            "course": {
-                "id": "68ca2e049043bcfafae98e9b",
-                "courseTitle": "Design Mastery",
-                "courseShortDescription": "Learn design from scratch",
-                "courseLevel": "Beginner",
-                "price": 150,
-                "discountPrice": 120,
+    "message": "Course details retrieved successfully",
+    "data": {
+        "categoryName": "Development",
+        "id": "68ca2e049043bcfafae98e9b",
+        "userId": "68c63f0b0a7c05b91fbf3470",
+        "courseTitle": "Design Mastery",
+        "courseShortDescription": "Learn design from scratch",
+        "courseDescription": "Full UI?UX guide...",
+        "courseLevel": "Beginner",
+        "categoryId": "68c7adabfa864223d9f28fa9",
+        "certificate": true,
+        "lifetimeAccess": true,
+        "price": 150,
+        "discountPrice": 120,
+        "instructorName": "John Doe",
+        "instructorImage": "https://lerirides.nyc3.digitaloceanspaces.com/courses/instructors/1758082951849_female-instructor.png",
+        "instructorDesignation": "Senior Designer",
+        "instructorDescription": "10 years exp.",
+        "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1758082948594_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+        "totalLessons": 3,
+        "totalSections": 2,
+        "totalDuration": 0,
+        "avgRating": 5,
+        "totalRatings": 1,
+        "totalEnrollments": 1,
+        "isPublished": false,
+        "lastUpdated": "2025-09-17T03:41:56.813Z",
+        "difficulty": "EASY",
+        "skillLevel": "BEGINNER",
+        "courseLength": null,
+        "createdAt": "2025-10-04T10:22:31.077Z",
+        "updatedAt": "2025-10-04T10:22:31.077Z",
+        "Section": [
+            {
+                "id": "68ca378c3959272421d53d49",
+                "courseId": "68ca2e049043bcfafae98e9b",
+                "title": "Introduction",
+                "order": 1,
+                "totalLength": 0,
+                "totalLessons": 2,
+                "testCount": null,
+                "createdAt": "2025-09-17T04:22:34.873Z",
+                "updatedAt": "2025-09-17T04:22:34.873Z",
+                "Lesson": [
+                    {
+                        "title": "Welcome",
+                        "order": 1
+                    },
+                    {
+                        "title": "Setup",
+                        "order": 2
+                    }
+                ],
+                "Test": []
+            },
+            {
+                "id": "68ca378c3959272421d53d4c",
+                "courseId": "68ca2e049043bcfafae98e9b",
+                "title": "Advanced",
+                "order": 2,
+                "totalLength": 0,
+                "totalLessons": 1,
+                "testCount": null,
+                "createdAt": "2025-09-17T04:22:34.873Z",
+                "updatedAt": "2025-09-17T04:22:34.873Z",
+                "Lesson": [
+                    {
+                        "title": "Tools",
+                        "order": 1
+                    }
+                ],
+                "Test": []
+            }
+        ],
+        "Review": [
+            {
+                "id": "68cfc63e8b48ee18b52c5d6e",
+                "rating": 5,
+                "comment": "Amazing course, the instructor was very professional!",
+                "createdAt": "2025-09-21T09:32:46.812Z",
+                "user": {
+                    "id": "68c656890ce5ec82b3563b35",
+                    "fullName": "efaz khondhoker",
+                    "image": "https://lerirides.nyc3.digitaloceanspaces.com/user-profile-images/1757831687549_man-4672229_1280.jpg"
+                }
+            }
+        ],
+        "similarCourses": [
+            {
+                "id": "68e0f56752af379cf34c9622",
+                "courseTitle": "Design Mastery1",
+                "courseShortDescription": "Learn design from scratch1",
+                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759573334207_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+                "price": 200,
+                "discountPrice": 150,
                 "instructorName": "John Doe",
-                "instructorImage": "https://lerirides.nyc3.digitaloceanspaces.com/courses/instructors/1758082951849_female-instructor.png",
-                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1758082948594_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
-                "certificate": true,
-                "lifetimeAccess": true,
-                "createdAt": "2025-10-04T10:22:31.077Z",
+                "totalSections": 2,
+                "totalLessons": 3,
+                "totalDuration": 0,
+                "avgRating": 0,
+                "totalRatings": 0,
                 "category": {
                     "name": "Development"
                 }
             }
-        },
-        {
-            "id": "68ef4e267d2d562809132a00",
-            "userId": "68c656890ce5ec82b3563b35",
-            "courseId": "68e4bf6681b141f1ff4a69f3",
-            "createdAt": "2025-10-15T07:32:54.763Z",
-            "updatedAt": "2025-10-15T07:32:54.763Z",
-            "course": {
-                "id": "68e4bf6681b141f1ff4a69f3",
-                "courseTitle": "Design Mastery123",
-                "courseShortDescription": "Learn design from scratch123",
-                "courseLevel": "Beginner",
-                "price": 100,
-                "discountPrice": 50,
-                "instructorName": "John Doe",
-                "instructorImage": "https://lerirides.nyc3.digitaloceanspaces.com/courses/instructors/1759821667624_instructor.png",
-                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759821665911_Online-Career-Counselling-course.jpg",
-                "certificate": false,
-                "lifetimeAccess": false,
-                "createdAt": "2025-10-07T07:21:10.073Z",
-                "category": {
-                    "name": "New category"
-                }
-            }
-        },
-        {
-            "id": "68e1f3879116c0c80de21e6d",
-            "userId": "68c656890ce5ec82b3563b35",
-            "courseId": "68e0f8de4e2e1554687454a0",
-            "createdAt": "2025-10-05T04:26:47.567Z",
-            "updatedAt": "2025-10-05T04:26:47.567Z",
-            "course": {
-                "id": "68e0f8de4e2e1554687454a0",
-                "courseTitle": "Design Mastery12",
-                "courseShortDescription": "Learn design from scratch12",
-                "courseLevel": "Beginner",
-                "price": 200,
-                "discountPrice": 180,
-                "instructorName": "John Doe",
-                "instructorImage": "https://lerirides.nyc3.digitaloceanspaces.com/courses/instructors/1759574236209_female-instructor.png",
-                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759574235590_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
-                "certificate": false,
-                "lifetimeAccess": false,
-                "createdAt": "2025-10-04T10:37:18.783Z",
-                "category": {
-                    "name": "IT & Software"
-                }
-            }
-        }
-    ],
-    "meta": {
-        "page": 1,
-        "limit": 10,
-        "total": 3,
-        "totalPages": 1,
-        "hasNextPage": false,
-        "hasPrevPage": false
+        ]
     }
 }

@@ -78,7 +78,7 @@ const recipeApi = baseApi.injectEndpoints({
         // GET COURSE BY ID
         getCourseById: builder.query({
             query: (id) => ({
-                url: `/get_recipe_detail/${id}`,
+                url: `/courses/${id}`,
                 method: "GET",
             }),
             providesTags: ["COURSE"],

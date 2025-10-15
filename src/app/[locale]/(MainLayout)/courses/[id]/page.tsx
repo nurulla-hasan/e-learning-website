@@ -1,3 +1,5 @@
+"use client"
+import React from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -6,55 +8,132 @@ import { Star, Users, Clock, Award, CheckCircle, Play} from "lucide-react"
 import Image from "next/image"
 import CurriculamTab from "@/components/SingleCourse/CurriculamTab"
 import ReviewTab from "@/components/SingleCourse/ReviewTab"
+import { useGetCourseByIdQuery } from "@/redux/feature/course/courseApi"
+import { StarRating } from "@/tools/StarRating";
+import PageLayout from "@/tools/PageLayout";
 
-const CourseDetailsPage = () =>{
+// Define types based on API response
+interface Lesson {
+  title: string;
+  order: number;
+}
+
+interface Test {
+  id: string;
+  title: string;
+}
+
+interface Section {
+  id: string;
+  courseId: string;
+  title: string;
+  order: number;
+  totalLength: number;
+  totalLessons: number;
+  testCount: number;
+  createdAt: string;
+  updatedAt: string;
+  Lesson: Lesson[];
+  Test: Test[];
+}
+
+interface Review {
+  id: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  user: {
+    id: string;
+    fullName: string;
+    image?: string;
+  };
+}
+
+interface Course {
+  categoryName: string;
+  id: string;
+  courseTitle: string;
+  courseShortDescription: string;
+  courseDescription: string;
+  courseLevel: string;
+  price: number;
+  discountPrice?: number;
+  instructorName: string;
+  instructorImage: string;
+  instructorDesignation: string;
+  instructorDescription: string;
+  courseThumbnail: string;
+  totalLessons: number;
+  totalSections: number;
+  totalDuration: number;
+  avgRating: number;
+  totalRatings: number;
+  totalEnrollments: number;
+  lastUpdated: string;
+  skillLevel: string;
+  certificate: boolean;
+  lifetimeAccess: boolean;
+  Section: Section[];
+  Review: Review[];
+}
+
+const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = React.use(params);
+  const { data, isLoading, error } = useGetCourseByIdQuery(id);
+  const course = data?.data as Course | undefined;
+
+  if (isLoading) {
+    return <div className="min-h-screen bg-background flex items-center justify-center"><div className="text-lg">Loading...</div></div>;
+  }
+
+  if (error || !course) {
+    return <div className="min-h-screen bg-background flex items-center justify-center"><div className="text-lg text-red-500">Error loading course details</div></div>;
+  }
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Header */}
       <header className="bg-card">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <PageLayout paddingSize="none">
           <nav className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>Home</span>
             <span>/</span>
             <span>Courses</span>
             <span>/</span>
-            <span>IT & Software</span>
+            <span>{course.categoryName}</span>
           </nav>
-        </div>
+        </PageLayout>
       </header>
 
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <PageLayout paddingSize="none">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Course Header */}
             <div className="space-y-4">
               <h1 className="text-3xl md:text-4xl font-bold text-balance">
-                Web Design & Development Fundamentals - From Zero to Expert Level
+                {course?.courseTitle}
               </h1>
               <p className="text-lg text-muted-foreground text-pretty">
-                Learn to design and develop responsive, modern websites from scratch and become an industry-ready
-                expert.
+                {course?.courseShortDescription}
               </p>
 
               {/* Rating and Stats */}
               <div className="flex flex-wrap items-center gap-4 text-sm">
                 <div className="flex items-center gap-1">
-                  <span className="font-semibold">4.8</span>
                   <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    ))}
+                    <StarRating rating={course?.avgRating || 0} totalStars={1} size={16} />
                   </div>
-                  <span className="text-muted-foreground">(86)</span>
+                  <span className="font-semibold">{course?.avgRating || 0}</span>
+                  <span className="text-muted-foreground">({course?.totalRatings})</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Users className="w-4 h-4" />
-                  <span>219 enrolled in this course</span>
+                  <span>{course?.totalEnrollments} enrolled in this course</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>Last update 09/2025</span>
+                  <span>Last update {new Date(course?.lastUpdated).toLocaleDateString()}</span>
                 </div>
               </div>
 
@@ -63,10 +142,10 @@ const CourseDetailsPage = () =>{
                 <span className="text-sm text-muted-foreground">Instructor:</span>
                 <div className="flex items-center gap-2">
                   <Avatar className="w-6 h-6">
-                    <AvatarImage src="/images/instructor/instructor-teaching.png" />
-                    <AvatarFallback>RS</AvatarFallback>
+                    <AvatarImage src={course?.instructorImage} />
+                    <AvatarFallback>{course?.instructorName.charAt(0)}</AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-medium">Robert Smith</span>
+                  <span className="text-sm font-medium">{course?.instructorName}</span>
                 </div>
               </div>
             </div>
@@ -83,87 +162,22 @@ const CourseDetailsPage = () =>{
                 <div className="space-y-4">
                   <h3 className="text-xl font-semibold">About the Course:</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    This course is designed to take you from a complete beginner to a skilled web designer and developer
-                    capable of building beautiful, responsive websites. Whether you want to start a freelance career,
-                    land a developer job, or simply create websites for personal projects, this course equips you with
-                    everything you need.
-                  </p>
-                  <p className="text-muted-foreground leading-relaxed">
-                    We start with the very basics — understanding how websites work — and move towards advanced topics
-                    like responsive design, interactivity with JavaScript, and deploying live projects.
+                    {course?.courseDescription}
                   </p>
                 </div>
 
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">Who This Course Is For:</h3>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-muted-foreground">
-                        Beginners: No prior coding or design knowledge required.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-muted-foreground">
-                        Designers: Graphic or UI designers looking to transition into web development.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-muted-foreground">
-                        Entrepreneurs: Those wanting to create their own business websites without hiring a developer.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-muted-foreground">
-                        Freelancers: People aiming to expand their service offerings and earn more clients.
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">Course Includes:</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ul className="space-y-2">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-primary" />
-                        <span className="text-sm">12 hours of on-demand video</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-primary" />
-                        <span className="text-sm">Downloadable resources & project files</span>
-                      </li>
-                    </ul>
-                    <ul className="space-y-2">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-primary" />
-                        <span className="text-sm">Lifetime access</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-primary" />
-                        <span className="text-sm">Certificate of completion</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Instructor Profile */}
                 <div className="space-y-4">
                   <h3 className="text-xl font-semibold">Instructor:</h3>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Avatar className="w-20 h-20">
-                      <AvatarImage src="/images/instructor/female-instructor.png" />
-                      <AvatarFallback>SR</AvatarFallback>
+                      <AvatarImage src={course?.instructorImage} />
+                      <AvatarFallback>{course?.instructorName.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div className="space-y-2">
-                      <h4 className="text-lg font-semibold">Sophia Reynolds</h4>
-                      <p className="text-sm text-muted-foreground">Senior UI/UX Designer & Design Mentor</p>
+                      <h4 className="text-lg font-semibold">{course?.instructorName}</h4>
+                      <p className="text-sm text-muted-foreground">{course?.instructorDesignation}</p>
                       <p className="text-sm text-muted-foreground leading-relaxed">
-                        Sophia is a seasoned UI/UX Designer with over 5 years of industry experience, having worked with
-                        global brands and startups to create intuitive, user-friendly digital products.
+                        {course?.instructorDescription}
                       </p>
                     </div>
                   </div>
@@ -171,10 +185,10 @@ const CourseDetailsPage = () =>{
               </TabsContent>
 
               <TabsContent value="curriculum" className="mt-6">
-                <CurriculamTab/>
+                <CurriculamTab sections={course?.Section} />
               </TabsContent>
               <TabsContent value="reviews" className="mt-6">
-                <ReviewTab/>
+                <ReviewTab reviews={course?.Review} />
               </TabsContent>
             </Tabs>
           </div>
@@ -185,7 +199,7 @@ const CourseDetailsPage = () =>{
             <Card className="pt-0 pb-6">
               <CardHeader className="p-0">
                 <div className="relative aspect-video bg-gradient-to-br from-blue-600 to-purple-700 rounded-t-lg overflow-hidden">
-                  <Image src="/images/instructor/course-preview.png" alt="Course preview" className="w-full h-full object-cover" width={600} height={600}/>
+                  <Image src={course?.courseThumbnail} alt={course?.courseTitle} className="w-full h-full object-cover" width={600} height={600}/>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Button size="lg" variant="secondary" className="rounded-full">
                       <Play className="w-6 h-6 mr-2" />
@@ -196,8 +210,10 @@ const CourseDetailsPage = () =>{
               </CardHeader>
               <CardContent className="p-6 space-y-4">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold">$89.00</span>
-                  <span className="text-lg text-muted-foreground line-through">$95.00</span>
+                  <span className="text-3xl font-bold">${course.discountPrice || course.price}</span>
+                  {course.discountPrice && course.discountPrice < course.price && (
+                    <span className="text-lg text-muted-foreground line-through">${course.price}</span>
+                  )}
                 </div>
 
                 <div className="space-y-3">
@@ -219,68 +235,52 @@ const CourseDetailsPage = () =>{
                       <Play className="w-4 h-4" />
                       <span className="text-sm">Lessons</span>
                     </div>
-                    <span className="text-sm font-medium">25</span>
+                    <span className="text-sm font-medium">{course.totalLessons}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4" />
                       <span className="text-sm">Quizzes</span>
                     </div>
-                    <span className="text-sm font-medium">5</span>
+                    <span className="text-sm font-medium">{course.Section?.reduce((acc, section) => acc + (section.Test?.length || 0), 0) || 0}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
                       <span className="text-sm">Duration</span>
                     </div>
-                    <span className="text-sm font-medium">12 Hours</span>
+                    <span className="text-sm font-medium">{course.totalDuration > 0 ? `${course.totalDuration} min` : 'N/A'}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Award className="w-4 h-4" />
                       <span className="text-sm">Skill Level</span>
                     </div>
-                    <span className="text-sm font-medium">Intermediate</span>
+                    <span className="text-sm font-medium">{course.skillLevel}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Award className="w-4 h-4" />
                       <span className="text-sm">Certificate</span>
                     </div>
-                    <span className="text-sm font-medium">Yes</span>
+                    <span className="text-sm font-medium">{course.certificate ? 'Yes' : 'No'}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
                       <span className="text-sm">Full Lifetime Access</span>
                     </div>
-                    <span className="text-sm font-medium">Yes</span>
+                    <span className="text-sm font-medium">{course.lifetimeAccess ? 'Yes' : 'No'}</span>
                   </div>
                 </div>
-
-                {/* Social Actions */}
-                {/* <div className="flex items-center justify-center gap-4 pt-4 border-t">
-                  <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                    <Heart className="w-4 h-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                    <Share2 className="w-4 h-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                    <MessageCircle className="w-4 h-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                    <Facebook className="w-4 h-4" />
-                  </Button>
-                </div> */}
               </CardContent>
             </Card>
           </div>
         </div>
-      </div>
+      </PageLayout>
     </div>
-  )
-}
+  );
+};
 
 
 export default CourseDetailsPage
