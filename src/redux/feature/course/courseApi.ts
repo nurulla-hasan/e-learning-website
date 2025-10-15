@@ -75,10 +75,19 @@ const recipeApi = baseApi.injectEndpoints({
         }),
 
 
-        // GET COURSE BY ID
+        // GET COURSE BY ID WITHOUT AUTH
         getCourseById: builder.query({
             query: (id) => ({
                 url: `/courses/${id}`,
+                method: "GET",
+            }),
+            providesTags: ["COURSE"],
+        }),
+
+        // GET COURSE BY ID WITH AUTH
+        getCourseByIdWithAuth: builder.query({
+            query: (id) => ({
+                url: `/courses/details/${id}`,
                 method: "GET",
             }),
             providesTags: ["COURSE"],
@@ -146,6 +155,7 @@ export const {
     useGetMyCoursesQuery,
     useGetCourseReviewsQuery,
     useGetCourseByIdQuery,
+    useGetCourseByIdWithAuthQuery,
     useGetBookmarkedCoursesQuery,
     useAddToBookmarkMutation,
     useRemoveFromBookmarkMutation,

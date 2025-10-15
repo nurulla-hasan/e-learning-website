@@ -88,24 +88,6 @@
                 }
             }
         ],
-        "similarCourses": [
-            {
-                "id": "68e0f56752af379cf34c9622",
-                "courseTitle": "Design Mastery1",
-                "courseShortDescription": "Learn design from scratch1",
-                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759573334207_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
-                "price": 200,
-                "discountPrice": 150,
-                "instructorName": "John Doe",
-                "totalSections": 2,
-                "totalLessons": 3,
-                "totalDuration": 0,
-                "avgRating": 0,
-                "totalRatings": 0,
-                "category": {
-                    "name": "Development"
-                }
-            }
-        ]
+        "isFavoriteCourse": false
     }
 }

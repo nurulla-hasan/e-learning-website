@@ -1,16 +1,27 @@
-"use client"
+"use client";
 import React from "react";
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Star, Users, Clock, Award, CheckCircle, Play} from "lucide-react"
-import Image from "next/image"
-import CurriculamTab from "@/components/SingleCourse/CurriculamTab"
-import ReviewTab from "@/components/SingleCourse/ReviewTab"
-import { useGetCourseByIdQuery } from "@/redux/feature/course/courseApi"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Star,
+  Users,
+  Clock,
+  Award,
+  CheckCircle,
+  Play,
+  Bookmark,
+} from "lucide-react";
+import Image from "next/image";
+import CurriculamTab from "@/components/SingleCourse/CurriculamTab";
+import ReviewTab from "@/components/SingleCourse/ReviewTab";
+import { useGetCourseByIdQuery, useGetCourseByIdWithAuthQuery } from "@/redux/feature/course/courseApi";
 import { StarRating } from "@/tools/StarRating";
 import PageLayout from "@/tools/PageLayout";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import useFavorite from "@/hooks/useFavorite";
 
 // Define types based on API response
 interface Lesson {
@@ -75,19 +86,44 @@ interface Course {
   lifetimeAccess: boolean;
   Section: Section[];
   Review: Review[];
+  isFavoriteCourse?: boolean;
 }
 
 const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = React.use(params);
-  const { data, isLoading, error } = useGetCourseByIdQuery(id);
+  const token = useSelector((state: RootState) => state.auth.accessToken);
+
+  // Use RTK Query's skip option for conditional queries
+  const { data: authData, isLoading: authLoading, error: authError } = useGetCourseByIdWithAuthQuery(id, {
+    skip: !token,
+  });
+  const { data: publicData, isLoading: publicLoading, error: publicError } = useGetCourseByIdQuery(id, {
+    skip: !!token,
+  });
+
+  // Select data based on token
+  const data = token ? authData : publicData;
+  const isLoading = token ? authLoading : publicLoading;
+  const error = token ? authError : publicError;
+
   const course = data?.data as Course | undefined;
 
+  const { isFavorite, onFavoriteToggle } = useFavorite(course?.isFavoriteCourse || false);
+
   if (isLoading) {
-    return <div className="min-h-screen bg-background flex items-center justify-center"><div className="text-lg">Loading...</div></div>;
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
   }
 
   if (error || !course) {
-    return <div className="min-h-screen bg-background flex items-center justify-center"><div className="text-lg text-red-500">Error loading course details</div></div>;
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-lg text-red-500">Error loading course details</div>
+      </div>
+    );
   }
 
   return (
@@ -122,30 +158,49 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
               <div className="flex flex-wrap items-center gap-4 text-sm">
                 <div className="flex items-center gap-1">
                   <div className="flex items-center">
-                    <StarRating rating={course?.avgRating || 0} totalStars={1} size={16} />
+                    <StarRating
+                      rating={course?.avgRating || 0}
+                      totalStars={1}
+                      size={16}
+                    />
                   </div>
-                  <span className="font-semibold">{course?.avgRating || 0}</span>
-                  <span className="text-muted-foreground">({course?.totalRatings})</span>
+                  <span className="font-semibold">
+                    {course?.avgRating || 0}
+                  </span>
+                  <span className="text-muted-foreground">
+                    ({course?.totalRatings})
+                  </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Users className="w-4 h-4" />
-                  <span>{course?.totalEnrollments} enrolled in this course</span>
+                  <span>
+                    {course?.totalEnrollments} enrolled in this course
+                  </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>Last update {new Date(course?.lastUpdated).toLocaleDateString()}</span>
+                  <span>
+                    Last update{" "}
+                    {new Date(course?.lastUpdated).toLocaleDateString()}
+                  </span>
                 </div>
               </div>
 
               {/* Instructor */}
               <div className="flex items-center gap-3">
-                <span className="text-sm text-muted-foreground">Instructor:</span>
+                <span className="text-sm text-muted-foreground">
+                  Instructor:
+                </span>
                 <div className="flex items-center gap-2">
                   <Avatar className="w-6 h-6">
                     <AvatarImage src={course?.instructorImage} />
-                    <AvatarFallback>{course?.instructorName.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>
+                      {course?.instructorName.charAt(0)}
+                    </AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-medium">{course?.instructorName}</span>
+                  <span className="text-sm font-medium">
+                    {course?.instructorName}
+                  </span>
                 </div>
               </div>
             </div>
@@ -171,11 +226,17 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Avatar className="w-20 h-20">
                       <AvatarImage src={course?.instructorImage} />
-                      <AvatarFallback>{course?.instructorName.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>
+                        {course?.instructorName.charAt(0)}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="space-y-2">
-                      <h4 className="text-lg font-semibold">{course?.instructorName}</h4>
-                      <p className="text-sm text-muted-foreground">{course?.instructorDesignation}</p>
+                      <h4 className="text-lg font-semibold">
+                        {course?.instructorName}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {course?.instructorDesignation}
+                      </p>
                       <p className="text-sm text-muted-foreground leading-relaxed">
                         {course?.instructorDescription}
                       </p>
@@ -196,23 +257,59 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Course Preview Card */}
-            <Card className="pt-0 pb-6">
+            <Card className="pt-0">
               <CardHeader className="p-0">
                 <div className="relative aspect-video bg-gradient-to-br from-blue-600 to-purple-700 rounded-t-lg overflow-hidden">
-                  <Image src={course?.courseThumbnail} alt={course?.courseTitle} className="w-full h-full object-cover" width={600} height={600}/>
+                  <Image
+                    src={course?.courseThumbnail}
+                    alt={course?.courseTitle}
+                    className="w-full h-full object-cover"
+                    width={600}
+                    height={600}
+                  />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Button size="lg" variant="secondary" className="rounded-full">
+                    <Button
+                      size="lg"
+                      variant="secondary"
+                      className="rounded-full"
+                    >
                       <Play className="w-6 h-6 mr-2" />
                       PREVIEW
                     </Button>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold">${course.discountPrice || course.price}</span>
-                  {course.discountPrice && course.discountPrice < course.price && (
-                    <span className="text-lg text-muted-foreground line-through">${course.price}</span>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold">
+                      ${course.discountPrice || course.price}
+                    </span>
+                    {course.discountPrice &&
+                      course.discountPrice < course.price && (
+                        <span className="text-lg text-muted-foreground line-through">
+                          ${course.price}
+                        </span>
+                      )}
+                  </div>
+
+                  {token && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={`border h-8 w-8 p-0 bg-white/80 hover:bg-white/90 rounded-full shadow-sm ${
+                        isFavorite ? "bg-red-50 hover:bg-red-100" : ""
+                      }`}
+                      onClick={() => onFavoriteToggle(course.id)}
+                    >
+                      <Bookmark
+                        className={`${
+                          isFavorite
+                            ? "fill-red-500 text-red-500"
+                            : "fill-none text-gray-500"
+                        }`}
+                      />
+                    </Button>
                   )}
                 </div>
 
@@ -220,7 +317,11 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   <Button className="w-full" size="lg">
                     Add To Cart
                   </Button>
-                  <Button variant="outline" className="w-full bg-transparent" size="lg">
+                  <Button
+                    variant="outline"
+                    className="w-full bg-transparent"
+                    size="lg"
+                  >
                     Buy Now
                   </Button>
                   <Button variant="ghost" className="w-full text-primary">
@@ -235,42 +336,59 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                       <Play className="w-4 h-4" />
                       <span className="text-sm">Lessons</span>
                     </div>
-                    <span className="text-sm font-medium">{course.totalLessons}</span>
+                    <span className="text-sm font-medium">
+                      {course.totalLessons}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4" />
                       <span className="text-sm">Quizzes</span>
                     </div>
-                    <span className="text-sm font-medium">{course.Section?.reduce((acc, section) => acc + (section.Test?.length || 0), 0) || 0}</span>
+                    <span className="text-sm font-medium">
+                      {course.Section?.reduce(
+                        (acc, section) => acc + (section.Test?.length || 0),
+                        0
+                      ) || 0}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
                       <span className="text-sm">Duration</span>
                     </div>
-                    <span className="text-sm font-medium">{course.totalDuration > 0 ? `${course.totalDuration} min` : 'N/A'}</span>
+                    <span className="text-sm font-medium">
+                      {course.totalDuration > 0
+                        ? `${course.totalDuration} min`
+                        : "N/A"}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Award className="w-4 h-4" />
                       <span className="text-sm">Skill Level</span>
                     </div>
-                    <span className="text-sm font-medium">{course.skillLevel}</span>
+                    <span className="text-sm font-medium">
+                      {course.skillLevel}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Award className="w-4 h-4" />
                       <span className="text-sm">Certificate</span>
                     </div>
-                    <span className="text-sm font-medium">{course.certificate ? 'Yes' : 'No'}</span>
+                    <span className="text-sm font-medium">
+                      {course.certificate ? "Yes" : "No"}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
                       <span className="text-sm">Full Lifetime Access</span>
                     </div>
-                    <span className="text-sm font-medium">{course.lifetimeAccess ? 'Yes' : 'No'}</span>
+                    <span className="text-sm font-medium">
+                      {course.lifetimeAccess ? "Yes" : "No"}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -282,5 +400,4 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   );
 };
 
-
-export default CourseDetailsPage
+export default CourseDetailsPage;
