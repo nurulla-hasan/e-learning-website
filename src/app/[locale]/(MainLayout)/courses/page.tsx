@@ -1,15 +1,11 @@
-
-import CourseList from "@/components/course/CourseList"
+import CourseList from "@/components/course/CourseList";
 
 const CoursesPage = () => {
-
   return (
     <>
-      <div className="min-h-screen bg-background">
-        <CourseList/>
-      </div>
+      <CourseList />
     </>
-  )
-}
+  );
+};
 
-export default CoursesPage
+export default CoursesPage;

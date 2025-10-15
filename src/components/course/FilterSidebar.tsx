@@ -1,11 +1,12 @@
 import { ChevronDown, Filter } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { categories, levels } from "@/data/course.data";
+import { levels } from "@/data/course.data";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Dispatch, SetStateAction } from "react";
 import { useTranslations } from "next-intl";
 import { StarRating } from "@/tools/StarRating";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type TProps = {
     selectedCategories: string[];
@@ -17,9 +18,10 @@ type TProps = {
     minRating: number;
     setMinRating: Dispatch<SetStateAction<number>>;
     categories: any[];
+    categoriesLoading: boolean;
 }
 
-const FilterSidebar = ({selectedCategories, setSelectedCategories, selectedLevels, setSelectedLevels, priceRange, setPriceRange, minRating, setMinRating, categories}: TProps) => {
+const FilterSidebar = ({selectedCategories, setSelectedCategories, selectedLevels, setSelectedLevels, priceRange, setPriceRange, minRating, setMinRating, categories, categoriesLoading}: TProps) => {
      const t = useTranslations('CoursesPage');
     
     const toggleCategory = (category: string, checked: boolean) => {
@@ -54,7 +56,17 @@ const FilterSidebar = ({selectedCategories, setSelectedCategories, selectedLevel
                     <ChevronDown className="h-4 w-4" />
                 </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-3 mt-3">
-                    {categories?.map((category) => (
+                  {categoriesLoading ? (
+                    <div className="space-y-3 mt-3">
+                      {[...Array(5)].map((_, i) => (
+                        <div key={i} className="flex items-center space-x-2">
+                          <Skeleton className="h-4 w-4" />
+                          <Skeleton className="h-4 w-4/5" />
+                        </div>
+                      ))}
+                    </div>
+                  ) : categories && categories.length > 0 ? (
+                    categories.map((category) => (
                       <div key={category.id} className="flex items-center space-x-2">
                         <Checkbox
                           id={`cat-${category.id}`}
@@ -66,7 +78,10 @@ const FilterSidebar = ({selectedCategories, setSelectedCategories, selectedLevel
                           {category.name}
                         </label>
                       </div>
-                    ))}
+                    ))
+                  ) : (
+                    <p className="text-sm text-muted-foreground">{t("no_categories") || "No categories found"}</p>
+                  )}
                 </CollapsibleContent>
             </Collapsible>
 

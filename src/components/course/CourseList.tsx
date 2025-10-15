@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Filter } from "lucide-react";
+import { Filter, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CourseListItem from "./CourseListItem";
 import FilterSidebar from "./FilterSidebar";
@@ -11,7 +11,13 @@ import { useTranslations } from "next-intl";
 import PageLayout from "@/tools/PageLayout";
 import CustomPagination from "@/tools/CustomPagination";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
-import { useGetCategoriesQuery, useGetCoursesQuery } from "@/redux/feature/course/courseApi";
+import {
+  useGetCategoriesQuery,
+  useGetCoursesQuery,
+} from "@/redux/feature/course/courseApi";
+import NoData from "@/tools/NoData";
+import Error from "@/tools/Error";
+import CourseCardSkeleton from "@/skeleton/course/CourseCardSkeleton";
 
 const CourseList = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -29,23 +35,21 @@ const CourseList = () => {
     setCurrentPage,
     totalPages,
     items,
-    // isLoading,
-    // isError,
-    // filterParams,
+    isLoading,
+    isError,
     setFilterParams,
-  } = useSmartFetchHook(useGetCoursesQuery, {});
-
-  console.log(items);
+  } = useSmartFetchHook(useGetCoursesQuery);
 
   useEffect(() => {
     const params: Record<string, any> = {};
 
     // Only include parameters that have values
-    if (selectedCategories.length > 0) params.categoryName = selectedCategories.join(',');
-    if (selectedLevels.length > 0) params.courseLevel = selectedLevels.join(',');
+    if (selectedCategories.length > 0)
+      params.categoryName = selectedCategories.join(",");
+    if (selectedLevels.length > 0)
+      params.courseLevel = selectedLevels.join(",");
     if (minRating > 0) params.rating = minRating;
     if (sortBy && sortBy !== "price-low") params.sortBy = sortBy;
-    if (currentPage > 1) params.page = currentPage;
 
     // Only include price range if it's not the default
     if (priceRange[0] !== 0 || priceRange[1] !== 2000) {
@@ -60,15 +64,13 @@ const CourseList = () => {
     priceRange,
     minRating,
     sortBy,
-    currentPage,
     setFilterParams,
   ]);
 
-  const { data } = useGetCategoriesQuery({});
+  const { data, isLoading: categoriesLoading } = useGetCategoriesQuery({});
   const categories = data?.data;
 
-
-  const sortedCourses: any[] = [];
+  // const sortedCourses: any[] = [];
 
   return (
     <>
@@ -83,6 +85,7 @@ const CourseList = () => {
         }
         paddingSize="none"
       >
+        {/* Course List */}
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Mobile Filter Toggle */}
           <div className="lg:hidden">
@@ -97,7 +100,8 @@ const CourseList = () => {
             {isMobileFilterOpen && (
               <div className="mb-6">
                 <FilterSidebar
-                categories={categories}
+                  categories={categories}
+                  categoriesLoading={categoriesLoading}
                   selectedCategories={selectedCategories}
                   setSelectedCategories={setSelectedCategories}
                   selectedLevels={selectedLevels}
@@ -114,7 +118,8 @@ const CourseList = () => {
           {/* Desktop Sidebar */}
           <div className="hidden lg:block">
             <FilterSidebar
-            categories={categories}
+              categories={categories}
+              categoriesLoading={categoriesLoading}
               selectedCategories={selectedCategories}
               setSelectedCategories={setSelectedCategories}
               selectedLevels={selectedLevels}
@@ -138,18 +143,20 @@ const CourseList = () => {
 
             {/* Course Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {items?.map((course: any, index: number) => (
-                <CourseListItem key={index} course={course} />
-              ))}
+              {isLoading ? (
+                Array.from({ length: 6 }).map((_, index) => (
+                  <CourseCardSkeleton key={index} />
+                ))
+              ) : isError ? (
+                <Error msg="An error occurred while loading courses." />
+              ) : items?.length === 0 ? (
+                <NoData msg="No courses found matching your criteria." />
+              ) : (
+                items?.map((course: any, index: number) => (
+                  <CourseListItem key={index} course={course} />
+                ))
+              )}
             </div>
-
-            {items?.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">
-                  No courses found matching your criteria.
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </PageLayout>

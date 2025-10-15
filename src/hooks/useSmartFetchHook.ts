@@ -78,7 +78,9 @@ const useSmartFetchHook = <T = unknown>(
   const rawResults = data?.data?.data || [];
   const items = Array.isArray(rawResults) ? rawResults : [];
   const meta: any = (data as any)?.data?.meta;
-  const totalPages = (meta?.totalPages ?? meta?.totalPage) || 1;
+  const total = meta?.total || 0;
+  const limit = (queryParams as any)?.limit || meta?.limit;
+  const totalPages = limit > 0 ? Math.ceil(total / limit) : 1;
 
   return {
     searchTerm,
