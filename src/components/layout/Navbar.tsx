@@ -56,6 +56,7 @@ const Navbar = () => {
               width={600}
               alt="logo"
               className="h-[60px] w-[60px]"
+              priority
             />
           </NextIntlLink>
           {/* Desktop Navigation */}

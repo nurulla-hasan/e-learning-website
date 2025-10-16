@@ -266,6 +266,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     className="w-full h-full object-cover"
                     width={600}
                     height={600}
+                    priority
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Button

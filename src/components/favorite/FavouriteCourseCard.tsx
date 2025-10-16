@@ -50,7 +50,7 @@ const FavouriteCourseCard = ({ favorite }: TProps) => {
         variant="ghost"
         size="sm"
         className="absolute top-2 right-2 z-10 h-8 w-8 p-0 bg-white/80 hover:bg-white/90 rounded-full shadow-sm"
-        onClick={() => onFavoriteToggle(favorite.id)} // Use the course ID to toggle favorite status
+        onClick={() => onFavoriteToggle(favorite.courseId)} // Use the course ID to toggle favorite status
       >
         <Bookmark className={"fill-red-500 text-red-500"} />
       </Button>
