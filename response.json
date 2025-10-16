@@ -1,93 +1,81 @@
 {
     "success": true,
     "statusCode": 200,
-    "message": "Course details retrieved successfully",
-    "data": {
-        "categoryName": "Development",
-        "id": "68ca2e049043bcfafae98e9b",
-        "userId": "68c63f0b0a7c05b91fbf3470",
-        "courseTitle": "Design Mastery",
-        "courseShortDescription": "Learn design from scratch",
-        "courseDescription": "Full UI?UX guide...",
-        "courseLevel": "Beginner",
-        "categoryId": "68c7adabfa864223d9f28fa9",
-        "certificate": true,
-        "lifetimeAccess": true,
-        "price": 150,
-        "discountPrice": 120,
-        "instructorName": "John Doe",
-        "instructorImage": "https://lerirides.nyc3.digitaloceanspaces.com/courses/instructors/1758082951849_female-instructor.png",
-        "instructorDesignation": "Senior Designer",
-        "instructorDescription": "10 years exp.",
-        "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1758082948594_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
-        "totalLessons": 3,
-        "totalSections": 2,
-        "totalDuration": 0,
-        "avgRating": 5,
-        "totalRatings": 1,
-        "totalEnrollments": 1,
-        "isPublished": false,
-        "lastUpdated": "2025-09-17T03:41:56.813Z",
-        "difficulty": "EASY",
-        "skillLevel": "BEGINNER",
-        "courseLength": null,
-        "createdAt": "2025-10-04T10:22:31.077Z",
-        "updatedAt": "2025-10-04T10:22:31.077Z",
-        "Section": [
-            {
-                "id": "68ca378c3959272421d53d49",
-                "courseId": "68ca2e049043bcfafae98e9b",
-                "title": "Introduction",
-                "order": 1,
-                "totalLength": 0,
-                "totalLessons": 2,
-                "testCount": null,
-                "createdAt": "2025-09-17T04:22:34.873Z",
-                "updatedAt": "2025-09-17T04:22:34.873Z",
-                "Lesson": [
-                    {
-                        "title": "Welcome",
-                        "order": 1
-                    },
-                    {
-                        "title": "Setup",
-                        "order": 2
-                    }
-                ],
-                "Test": []
-            },
-            {
-                "id": "68ca378c3959272421d53d4c",
-                "courseId": "68ca2e049043bcfafae98e9b",
-                "title": "Advanced",
-                "order": 2,
-                "totalLength": 0,
-                "totalLessons": 1,
-                "testCount": null,
-                "createdAt": "2025-09-17T04:22:34.873Z",
-                "updatedAt": "2025-09-17T04:22:34.873Z",
-                "Lesson": [
-                    {
-                        "title": "Tools",
-                        "order": 1
-                    }
-                ],
-                "Test": []
-            }
-        ],
-        "Review": [
-            {
-                "id": "68cfc63e8b48ee18b52c5d6e",
-                "rating": 5,
-                "comment": "Amazing course, the instructor was very professional!",
-                "createdAt": "2025-09-21T09:32:46.812Z",
-                "user": {
-                    "id": "68c656890ce5ec82b3563b35",
-                    "fullName": "efaz khondhoker",
-                    "image": "https://lerirides.nyc3.digitaloceanspaces.com/user-profile-images/1757831687549_man-4672229_1280.jpg"
+    "message": "My in-person training requests retrieved successfully",
+    "data": [
+        {
+            "id": "68f09c1c992e74ae611d524c",
+            "userId": "68c656890ce5ec82b3563b35",
+            "courseId": "68e0f56752af379cf34c9622",
+            "location": "bangladesh",
+            "duration": null,
+            "price": null,
+            "status": "PENDING",
+            "createdAt": "2025-10-16T07:17:48.611Z",
+            "updatedAt": "2025-10-16T07:17:48.611Z",
+            "course": {
+                "id": "68e0f56752af379cf34c9622",
+                "courseTitle": "Design Mastery1",
+                "courseLevel": "Beginner",
+                "instructorName": "John Doe",
+                "price": 200,
+                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759573334207_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+                "category": {
+                    "name": "Development"
                 }
             }
-        ],
-        "isFavoriteCourse": false
+        },
+        {
+            "id": "68f09c04992e74ae611d524b",
+            "userId": "68c656890ce5ec82b3563b35",
+            "courseId": "68ca2e049043bcfafae98e9b",
+            "location": "bangladesh",
+            "duration": null,
+            "price": null,
+            "status": "PENDING",
+            "createdAt": "2025-10-16T07:17:24.442Z",
+            "updatedAt": "2025-10-16T07:17:24.442Z",
+            "course": {
+                "id": "68ca2e049043bcfafae98e9b",
+                "courseTitle": "Design Mastery",
+                "courseLevel": "Beginner",
+                "instructorName": "John Doe",
+                "price": 150,
+                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1758082948594_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+                "category": {
+                    "name": "Development"
+                }
+            }
+        },
+        {
+            "id": "68f095ccd373dc796ed8c4e8",
+            "userId": "68c656890ce5ec82b3563b35",
+            "courseId": "68e4bf6681b141f1ff4a69f3",
+            "location": "bangladesh",
+            "duration": null,
+            "price": null,
+            "status": "PENDING",
+            "createdAt": "2025-10-16T06:50:52.508Z",
+            "updatedAt": "2025-10-16T06:50:52.508Z",
+            "course": {
+                "id": "68e4bf6681b141f1ff4a69f3",
+                "courseTitle": "Design Mastery123",
+                "courseLevel": "Beginner",
+                "instructorName": "John Doe",
+                "price": 100,
+                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759821665911_Online-Career-Counselling-course.jpg",
+                "category": {
+                    "name": "New category"
+                }
+            }
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "limit": 10,
+        "total": 3,
+        "totalPages": 1,
+        "hasNextPage": false,
+        "hasPrevPage": false
     }
 }

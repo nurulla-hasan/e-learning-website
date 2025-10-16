@@ -13,6 +13,7 @@ import {
   Play,
   Bookmark,
 } from "lucide-react";
+import { TrainingRequestModal } from "@/components/training/TrainingRequestModal";
 import Image from "next/image";
 import CurriculamTab from "@/components/SingleCourse/CurriculamTab";
 import ReviewTab from "@/components/SingleCourse/ReviewTab";
@@ -325,9 +326,14 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   >
                     Buy Now
                   </Button>
-                  <Button variant="ghost" className="w-full text-primary">
-                    Request In-Person Training
-                  </Button>
+                  <TrainingRequestModal 
+                    courseId={course.id}
+                    courseName={course.courseTitle}
+                  >
+                    <Button variant="outline" className="w-full text-primary">
+                      Request In-Person Training
+                    </Button>
+                  </TrainingRequestModal>
                 </div>
 
                 {/* Course Stats */}

@@ -19,7 +19,24 @@
     "help": "Help Center",
     "favorites": "Favorites",
     "cart": "Cart",
-    "checkout": "Check Out"
+    "checkout": "Check Out",
+    "training_request": "Training Request",
+    "training_request_description": "Submit your training request here."
+  },
+  "TrainingRequest": {
+    "training_requests": "Training Requests",
+    "pending_requests": "Pending Requests",
+    "accepted_requests": "Accepted Requests",
+    "no_pending_requests": "No pending training requests found.",
+    "no_accepted_requests": "No accepted training requests found.",
+    "request_training": "Request In-Person Training",
+    "request_training_description": "Please provide the details for your in-person training request.",
+    "course_name": "Course Name",
+    "location": "Location",
+    "enter_location": "e.g., New York Training Center, Room 204",
+    "cancel": "Cancel",
+    "submit_request": "Submit Request",
+    "submitting": "Submitting..."
   },
   "Hero": {
     "title": "Learn, Grow, and Achieve Anytime, Anywhere",
@@ -31,6 +48,7 @@
     "my_learning": "My Learning",
     "learning_history": "Learning History",
     "my_orders": "My Orders",
+    "training_request": "Training Request",
     "sign_in": "Sign In",
     "logout": "Logout"
   },

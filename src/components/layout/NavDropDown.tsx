@@ -114,6 +114,15 @@ const NavDropDown = ({
               <Package />
               <span>{t("my_orders")}</span>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onClick={() => handleNavigate("/training-request")}
+              className="cursor-pointer"
+            >
+              <Package />
+              <span>{t("training_request")}</span>
+            </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 

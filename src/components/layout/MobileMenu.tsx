@@ -166,6 +166,14 @@ const MobileMenu = ({
                     </DropdownMenuItem>
 
                     <DropdownMenuItem
+                      onClick={() => handleNavigate("/training-request")}
+                      className="cursor-pointer"
+                    >
+                      <Package />
+                      <span>{t("training_request")}</span>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
                       onClick={() => {
                         handleNavigate("/favorites");
                         setIsOpen(false);

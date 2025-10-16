@@ -19,7 +19,24 @@
     "help": "Centrum Pomocy",
     "favorites": "Ulubione",
     "cart": "Koszyk",
-    "checkout": "Do kasy"
+    "checkout": "Do kasy",
+    "training_request": "Zgłoszenie szkoleniowe",
+    "training_request_description": "Złóż tutaj swoje zgłoszenie szkoleniowe."
+  },
+  "TrainingRequest": {
+    "training_requests": "Zgłoszenia szkoleniowe",
+    "pending_requests": "Oczekujące zgłoszenia",
+    "accepted_requests": "Zaakceptowane zgłoszenia",
+    "no_pending_requests": "Brak oczekujących zgłoszeń szkoleniowych.",
+    "no_accepted_requests": "Brak zaakceptowanych zgłoszeń.",
+    "request_training": "Zamów szkolenie stacjonarne",
+    "request_training_description": "Podaj szczegóły dotyczące szkolenia stacjonarnego.",
+    "course_name": "Nazwa kursu",
+    "location": "Lokalizacja",
+    "enter_location": "np. Centrum Szkoleniowe Warszawa, Sala 204",
+    "cancel": "Anuluj",
+    "submit_request": "Wyślij wniosek",
+    "submitting": "Wysyłanie..."
   },
   "Hero": {
     "title": "Ucz się, rozwijaj i osiągaj w każdej chwili, w każdym miejscu",
@@ -31,6 +48,7 @@
     "my_learning": "Moja Nauka",
     "learning_history": "Historia Nauki",
     "my_orders": "Moje Zamówienia",
+    "training_request": "Zgłoszenie szkoleniowe",
     "sign_in": "Zaloguj się",
     "logout": "Wyloguj się"
   },

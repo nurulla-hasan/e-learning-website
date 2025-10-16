@@ -133,6 +133,26 @@ const recipeApi = baseApi.injectEndpoints({
             providesTags: ["COURSE"],
         }),
 
+        // GET ACCEPTED TRAINING REQUEST
+        getAcceptedTrainingsRequest: builder.query({
+            query: (args) => {
+                const params = new URLSearchParams();
+                if (args) {
+                    Object.entries(args).forEach(([key, value]) => {
+                        if (value) {
+                            params.append(key, value as string);
+                        }
+                    });
+                }
+                return {
+                    url: "/in-person-trainings/my-trainings",
+                    method: "GET",
+                    params,
+                };
+            },
+            providesTags: ["COURSE"],
+        }),
+
         // ===================================END GET QUERY============================================
 
         // ===================================START MUTATION===========================================
@@ -178,6 +198,7 @@ export const {
     useGetCourseByIdWithAuthQuery,
     useGetBookmarkedCoursesQuery,
     useGetMyTrainingsRequestQuery,
+    useGetAcceptedTrainingsRequestQuery,
     useAddToBookmarkMutation,
     useRemoveFromBookmarkMutation,
     useRequestForTrainingMutation,
