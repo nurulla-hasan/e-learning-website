@@ -30,9 +30,9 @@ export default function RootLayout({
         <ReduxProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+            defaultTheme="light"
+            // enableSystem
+            // disableTransitionOnChange
           >
             <NextTopLoader color="#3bc0d8" height={2} showSpinner={false} />
             {children}

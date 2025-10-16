@@ -95,7 +95,7 @@ export default function PendingRequestsTab() {
 
         return (
           <Card key={request?.id || index} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
+            <CardContent>
               <div className="flex gap-4">
                 <div className="relative w-20 h-20 rounded-lg overflow-hidden">
                   <Image
@@ -151,9 +151,8 @@ export default function PendingRequestsTab() {
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
-                      <DollarSign className="w-4 h-4 text-muted-foreground" />
                       <span className="font-semibold text-green-600">
-                        ${request.course.price}
+                        zł {request.course.price}
                       </span>
                     </div>
                   </div>

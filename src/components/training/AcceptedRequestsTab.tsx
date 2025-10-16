@@ -99,7 +99,7 @@ export default function AcceptedRequestsTab() {
 
         return (
           <Card key={request.id || index} className="hover:shadow-md transition-shadow border-green-200 bg-green-50/30">
-            <CardContent className="p-6">
+            <CardContent>
               <div className="flex gap-4">
                 <div className="relative w-20 h-20 rounded-lg overflow-hidden">
                   <Image
@@ -158,9 +158,8 @@ export default function AcceptedRequestsTab() {
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
-                      <DollarSign className="w-4 h-4 text-muted-foreground" />
                       <span className="font-semibold text-green-600">
-                        ${request.price || request.course?.price || 0}
+                        zł {request.price || request.course?.price || 0}
                       </span>
                     </div>
                   </div>
@@ -174,7 +173,7 @@ export default function AcceptedRequestsTab() {
 
                   <div className="mt-3 p-3 bg-green-100 rounded-lg">
                     <p className="text-sm text-green-800">
-                      🎉 Your training request has been {request.status.toLowerCase()}! You can now proceed with the course enrollment.
+                      🎉 Your training request has been {request.status.toLowerCase()}!
                     </p>
                   </div>
                 </div>
