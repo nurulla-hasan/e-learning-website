@@ -4,8 +4,6 @@ import { useTranslations } from "next-intl";
 import PageHeader from "@/components/common/PageHeader";
 import PageLayout from "@/tools/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import useSmartFetchHook from "@/hooks/useSmartFetchHook";
-import { useGetAcceptedTrainingsRequestQuery, useGetMyTrainingsRequestQuery } from "@/redux/feature/course/courseApi";
 import PendingRequestsTab from "@/components/training/PendingRequestsTab";
 import AcceptedRequestsTab from "@/components/training/AcceptedRequestsTab";
 

@@ -8,7 +8,7 @@ import { CalendarDays, MapPin, Clock, DollarSign, CheckCircle } from "lucide-rea
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import { useGetAcceptedTrainingsRequestQuery } from "@/redux/feature/course/courseApi";
 
-interface TrainingRequest {
+interface Item {
   id: string;
   userId: string;
   courseId: string;
@@ -18,7 +18,12 @@ interface TrainingRequest {
   status: string;
   createdAt: string;
   updatedAt: string;
-  course: {
+  courseTitle?: string;
+  courseLevel?: string;
+  instructorName?: string;
+  courseThumbnail?: string;
+  categoryName?: string;
+  course?: {
     id: string;
     courseTitle: string;
     courseLevel: string;
@@ -87,8 +92,8 @@ export default function AcceptedRequestsTab() {
     <div className="space-y-4">
       {items.map((item, index) => {
         // Type guard to ensure item is a valid training request
-        const request = item as TrainingRequest;
-        if (!request || typeof request !== 'object' || !request.id || !request.course) {
+        const request = item as Item;
+        if (!request || typeof request !== 'object' || !request.id) {
           return null; // Skip invalid items
         }
 
@@ -98,9 +103,10 @@ export default function AcceptedRequestsTab() {
               <div className="flex gap-4">
                 <div className="relative w-20 h-20 rounded-lg overflow-hidden">
                   <Image
-                    src={request.course.courseThumbnail}
-                    alt={request.course.courseTitle}
+                    src={request.courseThumbnail || request.course?.courseThumbnail || ''}
+                    alt={request.courseTitle || request.course?.courseTitle || 'Course'}
                     fill
+                    sizes="(max-width: 768px) 80px, 80px"
                     className="object-cover"
                   />
                 </div>
@@ -109,10 +115,10 @@ export default function AcceptedRequestsTab() {
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <h3 className="font-semibold text-lg">
-                        {request.course.courseTitle}
+                        {request.courseTitle || request.course?.courseTitle || 'Untitled Course'}
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        by {request.course.instructorName}
+                        by {request.instructorName || request.course?.instructorName || 'Unknown Instructor'}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -128,20 +134,20 @@ export default function AcceptedRequestsTab() {
                       <span className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
                         <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                       </span>
-                      {request.course.category.name}
+                      {request.categoryName || request.course?.category?.name || 'Uncategorized'}
                     </div>
                     <div className="flex items-center gap-1">
                       <span className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center">
                         <span className="w-2 h-2 rounded-full bg-green-500"></span>
                       </span>
-                      {request.course.courseLevel}
+                      {request.courseLevel || request.course?.courseLevel || 'Beginner'}
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="flex items-center gap-2 text-sm">
                       <MapPin className="w-4 h-4 text-muted-foreground" />
-                      <span>{request.location}</span>
+                      <span>{request.location || 'Location not specified'}</span>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
@@ -154,7 +160,7 @@ export default function AcceptedRequestsTab() {
                     <div className="flex items-center gap-2 text-sm">
                       <DollarSign className="w-4 h-4 text-muted-foreground" />
                       <span className="font-semibold text-green-600">
-                        ${request.course.price}
+                        ${request.price || request.course?.price || 0}
                       </span>
                     </div>
                   </div>
@@ -168,7 +174,7 @@ export default function AcceptedRequestsTab() {
 
                   <div className="mt-3 p-3 bg-green-100 rounded-lg">
                     <p className="text-sm text-green-800">
-                      🎉 Your training request has been accepted! You can now proceed with the course enrollment.
+                      🎉 Your training request has been {request.status.toLowerCase()}! You can now proceed with the course enrollment.
                     </p>
                   </div>
                 </div>

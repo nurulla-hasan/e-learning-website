@@ -89,7 +89,6 @@ export default function PendingRequestsTab() {
       {items.map((item, index) => {
         // Type guard to ensure item is a valid training request
         const request = item as TrainingRequest;
-        console.log(request)
         if (!request || typeof request !== 'object' || !request.id || !request.course) {
           return null; // Skip invalid items
         }
