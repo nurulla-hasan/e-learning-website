@@ -30,7 +30,7 @@ const Navbar = () => {
   const user = useSelector((state: RootState) => state.profile.profile);
   const isAuthenticated = Boolean(token && user);
 
-  const { isLoading } = useGetUserProfileQuery(undefined,{
+  const { isLoading } = useGetUserProfileQuery(undefined, {
     skip: !token,
   });
 
@@ -121,7 +121,10 @@ const Navbar = () => {
             )}
           </div>
           {/* Mobile menu button */}
-          <MobileMenu />
+          <MobileMenu
+            user={user}
+            isAuthenticated={isAuthenticated}
+          />
         </div>
       </div>
     </nav>

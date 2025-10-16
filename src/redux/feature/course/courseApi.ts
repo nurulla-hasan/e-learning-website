@@ -113,6 +113,26 @@ const recipeApi = baseApi.injectEndpoints({
             providesTags: ["COURSE"],
         }),
 
+        // GET MY TRAININGS REQUEST
+        getMyTrainingsRequest: builder.query({
+            query: (args) => {
+                const params = new URLSearchParams();
+                if (args) {
+                    Object.entries(args).forEach(([key, value]) => {
+                        if (value) {
+                            params.append(key, value as string);
+                        }
+                    });
+                }
+                return {
+                    url: "/in-person-trainings/my-requests",
+                    method: "GET",
+                    params,
+                };
+            },
+            providesTags: ["COURSE"],
+        }),
+
         // ===================================END GET QUERY============================================
 
         // ===================================START MUTATION===========================================
@@ -136,14 +156,14 @@ const recipeApi = baseApi.injectEndpoints({
             invalidatesTags: ["COURSE"],
         }),
 
-        // SEND REVIEW
-        sendReview: builder.mutation({
+        // REQUEST FOR TRAINING
+        requestForTraining: builder.mutation({
             query: (data) => ({
-                url: "/review/send",
+                url: "/in-person-trainings",
                 method: "POST",
                 body: data
             }),
-            invalidatesTags: [ "REVIEW", "COURSE"],
+            invalidatesTags: ["COURSE"],
         }),
 
     })
@@ -157,7 +177,8 @@ export const {
     useGetCourseByIdQuery,
     useGetCourseByIdWithAuthQuery,
     useGetBookmarkedCoursesQuery,
+    useGetMyTrainingsRequestQuery,
     useAddToBookmarkMutation,
     useRemoveFromBookmarkMutation,
-    useSendReviewMutation,
+    useRequestForTrainingMutation,
 } = recipeApi
