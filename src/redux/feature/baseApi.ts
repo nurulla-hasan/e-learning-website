@@ -26,6 +26,7 @@ const baseQuery: BaseQueryFn<FetchArgs, unknown, FetchBaseQueryError> = async (a
         api.dispatch(SetAccessToken(null));
         api.dispatch(SetUserProfile(null));
         localStorage.removeItem("accessToken");
+        window.location.href = "/login";
     }
 
     return result;

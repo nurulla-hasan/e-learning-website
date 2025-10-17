@@ -1,5 +1,7 @@
 "use client"
 
+import { ErrorToast, SuccessToast } from "@/lib/utils"
+import { useSendSubscribeMutation } from "@/redux/feature/legal/legalApi"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
@@ -12,11 +14,17 @@ const Footer = () => {
   const t = useTranslations('Header');
   const tFooter = useTranslations('Footer');
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const [sendSubscribe, { isLoading }] = useSendSubscribeMutation()
+
+  const handleSubscribe =async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle newsletter subscription
-    console.log("Subscribing email:", email)
-    setEmail("")
+    try {
+      await sendSubscribe({ email }).unwrap()
+      setEmail("")
+      SuccessToast("Subscribe successfully")
+    } catch (error: any) {
+      ErrorToast(error?.data?.message || 'Subscription failed. Please try again.');
+    }
   }
 
   return (
@@ -34,14 +42,15 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={tFooter("email_placeholder")}
-                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                 required
               />
               <button
+                disabled={isLoading}
                 type="submit"
                 className="px-6 py-2 cursor-pointer bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-lg transition-colors duration-200 whitespace-nowrap"
               >
-                {tFooter("subscribe_button")}
+                {isLoading ? "Loading..." : tFooter("subscribe_button")}
               </button>
             </form>
           </div>
