@@ -95,7 +95,7 @@ const ChangePasswordModal = () => {
       <Dialog open={isModalOpen} onOpenChange={handleOpenChange}>
         <DialogContent
           className="sm:max-w-md"
-          onInteractOutside={(e) => e.preventDefault()}
+          // onInteractOutside={(e) => e.preventDefault()}
         >
           <DialogHeader>
             <DialogTitle>{t("title")}</DialogTitle>

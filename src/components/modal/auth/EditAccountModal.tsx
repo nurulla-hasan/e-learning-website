@@ -143,7 +143,7 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent
           className="sm:max-w-md"
-          onInteractOutside={(e) => e.preventDefault()}
+          // onInteractOutside={(e) => e.preventDefault()}
         >
           <DialogHeader>
             <DialogTitle>{t("editAccount")}</DialogTitle>
