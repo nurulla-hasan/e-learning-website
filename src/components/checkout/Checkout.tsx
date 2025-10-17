@@ -7,93 +7,143 @@ import { Clock, BookOpen, User } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
+import { useGetCheckoutQuery, useRemoveFromCheckoutMutation } from "@/redux/feature/checkout/checkoutApi"
+import RemoveButton from "./RemoveButton"
 
-interface Course {
+interface CheckoutItem {
   id: string
-  title: string
-  instructor: string
-  totalHours: number
-  lessons: number
-  price: number
-  image: string
+  userId: string
+  totalAmount: number
+  status: string
+  createdAt: string
+  updatedAt: string
 }
-
-const courses: Course[] = [
-  {
-    id: "1",
-    title: "Learn Ethical Hacking From Scratch",
-    instructor: "Robert Smith",
-    totalHours: 25,
-    lessons: 34,
-    price: 40.0,
-    image: "/images/cart/figma-ui-ux-design-course.jpg",
-  },
-  {
-    id: "2",
-    title: "Digital Marketing Mastery-Social Media & Ads",
-    instructor: "Leslie Alexander",
-    totalHours: 35,
-    lessons: 48,
-    price: 35.0,
-    image: "/images/cart/web-development-course.png",
-  },
-]
 
 const Checkout = () => {
   const router = useRouter();
-  const subtotal = courses.reduce((sum, course) => sum + course.price, 0)
-  const total = subtotal // In a real app, this might include taxes, discounts, etc.
-   const t = useTranslations('CheckoutPage');
+  const t = useTranslations('CheckoutPage');
+
+  const { data, isLoading, error } = useGetCheckoutQuery({});
+  const checkoutItems = data?.data || [];
+  const subtotal = checkoutItems.reduce((sum: number, item: CheckoutItem) => sum + item.totalAmount, 0);
+  const total = subtotal; // In a real app, this might include taxes, discounts, etc.
+
+  if (isLoading) {
+    return (
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <h1 className="text-2xl font-bold text-foreground mb-6">{t("page_title")}</h1>
+            <div className="space-y-4">
+              {[...Array(3)].map((_, i) => (
+                <Card key={i} className="animate-pulse">
+                  <CardContent className="p-6">
+                    <div className="flex gap-4">
+                      <div className="w-20 h-20 bg-gray-200 rounded-lg"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                        <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                        <div className="h-3 bg-gray-200 rounded w-1/4"></div>
+                      </div>
+                      <div className="w-20 h-8 bg-gray-200 rounded"></div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+          <div className="lg:col-span-1">
+            <Card className="animate-pulse">
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center py-8">
+          <p className="text-red-500 mb-4">{t("error_loading_checkout")}</p>
+          <Button onClick={() => window.location.reload()}>
+            {t("try_again")}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Courses Section */}
+        {/* Checkout Items Section */}
         <div className="lg:col-span-2">
           <h1 className="text-2xl font-bold text-foreground mb-6">{t("page_title")}</h1>
           <div className="space-y-4">
-            {courses.map((course) => (
-              <Card key={course.id} className="bg-card border-border shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    {/* Course Image */}
-                    <div className="flex-shrink-0">
-                      <Image
-                        src={course.image || "/placeholder.svg"}
-                        alt={course.title}
-                        className="w-full sm:w-32 h-20 object-cover rounded-lg bg-muted"
-                        height={600}
-                        width={600}
-                      />
-                    </div>
-
-                    {/* Course Details */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-card-foreground mb-2 text-balance">{course.title}</h3>
-                      <div className="flex items-center gap-1 text-muted-foreground mb-3">
-                        <User className="w-4 h-4" />
-                        <span className="text-sm">By {course.instructor}</span>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          <span>{course.totalHours} total hours</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <BookOpen className="w-4 h-4" />
-                          <span>{course.lessons} lessons</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Price */}
-                    <div className="flex-shrink-0 text-right sm:text-left">
-                      <div className="text-xl font-bold text-primary">${course.price.toFixed(2)}</div>
-                    </div>
-                  </div>
+            {checkoutItems.length === 0 ? (
+              <Card className="bg-card border-border shadow-sm">
+                <CardContent className="p-6 text-center">
+                  <p className="text-muted-foreground">{t("no_checkout_items")}</p>
                 </CardContent>
               </Card>
-            ))}
+            ) : (
+              checkoutItems.map((item: CheckoutItem) => (
+                <Card key={item.id} className="bg-card border-border shadow-sm hover:shadow-md transition-shadow">
+                  <CardContent>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      {/* Order Icon */}
+                      <div className="flex-shrink-0">
+                        <div className="w-full sm:w-20 h-20 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <BookOpen className="w-8 h-8 text-primary" />
+                        </div>
+                      </div>
+
+                      {/* Order Details */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-semibold text-card-foreground mb-2">
+                          Order ID: {item.id.slice(-8)}
+                        </h3>
+                        <div className="flex items-center gap-1 text-muted-foreground mb-3">
+                          <User className="w-4 h-4" />
+                          <span className="text-sm">User ID: {item.userId.slice(-8)}</span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                          {/* <div className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            <span>Created: {new Date(item.createdAt).toLocaleDateString()}</span>
+                          </div> */}
+                          <div className="flex items-center gap-1">
+                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                              item.status === 'PAID'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {item.status}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Amount and Actions */}
+                      <div className="flex-shrink-0 flex flex-col justify-between text-right sm:text-left">
+                        <div className="text-xl font-bold text-primary">zł {item.totalAmount.toFixed(2)}</div>
+                        <RemoveButton
+                          id={item.id}
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
         </div>
 
@@ -107,12 +157,12 @@ const Checkout = () => {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">{t("subtotal")}:</span>
-                  <span className="font-semibold text-foreground">${subtotal.toFixed(2)}</span>
+                  <span className="font-semibold text-foreground">zł {subtotal.toFixed(2)}</span>
                 </div>
                 <hr className="border-border" />
                 <div className="flex justify-between items-center">
                   <span className="font-semibold text-foreground">{t("total")}:</span>
-                  <span className="text-xl font-bold text-primary">${total.toFixed(2)}</span>
+                  <span className="text-xl font-bold text-primary">zł {total.toFixed(2)}</span>
                 </div>
               </div>
 

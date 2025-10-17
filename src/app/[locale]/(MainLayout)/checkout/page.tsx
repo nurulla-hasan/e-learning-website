@@ -1,16 +1,11 @@
+"use client";
+
 import Checkout from "@/components/checkout/Checkout"
 import PageHeader from "@/components/common/PageHeader"
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-interface TProps {
-  params: {
-    locale: string;
-  };
-}
-
-const CheckoutPage = async ({ params }: TProps) => {
-  const {locale} = params;
-  const t = await getTranslations({locale});
+const CheckoutPage = () => {
+  const t = useTranslations();
   const title = t("Header.checkout");
 
   return (
@@ -20,6 +15,5 @@ const CheckoutPage = async ({ params }: TProps) => {
     </div>
   )
 }
-
 
 export default CheckoutPage

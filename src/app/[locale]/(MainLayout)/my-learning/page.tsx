@@ -1,21 +1,16 @@
+"use client";
+
 import PageHeader from "@/components/common/PageHeader"
 import LearningCourseList from "@/components/learning/LearningCourseList"
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-interface TProps {
-  params: {
-    locale: string;
-  };
-}
-
-const MyLearningPage = async ({ params }: TProps) => {
-  const {locale} = params;
-  const t = await getTranslations({locale});
+const MyLearningPage = () => {
+  const t = useTranslations();
   const title = t("Header.learning");
 
   return (
     <>
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen">
         <PageHeader title={title} />
         <LearningCourseList />
       </main>
