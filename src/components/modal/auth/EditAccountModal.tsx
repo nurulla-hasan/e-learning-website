@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -13,25 +13,76 @@ import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Camera, Edit } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { useUpdateUserProfileMutation } from "@/redux/feature/profile/profileApi"
+import { ErrorToast, SuccessToast } from "@/lib/utils"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
-const EditAccountModal = () => {
+interface EditAccountModalProps {
+  isLoading: boolean;
+  user: {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    dateOfBirth: string;
+    gender?: string;
+    address?: string;
+  };
+}
+
+const EditAccountModal = ({ user }: EditAccountModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const t = useTranslations("ProfilePage")
+  const [updateUserProfile, { isLoading: isUpdating }] = useUpdateUserProfileMutation()
 
   const [formData, setFormData] = useState({
-    fullName: "Leslie Alexander",
-    email: "debra.holt@example.com",
-    phoneNumber: "(208) 555-0112",
-    dateOfBirth: "05/11/2002"
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    dateOfBirth: "",
+    gender: "",
+    address: ""
   })
+
+  // Initialize form data when user data is available
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        fullName: user.fullName || "",
+        email: user.email || "",
+        phoneNumber: user.phoneNumber || "",
+        dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : "",
+        gender: user.gender || "",
+        address: user.address || ""
+      })
+    }
+  }, [user])
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
-  const handleUpdate = () => {
-    console.log("Updated profile:", formData)
-    setIsModalOpen(false)
+  const handleUpdate = async () => {
+    try {
+      const response = await updateUserProfile({
+        fullName: formData.fullName,
+        phoneNumber: formData.phoneNumber,
+        dateOfBirth: formData.dateOfBirth,
+        gender: formData.gender,
+        address: formData.address
+      }).unwrap()
+      
+      SuccessToast("Profile updated successfully")
+      setIsModalOpen(false)
+    } catch (error: any) {
+      console.error('Failed to update profile:', error)
+      ErrorToast(error?.data?.message || 'Failed to update profile')
+    }
   }
 
   return (
@@ -83,7 +134,8 @@ const EditAccountModal = () => {
                   id="email"
                   type="email"
                   value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  disabled
+                  className="bg-gray-100"
                 />
               </div>
 
@@ -100,8 +152,36 @@ const EditAccountModal = () => {
                 <Label htmlFor="dateOfBirth">{t("dateOfBirth")}</Label>
                 <Input
                   id="dateOfBirth"
+                  type="date"
                   value={formData.dateOfBirth}
                   onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="gender">Gender</Label>
+                <Select
+                  value={formData.gender}
+                  onValueChange={(value) => handleInputChange("gender", value)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select Gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="address">Address</Label>
+                <Input
+                  id="address"
+                  value={formData.address}
+                  onChange={(e) => handleInputChange("address", e.target.value)}
+                  placeholder="Enter your address"
                 />
               </div>
             </div>
@@ -109,9 +189,10 @@ const EditAccountModal = () => {
             {/* Update Button */}
             <Button
               onClick={handleUpdate}
-              className="w-full bg-sky-400 hover:bg-sky-500 text-white font-medium py-2.5"
+              disabled={isUpdating}
+              className="w-full bg-sky-400 hover:bg-sky-500 text-white font-medium py-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Update
+              {isUpdating ? "Updating..." : "Update"}
             </Button>
           </div>
         </DialogContent>

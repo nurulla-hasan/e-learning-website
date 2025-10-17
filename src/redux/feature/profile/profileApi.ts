@@ -27,8 +27,8 @@ const profileApi = baseApi.injectEndpoints({
     // UPDATE USER PROFILE
     updateUserProfile: builder.mutation({
       query: (data) => ({
-        url: "/users/edit-profile",
-        method: "PATCH",
+        url: "/users/update-profile",
+        method: "PUT",
         body: data,
       }),
       invalidatesTags: ["PROFILE"],
@@ -37,8 +37,8 @@ const profileApi = baseApi.injectEndpoints({
     // UPDATE USER PROFILE PICTURE
     updateProfilePicture: builder.mutation({
       query: (data) => ({
-        url: "/users/edit-profile",
-        method: "PATCH",
+        url: "/users/update-profile-image",
+        method: "PUT",
         body: data,
       }),
       invalidatesTags: ["PROFILE"],
@@ -49,7 +49,7 @@ const profileApi = baseApi.injectEndpoints({
       query: (data) => {
         return {
           url: "/users/change-password",
-          method: "PATCH",
+          method: "PUT",
           body: data,
         };
       },
@@ -63,35 +63,6 @@ const profileApi = baseApi.injectEndpoints({
       },
     }),
 
-    // GET FAVORITE RECIPES
-    getUserFavoriteRecipes: builder.query({
-      query: (args) => {
-        const params = new URLSearchParams();
-        if (args) {
-          Object.entries(args).forEach(([key, value]) => {
-            if (value) {
-              params.append(key, String(value));
-            }
-          });
-        }
-        return {
-          url: "/users/dashboard/get_user_favorites",
-          method: "GET",
-          params,
-        };
-      },
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          if (data?.data) {
-            dispatch(SetUserProfile(data?.data));
-          }
-        } catch {
-          // silently ignore; UI can read error from hook if needed
-        }
-      },
-      providesTags: ["FAVORITE"],
-    }),
   }),
 });
 

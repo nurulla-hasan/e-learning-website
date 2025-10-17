@@ -8,6 +8,7 @@ interface UserProfile {
   dateOfBirth: string;
   phoneNumber: string;
   address: string;
+  gender?: string;
   image: string;
   createdAt: string;
   updatedAt: string;
