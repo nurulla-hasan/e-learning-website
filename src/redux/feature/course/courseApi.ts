@@ -46,7 +46,7 @@ const recipeApi = baseApi.injectEndpoints({
                     });
                 }
                 return {
-                    url: "/my_all_recipe",
+                    url: "/enrolled-courses/my-courses",
                     method: "GET",
                     params,
                 };

@@ -35,11 +35,31 @@ export interface IFavoriteCourse {
 
 export type ILearningCourse = {
   id: string;
-  title: string;
-  instructor: string;
-  progress: number;
-  thumbnail: string;
-  isCompleted: boolean;
+  courseId: string;
+  paymentStatus: string;
+  enrolledAt: string;
+  courseTitle: string;
+  courseShortDescription: string;
+  courseLevel: string;
+  coursePrice: number;
+  discountPrice: number;
+  instructorName: string;
+  courseThumbnail: string;
+  certificate: boolean;
+  lifetimeAccess: boolean;
+  totalSections: number;
+  totalLessons: number;
+  totalDuration: number;
+  categoryName: string;
+  progress: {
+    courseId: string;
+    courseTitle: string;
+    progress: {
+      overallProgress: number;
+      completedLessons: number;
+      totalLessons: number;
+    };
+  };
 };
 
 

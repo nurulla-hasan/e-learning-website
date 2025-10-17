@@ -1,71 +1,89 @@
 {
     "success": true,
     "statusCode": 200,
-    "message": "My in-person training requests retrieved successfully",
+    "message": "My EnrolledCourses retrieved successfully",
     "data": [
         {
-            "id": "68f09c1c992e74ae611d524c",
-            "userId": "68c656890ce5ec82b3563b35",
-            "courseId": "68e0f56752af379cf34c9622",
-            "location": "bangladesh",
-            "duration": null,
-            "price": null,
-            "status": "PENDING",
-            "createdAt": "2025-10-16T07:17:48.611Z",
-            "updatedAt": "2025-10-16T07:17:48.611Z",
-            "course": {
-                "id": "68e0f56752af379cf34c9622",
-                "courseTitle": "Design Mastery1",
-                "courseLevel": "Beginner",
-                "instructorName": "John Doe",
-                "price": 200,
-                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759573334207_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
-                "category": {
-                    "name": "Development"
+            "id": "68e9e3b9d3d8f2a933536d0a",
+            "courseId": "68e0f8de4e2e1554687454a0",
+            "paymentStatus": "COMPLETED",
+            "enrolledAt": "2025-10-11T04:57:29.629Z",
+            "courseTitle": "Design Mastery12",
+            "courseShortDescription": "Learn design from scratch12",
+            "courseLevel": "Beginner",
+            "coursePrice": 200,
+            "discountPrice": 180,
+            "instructorName": "John Doe",
+            "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759574235590_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+            "certificate": false,
+            "lifetimeAccess": false,
+            "totalSections": 2,
+            "totalLessons": 3,
+            "totalDuration": 0,
+            "categoryName": "IT & Software",
+            "progress": {
+                "courseId": "68e0f8de4e2e1554687454a0",
+                "courseTitle": "Design Mastery12",
+                "progress": {
+                    "overallProgress": 0,
+                    "completedLessons": 0,
+                    "totalLessons": 3
                 }
             }
         },
         {
-            "id": "68f09c04992e74ae611d524b",
-            "userId": "68c656890ce5ec82b3563b35",
-            "courseId": "68ca2e049043bcfafae98e9b",
-            "location": "bangladesh",
-            "duration": null,
-            "price": null,
-            "status": "PENDING",
-            "createdAt": "2025-10-16T07:17:24.442Z",
-            "updatedAt": "2025-10-16T07:17:24.442Z",
-            "course": {
-                "id": "68ca2e049043bcfafae98e9b",
-                "courseTitle": "Design Mastery",
-                "courseLevel": "Beginner",
-                "instructorName": "John Doe",
-                "price": 150,
-                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1758082948594_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
-                "category": {
-                    "name": "Development"
-                }
-            }
-        },
-        {
-            "id": "68f095ccd373dc796ed8c4e8",
-            "userId": "68c656890ce5ec82b3563b35",
+            "id": "68e3596b40d5c549f2e173f8",
             "courseId": "68e4bf6681b141f1ff4a69f3",
-            "location": "bangladesh",
-            "duration": null,
-            "price": null,
-            "status": "PENDING",
-            "createdAt": "2025-10-16T06:50:52.508Z",
-            "updatedAt": "2025-10-16T06:50:52.508Z",
-            "course": {
-                "id": "68e4bf6681b141f1ff4a69f3",
+            "paymentStatus": "COMPLETED",
+            "enrolledAt": "2025-10-06T05:53:47.012Z",
+            "courseTitle": "Design Mastery123",
+            "courseShortDescription": "Learn design from scratch123",
+            "courseLevel": "Beginner",
+            "coursePrice": 100,
+            "discountPrice": 50,
+            "instructorName": "John Doe",
+            "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759821665911_Online-Career-Counselling-course.jpg",
+            "certificate": false,
+            "lifetimeAccess": false,
+            "totalSections": 1,
+            "totalLessons": 1,
+            "totalDuration": 0,
+            "categoryName": "New category",
+            "progress": {
+                "courseId": "68e4bf6681b141f1ff4a69f3",
                 "courseTitle": "Design Mastery123",
-                "courseLevel": "Beginner",
-                "instructorName": "John Doe",
-                "price": 100,
-                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759821665911_Online-Career-Counselling-course.jpg",
-                "category": {
-                    "name": "New category"
+                "progress": {
+                    "overallProgress": 200,
+                    "completedLessons": 2,
+                    "totalLessons": 1
+                }
+            }
+        },
+        {
+            "id": "68cf7d77fe7dd5b0a715c2d7",
+            "courseId": "68ca2e049043bcfafae98e9b",
+            "paymentStatus": "COMPLETED",
+            "enrolledAt": "2025-09-21T04:22:15.884Z",
+            "courseTitle": "Design Mastery",
+            "courseShortDescription": "Learn design from scratch",
+            "courseLevel": "Beginner",
+            "coursePrice": 150,
+            "discountPrice": 120,
+            "instructorName": "John Doe",
+            "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1758082948594_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+            "certificate": true,
+            "lifetimeAccess": true,
+            "totalSections": 2,
+            "totalLessons": 3,
+            "totalDuration": 0,
+            "categoryName": "Development",
+            "progress": {
+                "courseId": "68ca2e049043bcfafae98e9b",
+                "courseTitle": "Design Mastery",
+                "progress": {
+                    "overallProgress": 100,
+                    "completedLessons": 3,
+                    "totalLessons": 3
                 }
             }
         }
