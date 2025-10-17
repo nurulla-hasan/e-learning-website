@@ -1,26 +1,25 @@
-import PageHeader from "@/components/common/PageHeader"
-import TermsCondition from "@/components/policy/TermsConditon";
-import { getTranslations } from "next-intl/server";
+"use client";
 
+import PageHeader from "@/components/common/PageHeader";
+import PageLayout from "@/tools/PageLayout";
+import { useTranslations } from "next-intl";
 
-interface TProps {
-  params: {
-    locale: string;
-  };
-}
-
-const TermsConditionPage = async ({ params }: TProps) => {
-  const {locale} = params;
-  const t = await getTranslations({locale});
+const TermsConditionPage = () => {
+  const t = useTranslations();
   const title = t("Header.terms");
+
   return (
     <>
       <div className="min-h-screen bg-background">
         <PageHeader title={title} />
-        <TermsCondition/>
+        <PageLayout paddingSize="none">
+          <div>
+            {/* Terms and conditions content will go here */}
+          </div>
+        </PageLayout>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default TermsConditionPage
+export default TermsConditionPage;
