@@ -1,13 +1,31 @@
 {
     "success": true,
     "statusCode": 200,
-    "message": "TermAndCondition list retrieved successfully",
-    "data": {
-        "id": "68e63f590e8f95e3f3747396",
-        "userId": "68ddfadcace204dd21badd3b",
-        "heading": null,
-        "content": "This is Terms Conditions",
-        "createdAt": "2025-10-08T10:39:21.724Z",
-        "updatedAt": "2025-10-08T10:56:59.853Z"
-    }
+    "message": "Faq list retrieved successfully",
+    "data": [
+        {
+            "id": "68e60ef6f4793853382faa9c",
+            "userId": "68ddfadcace204dd21badd3b",
+            "question": "What is your name?",
+            "answer": "My name is Osman Goni.",
+            "createdAt": "2025-10-08T07:12:54.207Z",
+            "updatedAt": "2025-10-08T09:07:18.227Z"
+        },
+        {
+            "id": "68de62678674add5728aeaf0",
+            "userId": "68ddfadcace204dd21badd3b",
+            "question": "What are Your opening hours?",
+            "answer": "We are open from 9 AM to 9 PM every day.",
+            "createdAt": "2025-10-02T11:30:47.948Z",
+            "updatedAt": "2025-10-02T11:30:47.948Z"
+        },
+        {
+            "id": "68de43ddff773b124d7b7764",
+            "userId": "68ddfadcace204dd21badd3b",
+            "question": "What are your opening hours?",
+            "answer": "We are open from 9 AM to 9 PM every day.",
+            "createdAt": "2025-10-02T09:20:29.041Z",
+            "updatedAt": "2025-10-02T09:20:29.041Z"
+        }
+    ]
 }

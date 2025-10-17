@@ -1,4 +1,8 @@
 export type TFaq = {
-    question: string,
+    id: string;
+    userId: string;
+    question: string;
     answer: string;
+    createdAt: string;
+    updatedAt: string;
 }
