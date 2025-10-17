@@ -113,7 +113,7 @@
     "order_overview": "Podsumowanie zamówienia",
     "total_courses": "Łącznie kursów:",
     "subtotal": "Suma częściowa:",
-    "checkout_button": "Do kasy",   
+    "checkout_button": "Do kasy",
     "remove_button": "Usuń",
     "no_items": "Brak przedmiotów w koszyku"
   },
@@ -140,7 +140,12 @@
       "currentPassword": "Obecne hasło",
       "newPassword": "Nowe hasło",
       "confirmNewPassword": "Potwierdź nowe hasło",
-      "changePasswordButton": "Zmień hasło"
+      "changePasswordButton": "Zmień hasło",
+      "passwordsDoNotMatch": "Hasła nie są identyczne",
+      "passwordMinLength": "Hasło musi mieć co najmniej 6 znaków",
+      "passwordChanged": "Hasło zostało zmienione pomyślnie",
+      "passwordChangeFailed": "Nie udało się zmienić hasła",
+      "changingPassword": "Zmienianie..."
     }
   },
   "OrdersPage": {

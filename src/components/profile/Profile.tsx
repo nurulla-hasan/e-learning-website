@@ -15,6 +15,7 @@ const Profile = () => {
   const t = useTranslations("ProfilePage");
   const { isLoading } = useGetUserProfileQuery({});
   const user = useSelector((state: RootState) => state.profile.profile);
+  console.log(user);
 
   // Return loading state if user data is not yet loaded
   if (isLoading || !user) {
@@ -37,7 +38,7 @@ const Profile = () => {
               <Image
                 width={600}
                 height={600}
-                src="/images/profile.png"
+                src={user?.image}
                 alt="Account Management"
                 className="w-full object-cover rounded-xl"
               />
@@ -51,7 +52,7 @@ const Profile = () => {
               <div className="flex flex-col sm:flex-row items-center gap-6">
                 <Avatar className="h-24 w-24">
                   <AvatarImage
-                    src="/images/profile.png"
+                    src={user?.image}
                     alt="Profile picture"
                   />
                   <AvatarFallback className="text-lg">LA</AvatarFallback>
@@ -67,14 +68,7 @@ const Profile = () => {
               <Card>
                 <CardHeader className="flex flex-col lg:flex-row items-center justify-between">
                   <CardTitle className="text-lg">{t("loginDetails")}</CardTitle>
-                  <EditAccountModal isLoading={isLoading} user={{
-                    fullName: user.fullName,
-                    email: user.email,
-                    phoneNumber: user.phoneNumber,
-                    dateOfBirth: user.dateOfBirth,
-                    gender: user.gender,
-                    address: user.address
-                  }} />
+                  <EditAccountModal isLoading={isLoading} user={user} />
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

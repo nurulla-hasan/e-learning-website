@@ -74,7 +74,7 @@
     "help_and_support": "Help & Support",
     "copyright": "© 2025 E-learning platform. All rights reserved."
   },
-   "ContactPage": {
+  "ContactPage": {
     "contact_info_title": "Contact Info",
     "contact_info_subtitle": "Get in touch with our team for legal support, inquiries, or consultation appointments.",
     "location_title": "Location",
@@ -110,7 +110,7 @@
     "checkout_button": "Check out",
     "no_items": "No items in cart"
   },
-   "CheckoutPage": {
+  "CheckoutPage": {
     "page_title": "Courses",
     "payment_details": "Payment Details",
     "subtotal": "Sub Total:",
@@ -133,12 +133,16 @@
       "currentPassword": "Current Password",
       "newPassword": "New Password",
       "confirmNewPassword": "Confirm New Password",
-      "changePasswordButton": "Change Password"
+      "changePasswordButton": "Change Password",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "passwordMinLength": "Password must be at least 6 characters long",
+      "passwordChanged": "Password changed successfully",
+      "passwordChangeFailed": "Failed to change password",
+      "changingPassword": "Changing..."
     }
   },
   "OrdersPage": {
     "title": "Orders Dashboard",
     "subtitle": "Manage and track your course orders"
   }
-  
 }

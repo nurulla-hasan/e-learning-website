@@ -1,27 +1,30 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef, ChangeEvent } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Camera, Edit } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useUpdateUserProfileMutation } from "@/redux/feature/profile/profileApi"
-import { ErrorToast, SuccessToast } from "@/lib/utils"
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Camera, Edit, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import {
+  useUpdateProfilePictureMutation,
+  useUpdateUserProfileMutation,
+} from "@/redux/feature/profile/profileApi";
+import { ErrorToast, getInitials, SuccessToast } from "@/lib/utils";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 interface EditAccountModalProps {
   isLoading: boolean;
@@ -32,13 +35,20 @@ interface EditAccountModalProps {
     dateOfBirth: string;
     gender?: string;
     address?: string;
+    image?: string;
   };
 }
 
 const EditAccountModal = ({ user }: EditAccountModalProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const t = useTranslations("ProfilePage")
-  const [updateUserProfile, { isLoading: isUpdating }] = useUpdateUserProfileMutation()
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const t = useTranslations("ProfilePage");
+  const [updateUserProfile, { isLoading: isUpdating }] =
+    useUpdateUserProfileMutation();
+  const [updateProfilePicture, { isLoading: isUpdatingPicture }] =
+    useUpdateProfilePictureMutation();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -46,8 +56,8 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
     phoneNumber: "",
     dateOfBirth: "",
     gender: "",
-    address: ""
-  })
+    address: "",
+  });
 
   // Initialize form data when user data is available
   useEffect(() => {
@@ -56,16 +66,49 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
         fullName: user.fullName || "",
         email: user.email || "",
         phoneNumber: user.phoneNumber || "",
-        dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : "",
+        dateOfBirth: user.dateOfBirth
+          ? new Date(user.dateOfBirth).toISOString().split("T")[0]
+          : "",
         gender: user.gender || "",
-        address: user.address || ""
-      })
+        address: user.address || "",
+      });
     }
-  }, [user])
+  }, [user]);
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Create preview URL
+    const previewUrl = URL.createObjectURL(file);
+    setSelectedImage(file);
+    setImagePreview(previewUrl);
+  };
+
+  const handleUploadImage = async () => {
+    if (!selectedImage) return;
+
+    const formData = new FormData();
+    formData.append("profileImage", selectedImage);
+
+    try {
+      await updateProfilePicture(formData).unwrap();
+      SuccessToast("Profile picture updated successfully");
+      // Clear the selected image and preview after successful upload
+      setSelectedImage(null);
+      setImagePreview(null);
+    } catch (error: any) {
+      ErrorToast(error?.data?.message || "Failed to update profile picture");
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleUpdate = async () => {
     try {
@@ -74,16 +117,16 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
         phoneNumber: formData.phoneNumber,
         dateOfBirth: formData.dateOfBirth,
         gender: formData.gender,
-        address: formData.address
-      }).unwrap()
-      
-      SuccessToast("Profile updated successfully")
-      setIsModalOpen(false)
+        address: formData.address,
+      }).unwrap();
+
+      SuccessToast("Profile updated successfully");
+      setIsModalOpen(false);
     } catch (error: any) {
-      console.error('Failed to update profile:', error)
-      ErrorToast(error?.data?.message || 'Failed to update profile')
+      console.error("Failed to update profile:", error);
+      ErrorToast(error?.data?.message || "Failed to update profile");
     }
-  }
+  };
 
   return (
     <>
@@ -98,23 +141,55 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
       </Button>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-md"  onInteractOutside={(e) => e.preventDefault()}>
+        <DialogContent
+          className="sm:max-w-md"
+          onInteractOutside={(e) => e.preventDefault()}
+        >
           <DialogHeader>
             <DialogTitle>{t("editAccount")}</DialogTitle>
           </DialogHeader>
 
           <div className="flex flex-col items-center space-y-6 py-4">
             {/* Profile Picture */}
-            <div className="relative">
+            <div className="relative flex flex-col items-center">
               <Avatar className="h-20 w-20">
-                <AvatarImage src="/images/profile.png" alt="Profile picture" />
-                <AvatarFallback className="bg-teal-400 text-white text-lg">
-                  LA
-                </AvatarFallback>
+                {imagePreview ? (
+                  <AvatarImage src={imagePreview} alt="Profile preview" />
+                ) : (
+                  <>
+                    <AvatarImage src={user?.image} alt="Profile picture" />
+                    <AvatarFallback className="bg-teal-400 text-white text-lg">
+                      {getInitials(user?.fullName)}
+                    </AvatarFallback>
+                  </>
+                )}
               </Avatar>
-              <button className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-sky-400 flex items-center justify-center hover:bg-sky-500 transition-colors">
-                <Camera className="h-3 w-3 text-white" />
-              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                accept="image/*"
+                className="hidden"
+              />
+              <div className="flex gap-2 mt-2">
+                <button
+                  type="button"
+                  onClick={triggerFileInput}
+                  className="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
+                >
+                  {imagePreview ? "Change Image" : "Select Image"}
+                </button>
+                {imagePreview && (
+                  <button
+                    type="button"
+                    onClick={handleUploadImage}
+                    disabled={isUpdatingPicture}
+                    className="text-xs bg-sky-400 hover:bg-sky-500 text-white px-2 py-1 rounded disabled:opacity-50"
+                  >
+                    {isUpdatingPicture ? "Uploading..." : "Upload"}
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Form Fields */}
@@ -124,7 +199,9 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
                 <Input
                   id="fullName"
                   value={formData.fullName}
-                  onChange={(e) => handleInputChange("fullName", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("fullName", e.target.value)
+                  }
                 />
               </div>
 
@@ -144,7 +221,9 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
                 <Input
                   id="phoneNumber"
                   value={formData.phoneNumber}
-                  onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("phoneNumber", e.target.value)
+                  }
                 />
               </div>
 
@@ -154,7 +233,9 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
                   id="dateOfBirth"
                   type="date"
                   value={formData.dateOfBirth}
-                  onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("dateOfBirth", e.target.value)
+                  }
                 />
               </div>
 
@@ -198,7 +279,7 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
         </DialogContent>
       </Dialog>
     </>
-  )
-}
+  );
+};
 
-export default EditAccountModal
+export default EditAccountModal;

@@ -53,14 +53,14 @@ const profileApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      async onQueryStarted(arg, { queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          SuccessToast(data?.message);
-        } catch {
-          ErrorToast("Failed to change password.");
-        }
-      },
+      // async onQueryStarted(arg, { queryFulfilled }) {
+      //   try {
+      //     const { data } = await queryFulfilled;
+      //     SuccessToast(data?.message);
+      //   } catch {
+      //     ErrorToast("Failed to change password.");
+      //   }
+      // },
     }),
 
   }),
