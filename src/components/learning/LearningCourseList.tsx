@@ -9,7 +9,7 @@ import CustomPagination from "@/tools/CustomPagination";
 
 const LearningCourseList = () => {
   const { currentPage, setCurrentPage, totalPages, items, isLoading, isError } =
-    useSmartFetchHook<ILearningCourse>(useGetMyCoursesQuery, {limit:1});
+    useSmartFetchHook<ILearningCourse>(useGetMyCoursesQuery);
 
   if (isLoading) {
     return (
@@ -94,8 +94,8 @@ const LearningCourseList = () => {
       }
     >
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <h1 className="text-lg font-medium text-foreground">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+        <h1 className="text-sm font-medium text-muted-foreground">
           Showing {items.length} {items.length === 1 ? "course" : "courses"}
         </h1>
         {/* <div className="flex items-center gap-2">

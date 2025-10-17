@@ -3,6 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Download, Eye } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { ILearningCourse } from "@/types/course.type";
 
 type TProps = {
@@ -79,10 +80,12 @@ const LearningCourseItem = ({ course }: TProps) => {
                   )}
                 </div>
               ) : (
-                <Button className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Continue Learning
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
+                <Link href={`/courses/${course.courseId}`}>
+                  <Button className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
+                    Continue Learning
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
               )}
             </div>
           </div>
