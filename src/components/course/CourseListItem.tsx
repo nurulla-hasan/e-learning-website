@@ -11,7 +11,9 @@ import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useAddToCheckoutMutation } from "@/redux/feature/checkout/checkoutApi";
+import { useRouter } from "next/navigation";
+import { useAddToCartMutation } from "@/redux/feature/cart/cartApi";
 interface CourseListItemProps {
   course: {
     id: string;
@@ -35,11 +37,23 @@ interface CourseListItemProps {
 
 const CourseListItem = ({ course }: CourseListItemProps) => {
 
-    const handleEnroll = (e: React.MouseEvent<HTMLButtonElement>, courseId: string) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log(courseId);
+  const router = useRouter();
+
+  const [addToCart, { isLoading: cartLoading }] = useAddToCartMutation();
+  const [addToCheckout, { isLoading: checkoutLoading }] =useAddToCheckoutMutation();
+
+
+  const handleEnroll = async(e: React.MouseEvent<HTMLButtonElement>, courseId: string) => {
+    e.preventDefault();
+    try {
+      await addToCart({ courseId: courseId }).unwrap();
+      await addToCheckout({ courseIds: [courseId] }).unwrap();
+      router.push("/checkout");
+    } catch {
+      // console.log(error);
     }
+  }
+
 
   return (
     <Link href={`/courses/${course?.id}`}>
@@ -97,7 +111,7 @@ const CourseListItem = ({ course }: CourseListItemProps) => {
                   </span>
                 )}
             </div>
-            <Button onClick={(e) => handleEnroll(e, course?.id)} size="sm" className="bg-primary hover:bg-primary/90">
+            <Button loading={cartLoading || checkoutLoading} onClick={(e) => handleEnroll(e, course?.id)} size="sm" className="bg-primary hover:bg-primary/90">
               Enroll Now
             </Button>
           </div>
