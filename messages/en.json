@@ -108,7 +108,9 @@
     "total_courses": "Total courses",
     "subtotal": "Sub Total",
     "checkout_button": "Check out",
-    "no_items": "No items in cart"
+    "no_items": "No items in cart",
+    "error_message": "Error loading cart items",
+    "empty_cart": "Your cart is empty"
   },
   "CheckoutPage": {
     "page_title": "Courses",

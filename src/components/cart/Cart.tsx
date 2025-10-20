@@ -8,11 +8,15 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import { useGetCartQuery } from "@/redux/feature/cart/cartApi";
+import { useAddToCheckoutMutation } from "@/redux/feature/checkout/checkoutApi";
+import { useRemoveFromCartMutation } from "@/redux/feature/cart/cartApi";
 import Error from "@/tools/Error";
 import NoData from "@/tools/NoData";
 import PageLayout from "@/tools/PageLayout";
 import CustomPagination from "@/tools/CustomPagination";
 import { StarRating } from "@/tools/StarRating";
+import { SuccessToast } from "@/lib/utils";
+import RemoveButton from "./RemoveButton";
 
 interface CartItem {
   id: string;
@@ -37,6 +41,9 @@ const Cart = () => {
   const { currentPage, setCurrentPage, totalPages, items, isLoading, isError } =
     useSmartFetchHook(useGetCartQuery);
 
+  const [addToCheckout, { isLoading: checkoutLoading }] =
+    useAddToCheckoutMutation();
+
   // Cast items to CartItem array for TypeScript
   const cartItems = items as CartItem[];
 
@@ -44,6 +51,18 @@ const Cart = () => {
   const totalPrice = cartItems.reduce((sum: number, item: CartItem) => {
     return sum + (item.discountPrice || item.price);
   }, 0);
+
+  const handleCheckout = async () => {
+    try {
+      await addToCheckout({
+        courseIds: cartItems.map((item) => item.courseId),
+      });
+      router.push("/checkout");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <PageLayout
@@ -104,7 +123,10 @@ const Cart = () => {
                               <span className="text-sm font-medium text-card-foreground">
                                 {course.avgRating.toFixed(1)}
                               </span>
-                              <StarRating rating={course.avgRating} totalStars={5} />
+                              <StarRating
+                                rating={course.avgRating}
+                                totalStars={5}
+                              />
                               <span className="text-xs text-muted-foreground">
                                 ({course.totalRatings} Ratings)
                               </span>
@@ -126,20 +148,19 @@ const Cart = () => {
                           {/* Price and Actions */}
                           <div className="flex flex-col justify-between items-start md:items-end gap-3 md:gap-10 sm:gap-4 flex-shrink-0 h-full sm:h-auto">
                             <div className="text-base sm:text-lg font-bold text-card-foreground text-center">
-                              zł {course.discountPrice ? course.discountPrice.toFixed(2) : course.price.toFixed(2)}
+                              zł{" "}
+                              {course.discountPrice
+                                ? course.discountPrice.toFixed(2)
+                                : course.price.toFixed(2)}
                               {course.discountPrice && (
                                 <span className="text-xs sm:text-sm text-muted-foreground line-through ml-1 sm:ml-2 block sm:inline">
                                   zł {course.price.toFixed(2)}
                                 </span>
                               )}
                             </div>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="w-full sm:w-auto text-sm"
-                            >
-                              Remove
-                            </Button>
+                            <RemoveButton
+                              courseId={course.courseId}
+                            />
                           </div>
                         </div>
                       </div>
@@ -180,9 +201,10 @@ const Cart = () => {
               </div>
 
               <Button
-                onClick={() => router.push("/checkout")}
+                onClick={handleCheckout}
+                loading={checkoutLoading}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3"
-                disabled={cartItems.length === 0}
+                disabled={cartItems.length === 0 || checkoutLoading}
               >
                 {t("checkout_button")}
               </Button>

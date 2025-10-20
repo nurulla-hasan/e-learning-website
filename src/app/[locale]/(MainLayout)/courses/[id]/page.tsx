@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Star,
   Users,
   Clock,
   Award,
@@ -23,6 +22,10 @@ import PageLayout from "@/tools/PageLayout";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import useFavorite from "@/hooks/useFavorite";
+import { SuccessToast } from "@/lib/utils";
+import { useAddToCartMutation } from "@/redux/feature/cart/cartApi";
+import { useAddToCheckoutMutation } from "@/redux/feature/checkout/checkoutApi";
+import router from "next/router";
 
 // Define types based on API response
 interface Lesson {
@@ -110,6 +113,28 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const course = data?.data as Course | undefined;
 
   const { isFavorite, onFavoriteToggle } = useFavorite(course?.isFavoriteCourse || false);
+  
+
+  const [addToCart, { isLoading: cartLoading }] = useAddToCartMutation();
+  const handleAddToCart = async () => {
+    try {
+      await addToCart({ courseId: course?.id }).unwrap();
+      SuccessToast("Course added to cart");
+    } catch {
+      // console.log(error);
+    }
+  };  
+
+  const [addToCheckout, { isLoading: checkoutLoading }] = useAddToCheckoutMutation();
+  const handleAddToCheckout = async () => {
+    try {
+      await addToCheckout({ courseId: course?.id }).unwrap();
+      SuccessToast("Course added to checkout");
+      router.push("/checkout");
+    } catch {
+      // console.log(error);
+    }
+  };  
 
   if (isLoading) {
     return (
@@ -316,13 +341,19 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 </div>
 
                 <div className="space-y-3">
-                  <Button className="w-full" size="lg">
+                  <Button 
+                    className="w-full" 
+                    size="lg"
+                    onClick={handleAddToCart}
+                    disabled={cartLoading}
+                  >
                     Add To Cart
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full bg-transparent"
+                  <Button 
+                    className="w-full" 
                     size="lg"
+                    onClick={handleAddToCheckout}
+                    disabled={checkoutLoading}
                   >
                     Buy Now
                   </Button>
