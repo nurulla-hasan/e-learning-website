@@ -171,7 +171,7 @@ const Checkout = () => {
         {/* Payment Details Section */}
         <div className="lg:col-span-1">
           <Card className="bg-card border-border shadow-sm sticky top-8">
-            <CardContent className="p-6">
+            <CardContent>
               <h2 className="text-xl font-bold text-foreground mb-6">{t("payment_details")}</h2>
 
               {/* Price Summary */}
