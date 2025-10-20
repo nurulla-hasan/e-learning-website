@@ -30,6 +30,7 @@ const Navbar = () => {
   const token = useSelector((state: RootState) => state.auth.accessToken);
   const user = useSelector((state: RootState) => state.profile.profile);
   const isAuthenticated = Boolean(token && user);
+  const cartLength = useSelector((state: RootState) => state.cart.totalItems);
 
   useGetCartQuery(undefined, {
     skip: !token,
@@ -106,9 +107,14 @@ const Navbar = () => {
                         onClick={() => handleNavigate("/cart")}
                         variant="ghost"
                         size="icon"
-                        className="rounded-full"
+                        className="rounded-full relative"
                       >
                         <ShoppingCart />
+                        {cartLength > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                            {cartLength > 99 ? "99+" : cartLength}
+                          </span>
+                        )}
                       </Button>
                     </>
                   )
