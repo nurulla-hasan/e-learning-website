@@ -112,10 +112,12 @@
     },
     "order_overview": "Podsumowanie zamówienia",
     "total_courses": "Łącznie kursów:",
-    "subtotal": "Suma częściowa",
+    "subtotal": "Suma częściowa:",
     "checkout_button": "Do kasy",
     "remove_button": "Usuń",
-    "no_items": "Brak przedmiotów w koszyku"
+    "no_items": "Brak przedmiotów w koszyku",
+    "error_message": "Błąd podczas ładowania elementów koszyka",
+    "empty_cart": "Twój koszyk jest pusty"
   },
   "CheckoutPage": {
     "page_title": "Kursy",

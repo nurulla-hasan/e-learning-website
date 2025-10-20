@@ -4,10 +4,21 @@ const cartApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // GET CART
     getCart: builder.query({
-      query: () => ({
-        url: "/carts",
-        method: "GET",
-      }),
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+            Object.entries(args).forEach(([key, value]) => {
+                if (value) {
+                    params.append(key, value as string);
+                }
+            });
+        }
+        return {
+            url: "/carts",
+            method: "GET",
+            params,
+        };
+      },
       providesTags: ["CART"],
     }),
 

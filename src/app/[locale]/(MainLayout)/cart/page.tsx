@@ -9,8 +9,8 @@ interface TProps {
 }
 
 const CartPage = async ({ params }: TProps) => {
-  const {locale} = params;
-  const t = await getTranslations({locale});
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
   const title = t("Header.cart");
 
   return (
