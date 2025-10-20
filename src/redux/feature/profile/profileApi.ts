@@ -84,10 +84,21 @@ const profileApi = baseApi.injectEndpoints({
 
     // GET MY LEARNING HISTORY
     getMyLearningHistory: builder.query({
-      query: () => ({
-        url: "/enrolled-courses/my-learning-history",
-        method: "GET",
-      }),
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+            Object.entries(args).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    params.append(key, value as string);
+                }
+            });
+        }
+        return {
+            url: "/enrolled-courses/learning-history",
+            method: "GET",
+            params,
+        };
+      },
       providesTags: ["LEARNING"],
     }),
 
