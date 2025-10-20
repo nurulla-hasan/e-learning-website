@@ -16,6 +16,15 @@ import { useTranslations } from "next-intl";
 import { useChangePasswordMutation } from "@/redux/feature/profile/profileApi";
 import { ErrorToast, SuccessToast } from "@/lib/utils";
 
+// Define error interface for RTK Query errors
+interface ApiError {
+  data?: {
+    message?: string;
+  };
+  status?: number;
+  message?: string;
+}
+
 const ChangePasswordModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
@@ -60,8 +69,9 @@ const ChangePasswordModal = () => {
       setError("");
       SuccessToast(t('passwordChanged'))
       setIsModalOpen(false);
-    } catch (error: any) {
-      ErrorToast(error?.data?.message || t('passwordChangeFailed'))
+    } catch (error) {
+      const apiError = error as ApiError;
+      ErrorToast(apiError?.data?.message || t('passwordChangeFailed'))
     }
   };
 

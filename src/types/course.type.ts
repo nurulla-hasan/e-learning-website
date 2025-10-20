@@ -60,6 +60,7 @@ export type ILearningCourse = {
       totalLessons: number;
     };
   };
+  isCompleted: boolean;
 };
 
 

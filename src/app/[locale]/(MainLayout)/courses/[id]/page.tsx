@@ -4,19 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Users,
-  Clock,
-  Award,
-  CheckCircle,
-  Play,
-  Bookmark,
-} from "lucide-react";
+import { Users, Clock, Award, CheckCircle, Play, Bookmark } from "lucide-react";
 import { TrainingRequestModal } from "@/components/training/TrainingRequestModal";
 import Image from "next/image";
 import CurriculamTab from "@/components/SingleCourse/CurriculamTab";
 import ReviewTab from "@/components/SingleCourse/ReviewTab";
-import { useGetCourseByIdQuery, useGetCourseByIdWithAuthQuery } from "@/redux/feature/course/courseApi";
+import {
+  useGetCourseByIdQuery,
+  useGetCourseByIdWithAuthQuery,
+} from "@/redux/feature/course/courseApi";
 import { StarRating } from "@/tools/StarRating";
 import PageLayout from "@/tools/PageLayout";
 import { useSelector } from "react-redux";
@@ -25,7 +21,7 @@ import useFavorite from "@/hooks/useFavorite";
 import { SuccessToast } from "@/lib/utils";
 import { useAddToCartMutation } from "@/redux/feature/cart/cartApi";
 import { useAddToCheckoutMutation } from "@/redux/feature/checkout/checkoutApi";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 // Define types based on API response
 interface Lesson {
@@ -96,12 +92,21 @@ interface Course {
 const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = React.use(params);
   const token = useSelector((state: RootState) => state.auth.accessToken);
+  const router = useRouter();
 
   // Use RTK Query's skip option for conditional queries
-  const { data: authData, isLoading: authLoading, error: authError } = useGetCourseByIdWithAuthQuery(id, {
+  const {
+    data: authData,
+    isLoading: authLoading,
+    error: authError,
+  } = useGetCourseByIdWithAuthQuery(id, {
     skip: !token,
   });
-  const { data: publicData, isLoading: publicLoading, error: publicError } = useGetCourseByIdQuery(id, {
+  const {
+    data: publicData,
+    isLoading: publicLoading,
+    error: publicError,
+  } = useGetCourseByIdQuery(id, {
     skip: !!token,
   });
 
@@ -112,8 +117,9 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const course = data?.data as Course | undefined;
 
-  const { isFavorite, onFavoriteToggle } = useFavorite(course?.isFavoriteCourse || false);
-  
+  const { isFavorite, onFavoriteToggle } = useFavorite(
+    course?.isFavoriteCourse || false
+  );
 
   const [addToCart, { isLoading: cartLoading }] = useAddToCartMutation();
   const handleAddToCart = async () => {
@@ -123,18 +129,20 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
     } catch {
       // console.log(error);
     }
-  };  
+  };
 
-  const [addToCheckout, { isLoading: checkoutLoading }] = useAddToCheckoutMutation();
+  const [addToCheckout, { isLoading: checkoutLoading }] =
+    useAddToCheckoutMutation();
   const handleAddToCheckout = async () => {
     try {
-      await addToCheckout({ courseId: course?.id }).unwrap();
+      await addToCart({ courseId: course?.id }).unwrap();
+      await addToCheckout({ courseIds: [course?.id] }).unwrap();
       SuccessToast("Course added to checkout");
       router.push("/checkout");
     } catch {
       // console.log(error);
     }
-  };  
+  };
 
   if (isLoading) {
     return (
@@ -341,23 +349,24 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 </div>
 
                 <div className="space-y-3">
-                  <Button 
-                    className="w-full" 
+                  <Button
+                    className="w-full"
                     size="lg"
                     onClick={handleAddToCart}
                     disabled={cartLoading}
                   >
                     Add To Cart
                   </Button>
-                  <Button 
-                    className="w-full" 
+                  <Button
+                    className="w-full"
                     size="lg"
                     onClick={handleAddToCheckout}
                     disabled={checkoutLoading}
+                    loading={checkoutLoading || cartLoading}
                   >
                     Buy Now
                   </Button>
-                  <TrainingRequestModal 
+                  <TrainingRequestModal
                     courseId={course.id}
                     courseName={course.courseTitle}
                   >

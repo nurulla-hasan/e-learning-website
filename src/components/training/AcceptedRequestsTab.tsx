@@ -3,8 +3,8 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CalendarDays, MapPin, Clock, DollarSign, CheckCircle } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { CalendarDays, MapPin, Clock, CheckCircle } from "lucide-react";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import { useGetAcceptedTrainingsRequestQuery } from "@/redux/feature/course/courseApi";
 

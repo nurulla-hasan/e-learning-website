@@ -1,4 +1,3 @@
-import { SuccessToast, ErrorToast } from "@/lib/utils";
 import { baseApi } from "../baseApi";
 import { SetUserProfile } from "./profileSlice";
 

@@ -7,11 +7,9 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import {
-  BarChart3,
   Heart,
   LogOut,
   Menu,
-  Search,
   ShoppingBag,
   User,
   BookOpen,
@@ -40,13 +38,20 @@ import { RootState } from "@/redux/store";
 import { logout } from "@/redux/feature/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { getInitials } from "@/lib/utils";
-import { Switch } from "../ui/switch";
+
+// Define user interface
+interface User {
+  id: string;
+  fullName?: string;
+  image?: string;
+  email?: string;
+}
 
 const MobileMenu = ({
   user,
   isAuthenticated,
 }: {
-  user: any;
+  user: User | null;
   isAuthenticated: boolean;
 }) => {
   const tNav = useTranslations("Navbar");

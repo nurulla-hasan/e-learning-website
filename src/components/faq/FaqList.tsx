@@ -76,7 +76,7 @@ const FaqList = () => {
               <p className="text-gray-500">No FAQs available at the moment.</p>
             </div>
           ) : (
-            faqItems.map((faq, index) => (
+            faqItems.map((faq) => (
               <FaqItem key={faq.id} faq={faq}/>
             ))
           )}

@@ -1,13 +1,18 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronDown, ChevronRight, Play, FileText } from "lucide-react"
+import { ChevronDown, ChevronRight, Play } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
 // Define types based on API response
 interface Lesson {
   title: string;
   order: number;
+}
+
+interface Test {
+  id: string;
+  title: string;
 }
 
 interface Section {
@@ -21,7 +26,7 @@ interface Section {
   createdAt: string;
   updatedAt: string;
   Lesson: Lesson[];
-  Test: any[]; // Assuming Test is an array, adjust if needed
+  Test: Test[];
 }
 
 interface CurriculamTabProps {

@@ -18,7 +18,7 @@ type TProps = {
     setPriceRange: Dispatch<SetStateAction<number[]>>;
     minRating: number;
     setMinRating: Dispatch<SetStateAction<number>>;
-    categories: any[];
+    categories: { id: string; name: string }[];
     categoriesLoading: boolean;
 }
 

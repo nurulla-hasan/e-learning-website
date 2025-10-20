@@ -8,6 +8,27 @@ import NoData from "@/tools/NoData";
 import PageLayout from "@/tools/PageLayout";
 import FavouriteCourseCard from "@/components/favorite/FavouriteCourseCard";
 
+// Define the type for the nested course object
+interface Course {
+  id: string;
+  courseTitle: string;
+  courseShortDescription?: string;
+  courseLevel: string;
+  price: number;
+  discountPrice?: number;
+  courseThumbnail: string;
+  category: {
+    name: string;
+  };
+}
+
+// Define the type for the favorite object, which contains the course
+interface Favorite {
+  id: string; // This is the ID of the bookmark/favorite entry itself
+  courseId: string;
+  course: Course;
+}
+
 const FavoritesPage = () => {
   const t = useTranslations("Header");
   const title = t("favorites");
@@ -31,7 +52,7 @@ const {data, isLoading, isError} = useGetBookmarkedCoursesQuery({})
           ) : data?.data?.length === 0 ? (
             <NoData msg="No courses found matching your criteria." />
           ) : (
-            data?.data?.map((favorite: any, index: number) => (
+            data?.data?.map((favorite: Favorite, index: number) => (
               <FavouriteCourseCard key={index} favorite={favorite} />
             ))
           )}

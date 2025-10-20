@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { CalendarDays, MapPin, Clock, DollarSign } from "lucide-react";
+import { CalendarDays, MapPin, Clock } from "lucide-react";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import { useGetMyTrainingsRequestQuery } from "@/redux/feature/course/courseApi";
 

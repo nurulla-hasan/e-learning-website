@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Filter, Loader2 } from "lucide-react";
+import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CourseListItem from "./CourseListItem";
 import FilterSidebar from "./FilterSidebar";
@@ -18,6 +18,37 @@ import {
 import NoData from "@/tools/NoData";
 import Error from "@/tools/Error";
 import CourseCardSkeleton from "@/skeleton/course/CourseCardSkeleton";
+
+// Define filter params interface
+interface FilterParams extends Record<string, unknown> {
+  categoryName?: string;
+  courseLevel?: string;
+  rating?: number;
+  sortBy?: string;
+  sortOrder?: string;
+  priceMin?: number;
+  priceMax?: number;
+}
+
+// Define course interface based on CourseListItem expectations
+interface Course {
+  id: string;
+  courseTitle: string;
+  courseShortDescription: string;
+  courseDescription: string;
+  courseLevel: string;
+  price: number;
+  discountPrice: number;
+  courseThumbnail: string;
+  avgRating: number;
+  totalRatings: number;
+  categoryName: string;
+  instructorName: string;
+  instructorImage: string;
+  totalLessons: number;
+  totalDuration: number;
+  isBookmarked: boolean;
+}
 
 const CourseList = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -40,8 +71,11 @@ const CourseList = () => {
     setFilterParams,
   } = useSmartFetchHook(useGetCoursesQuery);
 
+  // Cast items to Course array for TypeScript
+  const courses = items as Course[];
+
   useEffect(() => {
-    const params: Record<string, any> = {};
+    const params: FilterParams = {};
 
     // Only include parameters that have values
     if (selectedCategories.length > 0)
@@ -77,8 +111,6 @@ const CourseList = () => {
 
   const { data, isLoading: categoriesLoading } = useGetCategoriesQuery({});
   const categories = data?.data;
-
-  // const sortedCourses: any[] = [];
 
   return (
     <>
@@ -144,7 +176,7 @@ const CourseList = () => {
             {/* Results Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
               <p className="text-muted-foreground">
-                {t("showing")} {items?.length} {t("results")}
+                {t("showing")} {courses?.length} {t("results")}
               </p>
               <CourseSorting sortBy={sortBy} setSortBy={setSortBy} />
             </div>
@@ -157,10 +189,10 @@ const CourseList = () => {
                 ))
               ) : isError ? (
                 <Error msg="An error occurred while loading courses." />
-              ) : items?.length === 0 ? (
+              ) : courses?.length === 0 ? (
                 <NoData msg="No courses found matching your criteria." />
               ) : (
-                items?.map((course: any, index: number) => (
+                courses?.map((course: Course, index: number) => (
                   <CourseListItem key={index} course={course} />
                 ))
               )}

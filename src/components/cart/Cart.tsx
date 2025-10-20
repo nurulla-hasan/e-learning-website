@@ -3,19 +3,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, BookOpen, Loader2 } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import { useGetCartQuery } from "@/redux/feature/cart/cartApi";
 import { useAddToCheckoutMutation } from "@/redux/feature/checkout/checkoutApi";
-import { useRemoveFromCartMutation } from "@/redux/feature/cart/cartApi";
 import Error from "@/tools/Error";
 import NoData from "@/tools/NoData";
 import PageLayout from "@/tools/PageLayout";
 import CustomPagination from "@/tools/CustomPagination";
+import Image from "next/image";
 import { StarRating } from "@/tools/StarRating";
-import { SuccessToast } from "@/lib/utils";
 import RemoveButton from "./RemoveButton";
 
 interface CartItem {

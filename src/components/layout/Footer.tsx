@@ -9,6 +9,15 @@ import type React from "react"
 
 import { useState } from "react"
 
+// Define error interface for RTK Query errors
+interface ApiError {
+  data?: {
+    message?: string;
+  };
+  status?: number;
+  message?: string;
+}
+
 const Footer = () => {
   const [email, setEmail] = useState("");
   const t = useTranslations('Header');
@@ -22,8 +31,9 @@ const Footer = () => {
       await sendSubscribe({ email }).unwrap()
       setEmail("")
       SuccessToast("Subscribe successfully")
-    } catch (error: any) {
-      ErrorToast(error?.data?.message || 'Subscription failed. Please try again.');
+    } catch (error) {
+      const apiError = error as ApiError;
+      ErrorToast(apiError?.data?.message || 'Subscription failed. Please try again.');
     }
   }
 

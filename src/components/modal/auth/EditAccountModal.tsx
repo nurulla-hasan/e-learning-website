@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Camera, Edit, Loader2 } from "lucide-react";
+import { Camera, Edit } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   useUpdateProfilePictureMutation,
@@ -25,6 +25,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+// Define error interface for RTK Query errors
+interface ApiError {
+  data?: {
+    message?: string;
+  };
+  status?: number;
+  message?: string;
+}
 
 interface EditAccountModalProps {
   isLoading: boolean;
@@ -101,8 +110,9 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
       // Clear the selected image and preview after successful upload
       setSelectedImage(null);
       setImagePreview(null);
-    } catch (error: any) {
-      ErrorToast(error?.data?.message || "Failed to update profile picture");
+    } catch (error) {
+      const apiError = error as ApiError;
+      ErrorToast(apiError?.data?.message || "Failed to update profile picture");
     }
   };
 
@@ -112,7 +122,7 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
 
   const handleUpdate = async () => {
     try {
-      const response = await updateUserProfile({
+      await updateUserProfile({
         fullName: formData.fullName,
         phoneNumber: formData.phoneNumber,
         dateOfBirth: formData.dateOfBirth,
@@ -122,9 +132,10 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
 
       SuccessToast("Profile updated successfully");
       setIsModalOpen(false);
-    } catch (error: any) {
-      console.error("Failed to update profile:", error);
-      ErrorToast(error?.data?.message || "Failed to update profile");
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error("Failed to update profile:", apiError);
+      ErrorToast(apiError?.data?.message || "Failed to update profile");
     }
   };
 

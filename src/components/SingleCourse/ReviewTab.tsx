@@ -1,4 +1,3 @@
-import { Star } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card } from "@/components/ui/card"
 import { StarRating } from "@/tools/StarRating"
