@@ -177,7 +177,7 @@ const EditAccountModal = ({ user }: EditAccountModalProps) => {
                   onClick={triggerFileInput}
                   className="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
                 >
-                  {imagePreview ? "Change Image" : "Select Image"}
+                  {imagePreview ? "Change Image" : <Camera className="h-4 w-4" />}
                 </button>
                 {imagePreview && (
                   <button

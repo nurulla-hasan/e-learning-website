@@ -112,7 +112,7 @@
     },
     "order_overview": "Podsumowanie zamówienia",
     "total_courses": "Łącznie kursów:",
-    "subtotal": "Suma częściowa:",
+    "subtotal": "Suma częściowa",
     "checkout_button": "Do kasy",
     "remove_button": "Usuń",
     "no_items": "Brak przedmiotów w koszyku"
@@ -123,7 +123,10 @@
     "subtotal": "Suma częściowa",
     "total": "Suma",
     "payment_options": "Opcje płatności",
-    "pay_button": "Zapłać teraz"
+    "pay_button": "Zapłać teraz",
+    "error_loading_checkout": "Błąd podczas ładowania elementów koszyka",
+    "try_again": "Spróbuj ponownie",
+    "no_checkout_items": "Brak elementów w koszyku"
   },
   "ProfilePage": {
     "loginDetails": "Dane logowania",

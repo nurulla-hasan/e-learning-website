@@ -113,10 +113,13 @@
   "CheckoutPage": {
     "page_title": "Courses",
     "payment_details": "Payment Details",
-    "subtotal": "Sub Total:",
-    "total": "Total:",
+    "subtotal": "Sub Total",
+    "total": "Total",
     "payment_options": "Payment Options",
-    "pay_button": "Pay Now"
+    "pay_button": "Pay Now",
+    "error_loading_checkout": "Error loading checkout items",
+    "try_again": "Try Again",
+    "no_checkout_items": "No items in checkout"
   },
   "ProfilePage": {
     "loginDetails": "Login Details",

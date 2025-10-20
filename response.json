@@ -1,0 +1,30 @@
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "Cart list retrieved successfully",
+    "data": [
+        {
+            "id": "68f5cbf3bdcdf267a9929e6b",
+            "courseId": "68e0f8de4e2e1554687454a0",
+            "cartId": "68e2326a6a8d22176b6a1a9c",
+            "courseTitle": "Design Mastery12",
+            "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759574235590_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+            "price": 200,
+            "discountPrice": 180,
+            "instructorName": "John Doe",
+            "categoryName": "IT & Software",
+            "avgRating": 0,
+            "totalRatings": 0,
+            "totalLessons": 3,
+            "totalHours": 0
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "limit": 10,
+        "total": 1,
+        "totalPages": 1,
+        "hasNextPage": false,
+        "hasPrevPage": false
+    }
+}
