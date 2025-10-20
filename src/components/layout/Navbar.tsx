@@ -14,6 +14,7 @@ import { RootState } from "@/redux/store";
 import { useGetUserProfileQuery } from "@/redux/feature/profile/profileApi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
+import { useGetCartQuery } from "@/redux/feature/cart/cartApi";
 
 const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
@@ -30,6 +31,9 @@ const Navbar = () => {
   const user = useSelector((state: RootState) => state.profile.profile);
   const isAuthenticated = Boolean(token && user);
 
+  useGetCartQuery(undefined, {
+    skip: !token,
+  });
   const { isLoading } = useGetUserProfileQuery(undefined, {
     skip: !token,
   });

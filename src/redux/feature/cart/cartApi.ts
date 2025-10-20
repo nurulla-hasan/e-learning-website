@@ -1,8 +1,9 @@
 import { baseApi } from "../baseApi";
+import { setCartLength } from "./cartSlice";
 
 const cartApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // GET CART
+    // GET CART ITEMS
     getCart: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -18,6 +19,14 @@ const cartApi = baseApi.injectEndpoints({
             method: "GET",
             params,
         };
+      },
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(setCartLength(result?.data?.data?.length));
+        } catch (error) {
+          console.error("Error fetching cart:", error);
+        }
       },
       providesTags: ["CART"],
     }),

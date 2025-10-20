@@ -1,56 +1,75 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Send } from "lucide-react"
-import Image from "next/image"
-import { useTranslations } from "next-intl"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Send } from "lucide-react";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { useSendMessageMutation } from "@/redux/feature/legal/legalApi";
+import { SuccessToast } from "@/lib/utils";
 
 const ContactForm = () => {
-  const t = useTranslations('ContactPage');
+  const t = useTranslations("ContactPage");
 
   const [formData, setFormData] = useState({
-    email: "",
-    phone: "",
+    userEmail: "",
+    userPhone: "",
     message: "",
-  })
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission here
-    console.log("Form submitted:", formData)
-  }
+  const [sendMessage] = useSendMessageMutation();
+  const handleSubmit = async (e: React.FormEvent) => {
+    try {
+      e.preventDefault();
+      await sendMessage(formData).unwrap();
+      setFormData({
+        userEmail: "",
+        userPhone: "",
+        message: "",
+      });
+      SuccessToast("Message sent successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-    }))
-  }
+    }));
+  };
 
   return (
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         {/* Contact Form */}
         <div>
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-8">{t("contact_us_form_title")}</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-8">
+            {t("contact_us_form_title")}
+          </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium text-foreground"
+              >
                 {t("email_label")}
               </Label>
               <Input
                 id="email"
-                name="email"
+                name="userEmail"
                 type="email"
                 placeholder={t("email_placeholder")}
-                value={formData.email}
+                value={formData.userEmail}
                 onChange={handleChange}
                 required
                 className="w-full"
@@ -58,22 +77,28 @@ const ContactForm = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="phone"
+                className="text-sm font-medium text-foreground"
+              >
                 {t("phone_label")}
               </Label>
               <Input
                 id="phone"
-                name="phone"
+                name="userPhone"
                 type="tel"
                 placeholder={t("phone_placeholder")}
-                value={formData.phone}
+                value={formData.userPhone}
                 onChange={handleChange}
                 className="w-full"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="message" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="message"
+                className="text-sm font-medium text-foreground"
+              >
                 {t("message_label")}
               </Label>
               <Textarea
@@ -88,10 +113,7 @@ const ContactForm = () => {
               />
             </div>
 
-            <Button
-              type="submit"
-              className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-md flex items-center gap-2 transition-colors"
-            >
+            <Button type="submit">
               {t("send_message_button")}
               <Send className="w-4 h-4" />
             </Button>
@@ -112,7 +134,7 @@ const ContactForm = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default ContactForm;

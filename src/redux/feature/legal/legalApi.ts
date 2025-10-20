@@ -65,7 +65,7 @@ const legalApi = baseApi.injectEndpoints({
         // SEND CONTACT
         sendMessage: builder.mutation({
             query: (data) => ({
-                url: "/contact-us-info",
+                url: "/support",
                 method: "POST",
                 body: data,
             }),
