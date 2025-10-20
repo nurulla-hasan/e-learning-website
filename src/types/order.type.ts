@@ -1,10 +1,13 @@
 
 export type IOrder = {
     id: string;
-    courseName: string;
-    courseImage: string;
-    date: string; // could also be Date if parsed
-    amount: number;
-    status: "Paid" | "Pending" | "Failed"; // union type for better type safety
-    hasInvoice: boolean;
+    courseId: string;
+    paymentStatus: "COMPLETED" | "PENDING" | "FAILED" | string;
+    enrolledAt: string; // ISO date string
+    invoiceId: string | null;
+    courseTitle: string;
+    coursePrice: number;
+    courseLevel: string;
+    categoryName: string;
+    courseThumbnail: string;
 };

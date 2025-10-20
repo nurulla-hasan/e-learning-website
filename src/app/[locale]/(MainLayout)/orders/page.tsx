@@ -1,33 +1,48 @@
+"use client";
+
 import PageHeader from "@/components/common/PageHeader";
 import OrdersTable from "@/components/order/OrdersTable";
 import OrderTitle from "@/components/order/OrderTitle";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
+import useSmartFetchHook from "@/hooks/useSmartFetchHook";
+import { useGetMyOrdersQuery } from "@/redux/feature/profile/profileApi";
+import PageLayout from "@/tools/PageLayout";
+import CustomPagination from "@/tools/CustomPagination";
+import { IOrder } from "@/types/order.type";
 
-interface TProps {
-  params: {
-    locale: string;
-  };
-}
+const OrdersPage = () => {
+  const t = useTranslations("Header");
+  const title = t("orders");
 
-const OrdersPage = async ({ params }: TProps) => {
-  const {locale} = params;
-  const t = await getTranslations({locale});
-  const title = t("Header.orders");
-
+  const { currentPage, setCurrentPage, totalPages, items, isLoading, isError } =
+    useSmartFetchHook(useGetMyOrdersQuery);
 
   return (
     <>
       <section className="min-h-screen">
-         <PageHeader title={title}/>
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="space-y-6">
-            <OrderTitle/>
-            <OrdersTable />
+        <PageHeader title={title} />
+        <PageLayout
+          paddingSize="none"
+          pagination={
+            <CustomPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          }
+        >
+          <div className="space-y-6 mb-4">
+            <OrderTitle />
+            <OrdersTable
+              items={items as IOrder[]}
+              isLoading={isLoading}
+              isError={isError}
+            />
           </div>
-        </div>
+        </PageLayout>
       </section>
     </>
-  )
-}
+  );
+};
 
 export default OrdersPage;

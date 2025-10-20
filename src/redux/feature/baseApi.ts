@@ -4,8 +4,8 @@ import { SetUserProfile } from './profile/profileSlice';
 import { RootState } from '../store';
 
 const rawBaseQuery = fetchBaseQuery({
-    baseUrl: 'https://paulina-e-learning-platform.vercel.app/api/v1',
-    // baseUrl: 'http://10.10.20.26:6080/api/v1',
+    // baseUrl: 'https://paulina-e-learning-platform.vercel.app/api/v1',
+    baseUrl: 'http://10.10.20.26:6080/api/v1',
 
     prepareHeaders: (headers, { getState }) => {
         const state = getState() as RootState;
@@ -37,6 +37,6 @@ export const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery,
 
-    tagTypes: ["PROFILE", "FAVORITE", "REVIEW", "COURSE", "CATEGORY", "CHECKOUT", "LEGAL", "CART"],
+    tagTypes: ["PROFILE", "FAVORITE", "REVIEW", "COURSE", "CATEGORY", "CHECKOUT", "LEGAL", "CART", "ORDER", "LEARNING"],
     endpoints: () => ({})
 })

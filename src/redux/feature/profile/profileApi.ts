@@ -62,6 +62,35 @@ const profileApi = baseApi.injectEndpoints({
       // },
     }),
 
+    // GET MY ORDERS
+    getMyOrders: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+            Object.entries(args).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    params.append(key, value as string);
+                }
+            });
+        }
+        return {
+            url: "/enrolled-courses/my-orders",
+            method: "GET",
+            params,
+        };
+      },
+      providesTags: ["ORDER"],
+    }),
+
+    // GET MY LEARNING HISTORY
+    getMyLearningHistory: builder.query({
+      query: () => ({
+        url: "/enrolled-courses/my-learning-history",
+        method: "GET",
+      }),
+      providesTags: ["LEARNING"],
+    }),
+
   }),
 });
 
@@ -70,4 +99,6 @@ export const {
   useUpdateUserProfileMutation,
   useUpdateProfilePictureMutation,
   useChangePasswordMutation,
+  useGetMyOrdersQuery,
+  useGetMyLearningHistoryQuery,
 } = profileApi;
