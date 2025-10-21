@@ -14,7 +14,7 @@ const LearningHistoryPage = () => {
   const title = t("history");
 
   const { currentPage, setCurrentPage, totalPages, items, isLoading, isError } =
-    useSmartFetchHook(useGetMyLearningHistoryQuery, {limit: 1});
+    useSmartFetchHook(useGetMyLearningHistoryQuery);
 
   return (
     <main className="min-h-screen bg-background">
