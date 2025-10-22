@@ -110,6 +110,9 @@ const MyLearningDetailsPage = () => {
                     autoPlay
                     className="w-full h-full object-contain"
                     poster={courseData?.course?.courseThumbnail}
+                    controlsList="nodownload noplaybackrate"
+                    disablePictureInPicture
+                    onContextMenu={(e) => e.preventDefault()}
                     onError={() => {
                       console.error('Video failed to load:', currentLesson.content);
                       // Fallback to placeholder or show error message
