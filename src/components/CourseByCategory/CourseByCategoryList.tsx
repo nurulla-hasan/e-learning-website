@@ -114,7 +114,7 @@ const CourseByCategoryList = () => {
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
               <p className="text-muted-foreground">
-                {items.length} courses in "{decodedCategory}"
+                {items.length} courses in &quot;{decodedCategory}&quot;
               </p>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">Sort by:</span>
