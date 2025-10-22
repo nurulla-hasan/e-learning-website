@@ -1,10 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
+import { Button} from "@/components/ui/button";
 import { Download, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ILearningCourse } from "@/types/course.type";
+import { Badge } from "@/components/ui/badge";
 
 type TProps = {
   course: ILearningCourse;
@@ -14,9 +15,19 @@ const LearningCourseItem = ({ course }: TProps) => {
   const progressPercentage = course.progress?.progress?.overallProgress || 0;
   const isCompleted = progressPercentage >= 100;
 
+  const downloadCertificate = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log("Download Certificate");
+  };
+
+  const viewCertificate = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log("View Certificate");
+  };
+
   return (
     <Link href={`/my-learning/${course.courseId}`}>
-      <Card className="group overflow-hidden transition-all duration-200 hover:shadow-lg hover:-translate-y-1 py-0">
+      <Card className="group overflow-hidden transition-all duration-200 py-0">
         <CardContent className="p-0">
           <div className="flex flex-col md:flex-row gap-0">
             {/* Course Image - Left Side */}
@@ -34,9 +45,16 @@ const LearningCourseItem = ({ course }: TProps) => {
             {/* Course Content - Right Side */}
             <div className="flex-1 p-6 space-y-4">
               <div className="space-y-2">
-                <h3 className="font-semibold text-card-foreground text-lg leading-tight">
-                  {course.courseTitle}
-                </h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold text-card-foreground text-lg leading-tight">
+                    {course.courseTitle}
+                  </h3>
+                  {course.lifetimeAccess && (
+                    <Badge>
+                      Lifetime Access
+                    </Badge>
+                  )}
+                </div>
                 <p className="text-sm text-muted-foreground">
                   By {course.instructorName}
                 </p>
@@ -73,20 +91,25 @@ const LearningCourseItem = ({ course }: TProps) => {
                   <div className="flex flex-wrap gap-2">
                     {course.certificate && (
                       <>
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button
+                          onClick={(e) => downloadCertificate(e)}
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                        >
                           <Download className="h-4 w-4" />
                           Download Certificate
                         </Button>
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button
+                          onClick={(e) => viewCertificate(e)}
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                        >
                           <Eye className="h-4 w-4" />
                           View Certificate
                         </Button>
                       </>
-                    )}
-                    {course.lifetimeAccess && (
-                      <Button variant="outline" size="sm" className="gap-2">
-                        Lifetime Access
-                      </Button>
                     )}
                   </div>
                 )}

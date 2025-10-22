@@ -59,7 +59,7 @@ const Register = () => {
         <CardContent className="p-0">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
-              <Link href="/auth/login">
+              <Link href="/login">
                 <ArrowLeft className="cursor-pointer" />
               </Link>
               <div className="flex flex-col gap-6 mt-6">

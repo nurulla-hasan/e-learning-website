@@ -1,6 +1,5 @@
 "use client";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import LearningCourseItem from "./LearningCourseItem";
 import { useGetMyCoursesQuery } from "@/redux/feature/course/courseApi";
 import { ILearningCourse } from "@/types/course.type";
