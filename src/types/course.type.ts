@@ -9,17 +9,24 @@ export interface IPopularCourse {
 }
 
 
-export type TCourse = {
-  id: number;
-  title: string;
-  description: string;
+export interface Course {
+  id: string;
+  courseTitle: string;
+  courseShortDescription: string;
+  courseDescription: string;
+  courseLevel: string;
   price: number;
-  originalPrice: number;
-  rating: number;
-  image: string;
-  category: string;
-  level: "Beginner" | "Intermediate" | "Advanced" | string;
-};
+  discountPrice: number;
+  courseThumbnail: string;
+  avgRating: number;
+  totalRatings: number;
+  categoryName: string;
+  instructorName: string;
+  instructorImage: string;
+  totalLessons: number;
+  totalDuration: number;
+  isBookmarked: boolean;
+}
 
 
 export interface IFavoriteCourse {

@@ -12,7 +12,7 @@ const TestimonialCard = ({ testimonial, isActive }: { testimonial: (typeof testi
       transition={{ duration: 0.5 }}
       className="w-full"
     >
-      <Card className="p-6 h-full bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+      <Card className="p-6 h-full border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
         <StarRating 
           rating={testimonial.rating} 
           totalStars={5}
@@ -36,7 +36,7 @@ const TestimonialCard = ({ testimonial, isActive }: { testimonial: (typeof testi
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+          <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
             <Image
               src={testimonial.avatar || "/placeholder.svg"}
               alt={testimonial.name}
