@@ -98,24 +98,10 @@ const LearningCourseList = () => {
         <h1 className="text-sm font-medium text-muted-foreground">
           Showing {items.length} {items.length === 1 ? "course" : "courses"}
         </h1>
-        {/* <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Sort By:</span>
-          <Select defaultValue="in-progress">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="in-progress">In progress</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="not-started">Not started</SelectItem>
-              <SelectItem value="alphabetical">Alphabetical</SelectItem>
-            </SelectContent>
-          </Select>
-        </div> */}
       </div>
 
       {/* Course List - Single Column */}
-      <div className="space-y-6 mb-4">
+      <div className="grid gap-6 mb-4">
         {items.length === 0 ? (
           <div className="col-span-full text-center py-12">
             <p className="text-muted-foreground text-lg">
