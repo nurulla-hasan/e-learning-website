@@ -63,7 +63,7 @@ const PopularCourses = () => {
             plugins={[autoplay.current]}
           >
             <CarouselContent className="-ml-2 md:-ml-4">
-              {popularCourses.map((course: IPopularCourse) => (
+              {popularCourses?.map((course: IPopularCourse) => (
                 <CarouselItem
                   key={course.id}
                   className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"

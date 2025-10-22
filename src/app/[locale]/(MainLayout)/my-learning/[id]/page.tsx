@@ -2,9 +2,10 @@
 
 import React from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { ChevronRight, Play, Check, Lock, Image, Video } from "lucide-react";
+import { ChevronRight, Play, Check, Lock, Video, FileImage } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import PageLayout from "@/tools/PageLayout";
 import { useGetEnrolledCourseByIdQuery } from "@/redux/feature/course/courseApi";
@@ -13,7 +14,7 @@ import type {
   Lesson,
 } from "@/types/course/enroll.details.type";
 
-const MyLearningDetailsPage = ({ params }: { params: { id: string } }) => {
+const MyLearningDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   console.log(id);
   const [selectedSection, setSelectedSection] = React.useState<string | null>(
@@ -94,13 +95,12 @@ const MyLearningDetailsPage = ({ params }: { params: { id: string } }) => {
               {currentLesson?.content ? (
                 currentLesson.contentType?.startsWith('image/') ? (
                   // Image content
-                  <img
+                  <Image
                     src={currentLesson.content}
-                    alt={currentLesson.title}
+                    alt={currentLesson.title || "Lesson image"}
                     className="w-full h-full object-contain"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "/placeholder-image.png";
-                    }}
+                    width={800}
+                    height={600}
                   />
                 ) : currentLesson.contentType?.startsWith('video/') ? (
                   // Video content
@@ -110,7 +110,7 @@ const MyLearningDetailsPage = ({ params }: { params: { id: string } }) => {
                     autoPlay
                     className="w-full h-full object-contain"
                     poster={courseData?.course?.courseThumbnail}
-                    onError={(e) => {
+                    onError={() => {
                       console.error('Video failed to load:', currentLesson.content);
                       // Fallback to placeholder or show error message
                     }}
@@ -119,13 +119,12 @@ const MyLearningDetailsPage = ({ params }: { params: { id: string } }) => {
                   </video>
                 ) : (
                   // Unknown content type - show as image
-                  <img
+                  <Image
                     src={currentLesson.content}
-                    alt={currentLesson.title}
+                    alt={currentLesson.title || "Lesson content"}
                     className="w-full h-full object-contain"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "/placeholder-image.png";
-                    }}
+                    width={800}
+                    height={600}
                   />
                 )
               ) : (
@@ -168,13 +167,12 @@ const MyLearningDetailsPage = ({ params }: { params: { id: string } }) => {
                     <Card className="p-6">
                       <div className="flex items-start space-x-6">
                         <div className="flex-shrink-0">
-                          <img
+                          <Image
                             src={courseData?.course?.instructorImage || "/placeholder-avatar.png"}
                             alt={courseData?.course?.instructorName || "Instructor"}
                             className="w-20 h-20 rounded-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = "/placeholder-avatar.png";
-                            }}
+                            width={80}
+                            height={80}
                           />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -363,7 +361,7 @@ const MyLearningDetailsPage = ({ params }: { params: { id: string } }) => {
                         </div>
                       ) : lesson.contentType?.startsWith('image/') ? (
                         <div className="h-6 w-6 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                          <Image className="h-3 w-3 text-blue-600" />
+                          <FileImage className="h-3 w-3 text-blue-600" />
                         </div>
                       ) : lesson.contentType?.startsWith('video/') ? (
                         <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center mr-3">

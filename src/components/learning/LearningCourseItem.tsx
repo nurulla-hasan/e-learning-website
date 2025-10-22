@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Download, Eye } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ILearningCourse } from "@/types/course.type";

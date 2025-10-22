@@ -1,58 +1,10 @@
 import { IOrder } from "@/types/order.type";
 
+// This file is not currently used in the application
+// Orders are fetched from the API via useGetMyOrdersQuery
+// Keeping this file for potential future use with mock data
+
 export const orders: IOrder[] = [
-  {
-    id: "#674577",
-    courseName: "Figma UI/UX Design: Web and App Design",
-    courseImage: "/images/orders/figma-ui-design-course-thumbnail.jpg",
-    date: "12/05/24",
-    amount: 56,
-    status: "Paid",
-    hasInvoice: true,
-  },
-  {
-    id: "#674577",
-    courseName: "Figma UI/UX Design: Web and App Design",
-    courseImage: "/images/orders/figma-ui-design-course-thumbnail-green.jpg",
-    date: "11/05/24",
-    amount: 67,
-    status: "Pending",
-    hasInvoice: true,
-  },
-  {
-    id: "#674577",
-    courseName: "Figma UI/UX Design: Web and App Design",
-    courseImage: "/images/orders/figma-ui-design-course-thumbnail-orange.jpg",
-    date: "07/05/24",
-    amount: 23,
-    status: "Paid",
-    hasInvoice: true,
-  },
-  {
-    id: "#674577",
-    courseName: "Figma UI/UX Design: Web and App Design",
-    courseImage: "/images/orders/figma-ui-design-course-thumbnail-blue.jpg",
-    date: "04/05/24",
-    amount: 75,
-    status: "Paid",
-    hasInvoice: true,
-  },
-  {
-    id: "#674577",
-    courseName: "Figma UI/UX Design: Web and App Design",
-    courseImage: "/images/orders/figma-ui-design-course-thumbnail-dark.jpg",
-    date: "01/05/24",
-    amount: 34,
-    status: "Paid",
-    hasInvoice: true,
-  },
-  {
-    id: "#674577",
-    courseName: "Figma UI/UX Design: Web and App Design",
-    courseImage: "/images/orders/figma-ui-design-course-thumbnail-red.jpg",
-    date: "-------",
-    amount: 86,
-    status: "Paid",
-    hasInvoice: false,
-  },
-]
+  // Empty array - no static order data needed
+  // Real orders are fetched from API in orders page
+];
