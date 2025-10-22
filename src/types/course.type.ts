@@ -1,11 +1,34 @@
 export interface IPopularCourse {
-  id: number
-  title: string
-  currentPrice: number
-  originalPrice: number
-  rating: number
-  description: string
-  image: string
+  id: string;
+  userId: string;
+  courseTitle: string;
+  courseShortDescription: string;
+  courseDescription: string;
+  courseLevel: string;
+  categoryId: string;
+  categoryName: string;
+  certificate: boolean;
+  lifetimeAccess: boolean;
+  price: number;
+  discountPrice: number;
+  instructorName: string;
+  instructorImage: string;
+  instructorDesignation: string;
+  instructorDescription: string;
+  courseThumbnail: string;
+  totalLessons: number;
+  totalSections: number;
+  totalDuration: number;
+  avgRating: number;
+  totalRatings: number;
+  totalEnrollments: number;
+  isPublished: boolean;
+  lastUpdated: string;
+  difficulty: string;
+  skillLevel: string;
+  courseLength: number | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 
@@ -38,6 +61,17 @@ export interface IFavoriteCourse {
   rating: number;
   description: string;
   isFavorited: boolean;
+}
+
+export interface Review {
+  id: string;
+  userId: string;
+  courseId: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  userName: string;
+  userImage: string;
 }
 
 export type ILearningCourse = {
@@ -79,4 +113,3 @@ export type THistoryCourse = {
   completedOn: string; // could also be Date if you parse it
   certificateUrl: string;
 };
-

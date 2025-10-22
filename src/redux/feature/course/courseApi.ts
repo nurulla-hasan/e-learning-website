@@ -161,6 +161,24 @@ const recipeApi = baseApi.injectEndpoints({
             providesTags: ["COURSE"],
         }),
 
+        // GET POPULAR COURSES
+        getPopularCourses: builder.query({
+            query: () => ({
+                url: "/courses/popular-courses",
+                method: "GET",
+            }),
+            providesTags: ["COURSE"],
+        }),
+
+        // GET TOP REVIEWS
+        getTopReviews: builder.query({
+            query: () => ({
+                url: "/reviews/top-reviews",
+                method: "GET",
+            }),
+            providesTags: ["REVIEW"],
+        }),
+
         // ===================================END GET QUERY============================================
 
         // ===================================START MUTATION===========================================
@@ -208,6 +226,8 @@ export const {
     useGetBookmarkedCoursesQuery,
     useGetMyTrainingsRequestQuery,
     useGetAcceptedTrainingsRequestQuery,
+    useGetPopularCoursesQuery,
+    useGetTopReviewsQuery,
     useAddToBookmarkMutation,
     useRemoveFromBookmarkMutation,
     useRequestForTrainingMutation,
