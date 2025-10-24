@@ -44,7 +44,7 @@ const MyLearningDetailsPage = () => {
   if (isLoading) {
     return (
       <PageLayout paddingSize="none">
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
       </PageLayout>
@@ -169,7 +169,7 @@ const MyLearningDetailsPage = () => {
                     <h2 className="text-2xl font-bold text-foreground">Your Instructor</h2>
                     <Card className="p-6">
                       <div className="flex items-start space-x-6">
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                           <Image
                             src={courseData?.course?.instructorImage || "/placeholder-avatar.png"}
                             alt={courseData?.course?.instructorName || "Instructor"}

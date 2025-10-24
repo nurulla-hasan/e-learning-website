@@ -156,7 +156,7 @@ const CourseList = () => {
           </div>
 
           {/* Desktop Sidebar */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:block sticky top-24 self-start">
             <FilterSidebar
               categories={categories}
               categoriesLoading={categoriesLoading}
