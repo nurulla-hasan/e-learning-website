@@ -51,7 +51,7 @@ const PopularCourses = () => {
 
       {/* Carousel Container */}
       {popularCourses.length > 0 ? (
-        <div className="relative">
+        <div>
           <Carousel
             className="w-full"
             opts={{
@@ -72,8 +72,8 @@ const PopularCourses = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden md:flex -left-12" />
-            <CarouselNext className="hidden md:flex -right-12" />
+            <CarouselPrevious className="hidden md:flex z-50" />
+            <CarouselNext className="hidden md:flex z-50" />
           </Carousel>
         </div>
       ) : (

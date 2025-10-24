@@ -55,7 +55,7 @@ const CourseList = () => {
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<number[]>([0, 2000]);
   const [minRating, setMinRating] = useState<number>(0);
-  const [sortBy, setSortBy] = useState("price-low");
+  const [sortBy, setSortBy] = useState("");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const t = useTranslations("CoursesPage");
 
@@ -126,7 +126,7 @@ const CourseList = () => {
         paddingSize="none"
       >
         {/* Course List */}
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-6 mb-4">
           {/* Mobile Filter Toggle */}
           <div className="lg:hidden">
             <Button

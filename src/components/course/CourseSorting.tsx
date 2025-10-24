@@ -13,12 +13,11 @@ const CourseSorting = ({sortBy, setSortBy}: TSortingProps) => {
                 <span className="text-sm text-muted-foreground">Sort by:</span>
                 <Select value={sortBy} onValueChange={setSortBy}>
                     <SelectTrigger className="w-48">
-                        <SelectValue />
+                        <SelectValue placeholder="Select an option" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="price-low">Price: Low to High</SelectItem>
                         <SelectItem value="price-high">Price: High to Low</SelectItem>
-
                     </SelectContent>
                 </Select>
             </div>
