@@ -95,6 +95,7 @@ export type ILearningCourse = {
   progress: {
     courseId: string;
     courseTitle: string;
+    progressPercentage: number;
     progress: {
       overallProgress: number;
       completedLessons: number;

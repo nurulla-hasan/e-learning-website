@@ -12,8 +12,8 @@ type TProps = {
 };
 
 const LearningCourseItem = ({ course }: TProps) => {
-  const progressPercentage = course.progress?.progress?.overallProgress || 0;
-  const isCompleted = progressPercentage >= 100;
+  const progressPercentage = course.progress?.progressPercentage || 0;
+  const isCompleted = progressPercentage === 100;
 
       const buildCombinedCertificateHTML = (course: ILearningCourse) => {
         const safe = (v: string | number | undefined) =>
@@ -235,7 +235,7 @@ const LearningCourseItem = ({ course }: TProps) => {
         <CardContent className="p-0">
           <div className="flex flex-col md:flex-row gap-0">
             {/* Course Image - Left Side */}
-            <div className="md:w-80 flex-shrink-0">
+            <div className="md:w-80 shrink-0">
               <div className="relative w-full h-48 md:h-full overflow-hidden">
                 <Link href={`/my-learning/${course.courseId}`}>
                   <Image
@@ -295,7 +295,7 @@ const LearningCourseItem = ({ course }: TProps) => {
               <div className="flex items-center justify-between pt-2">
                 {isCompleted && (
                   <div className="flex flex-wrap gap-2">
-                    {course.certificate && (
+                    {/* {course.certificate && ( */}
                       <>
                         <Button
                           onClick={(e) => handleDownloadCertificate(e)}
@@ -316,7 +316,7 @@ const LearningCourseItem = ({ course }: TProps) => {
                           View Certificate
                         </Button>
                       </>
-                    )}
+                    {/* )} */}
                   </div>
                 )}
               </div>

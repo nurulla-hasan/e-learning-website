@@ -5,10 +5,13 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { ChevronRight, Play, Check, Lock, Video, FileImage } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { ChevronRight, Play } from "lucide-react";
 import PageLayout from "@/tools/PageLayout";
 import { useGetEnrolledCourseByIdQuery } from "@/redux/feature/course/courseApi";
+import { useMarkLessonAsCompletedMutation, useMarkCourseAsCompletedMutation } from "@/redux/feature/lesson/lessonApi";
+import VideoPlayer from "@/components/learning/lesson/VideoPlayer";
+import NavigationControls from "@/components/learning/lesson/NavigationControls";
+import LearningSidebar from "@/components/learning/lesson/LearningSidebar";
 import type {
   EnrolledCourse,
   Lesson,
@@ -16,12 +19,18 @@ import type {
 
 const MyLearningDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  console.log(id);
+  // console.log(id);
   const [selectedSection, setSelectedSection] = React.useState<string | null>(
     null
   );
+
+  // Treat both legacy `completed` and new `isCompleted` as completion
+  const isLessonDone = React.useCallback((l: Lesson) => {
+    return Boolean((l as any)?.isCompleted ?? l.completed);
+  }, []);
   const [activeTab, setActiveTab] = React.useState("overview");
   const [currentLesson, setCurrentLesson] = React.useState<Lesson | null>(null);
+  const [completedIds, setCompletedIds] = React.useState<Set<string>>(new Set());
 
   const {
     data: response,
@@ -29,6 +38,39 @@ const MyLearningDetailsPage = () => {
     isError,
   } = useGetEnrolledCourseByIdQuery(id);
   const courseData = response?.data as EnrolledCourse | undefined;
+  const progressPercent = (courseData as any)?.progressPercentage ?? (typeof courseData?.progress === 'number' ? courseData.progress : 0);
+
+  const [markLessonAsCompleted, { isLoading: isMarking }] =
+    useMarkLessonAsCompletedMutation();
+  const [markCourseAsCompleted, { isLoading: isCompletingCourse }] =
+    useMarkCourseAsCompletedMutation();
+
+  // Flatten lessons with absolute order for navigation/locking
+  const flatLessons = React.useMemo(
+    () =>
+      (courseData?.course?.Section || []).flatMap((section, sIdx) =>
+        (section.Lesson || []).map((lesson, lIdx) => ({
+          sectionId: section.id,
+          sectionIndex: sIdx,
+          lessonIndex: lIdx,
+          id: lesson.id,
+          lesson,
+        }))
+      ),
+    [courseData]
+  );
+
+  const lessonIndexMap = React.useMemo(() => {
+    const m: Record<string, number> = {};
+    flatLessons.forEach((it, idx) => {
+      m[it.id] = idx;
+    });
+    return m;
+  }, [flatLessons]);
+
+  const currentAbsIndex = currentLesson?.id
+    ? lessonIndexMap[currentLesson.id] ?? -1
+    : -1;
 
   // Set the first section and lesson when data is loaded
   React.useEffect(() => {
@@ -38,13 +80,65 @@ const MyLearningDetailsPage = () => {
       if (firstLesson) {
         setCurrentLesson(firstLesson);
       }
+      // seed completed set from API
+      const seeded = new Set<string>();
+      courseData.course.Section.forEach((s) =>
+        (s.Lesson || []).forEach((l) => {
+          if (isLessonDone(l)) seeded.add(l.id);
+        })
+      );
+      setCompletedIds(seeded);
     }
   }, [courseData]);
+
+  // Navigation helpers
+  const goToAbsIndex = (idx: number) => {
+    if (idx < 0 || idx >= flatLessons.length) return;
+    const target = flatLessons[idx];
+    setSelectedSection(target.sectionId);
+    setCurrentLesson(target.lesson);
+  };
+
+  const handlePrevLesson = () => {
+    if (currentAbsIndex > 0) {
+      goToAbsIndex(currentAbsIndex - 1);
+    }
+  };
+
+  const handleNextLesson = async () => {
+    if (currentAbsIndex === -1 || !currentLesson?.id) return;
+    try {
+      await markLessonAsCompleted({ lessonId: currentLesson.id }).unwrap();
+      setCompletedIds((prev) => new Set(prev).add(currentLesson.id));
+      if (currentAbsIndex < flatLessons.length - 1) {
+        goToAbsIndex(currentAbsIndex + 1);
+      }
+    } catch (e) {
+      console.error("Failed to mark lesson completed", e);
+    }
+  };
+
+  const courseId = courseData?.course?.id;
+  const handleCompleteCourse = async () => {
+    if (!courseId) return;
+    try {
+      // ensure the last lesson is marked completed first
+      if (currentLesson?.id && !isLessonDone(currentLesson) && !completedIds.has(currentLesson.id)) {
+        await markLessonAsCompleted({ lessonId: currentLesson.id }).unwrap();
+        setCompletedIds((prev) => new Set(prev).add(currentLesson.id));
+      }
+      await markCourseAsCompleted({ courseId }).unwrap();
+      // optionally: navigate or show toast
+      console.log("Course marked as completed");
+    } catch (e) {
+      console.error("Failed to mark course completed", e);
+    }
+  };
 
   if (isLoading) {
     return (
       <PageLayout paddingSize="none">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center h-[90vh]">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
       </PageLayout>
@@ -54,7 +148,7 @@ const MyLearningDetailsPage = () => {
   if (isError) {
     return (
       <PageLayout paddingSize="none">
-        <div className="text-center py-12">
+        <div className="text-center py-12 h-[90vh]">
           <h2 className="text-xl font-semibold mb-2">Error loading course</h2>
           <p className="text-muted-foreground">
             There was an error loading the course. Please try again later.
@@ -67,7 +161,7 @@ const MyLearningDetailsPage = () => {
   if (!courseData) {
     return (
       <PageLayout paddingSize="none">
-        <div className="text-center py-12">
+        <div className="text-center py-12 h-[90vh]">
           <h2 className="text-xl font-semibold mb-2">Course not found</h2>
           <p className="text-muted-foreground">
             The requested course could not be loaded.
@@ -92,50 +186,12 @@ const MyLearningDetailsPage = () => {
           {/* Video Player */}
           <Card className="aspect-video bg-black rounded-lg overflow-hidden">
             <div className="w-full h-full flex items-center justify-center">
-              {currentLesson?.content ? (
-                currentLesson.contentType?.startsWith('image/') ? (
-                  // Image content
-                  <Image
-                    src={currentLesson.content}
-                    alt={currentLesson.title || "Lesson image"}
-                    className="w-full h-full object-contain"
-                    width={800}
-                    height={600}
-                  />
-                ) : currentLesson.contentType?.startsWith('video/') ? (
-                  // Video content
-                  <video
-                    src={currentLesson.content}
-                    controls
-                    autoPlay
-                    className="w-full h-full object-contain"
-                    poster={courseData?.course?.courseThumbnail}
-                    controlsList="nodownload noplaybackrate"
-                    disablePictureInPicture
-                    onContextMenu={(e) => e.preventDefault()}
-                    onError={() => {
-                      console.error('Video failed to load:', currentLesson.content);
-                      // Fallback to placeholder or show error message
-                    }}
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  // Unknown content type - show as image
-                  <Image
-                    src={currentLesson.content}
-                    alt={currentLesson.title || "Lesson content"}
-                    className="w-full h-full object-contain"
-                    width={800}
-                    height={600}
-                  />
-                )
+              {currentLesson ? (
+                <VideoPlayer lesson={currentLesson} poster={courseData?.course?.courseThumbnail} />
               ) : (
                 <div className="text-center">
                   <Play className="h-16 w-16 text-white mx-auto mb-2" />
-                  <p className="text-white">
-                    {currentLesson?.title || "Select a lesson to begin"}
-                  </p>
+                  <p className="text-white">Select a lesson to begin</p>
                 </div>
               )}
             </div>
@@ -147,10 +203,22 @@ const MyLearningDetailsPage = () => {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="resources">Resources</TabsTrigger>
-            </TabsList>
+            <div className="flex items-center justify-between">
+              <TabsList>
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="resources">Resources</TabsTrigger>
+              </TabsList>
+              <NavigationControls
+                canPrev={currentAbsIndex > 0}
+                onPrev={handlePrevLesson}
+                isLast={currentAbsIndex >= 0 && currentAbsIndex === flatLessons.length - 1}
+                onNext={handleNextLesson}
+                onCompleteCourse={handleCompleteCourse}
+                nextDisabled={currentAbsIndex === -1 || currentAbsIndex >= flatLessons.length - 1 || isMarking}
+                completingCourse={isCompletingCourse}
+                markingLesson={isMarking}
+              />
+            </div>
             <div className="mt-4 p-6 border rounded-lg">
               <TabsContent value="overview">
                 <div className="space-y-8">
@@ -285,10 +353,7 @@ const MyLearningDetailsPage = () => {
                               : "text-muted-foreground"
                           }`}>
                             <span>
-                              {
-                                (section.Lesson || []).filter((l) => l?.completed)
-                                  .length
-                              }{" "}
+                              {(section.Lesson || []).filter((l) => isLessonDone(l)).length}{" "}
                               of {(section.Lesson || []).length} lessons completed
                             </span>
                             <span className="text-xs">
@@ -306,91 +371,19 @@ const MyLearningDetailsPage = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="lg:col-span-1 space-y-4 sticky top-22 max-h-[90vh] overflow-y-auto">
-          <Card className="p-4">
-            <h3 className="font-semibold mb-3">Course Content</h3>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm mb-2">
-                <span>Progress: {courseData?.progress || 0}%</span>
-                <span className="text-muted-foreground">
-                  {courseData?.course?.Section?.flatMap(
-                    (s) => s?.Lesson || []
-                  ).filter((l) => l?.completed).length || 0}
-                  /
-                  {courseData?.course?.Section?.flatMap((s) => s?.Lesson || [])
-                    .length || 0}{" "}
-                  lessons
-                </span>
-              </div>
-              <Progress value={courseData.progress} className="h-2" />
-            </div>
-          </Card>
-
-          {selectedSection && (
-            <Card className="overflow-hidden">
-              <div className="p-4 border-b">
-                <h3 className="font-semibold">
-                  {
-                    courseData?.course?.Section?.find(
-                      (s) => s.id === selectedSection
-                    )?.title
-                  }
-                </h3>
-              </div>
-              <div className="divide-y max-h-96 overflow-y-auto">
-                {courseData?.course?.Section?.find(
-                  (s) => s.id === selectedSection
-                )?.Lesson.map((lesson) => (
-                  <div
-                    key={lesson.id}
-                    className={`flex items-center p-3 text-sm cursor-pointer ${
-                      lesson.id === currentLesson?.id
-                        ? "bg-primary/10 text-primary"
-                        : "hover:bg-muted/30"
-                    }`}
-                    onClick={() => {
-                      setCurrentLesson(lesson);
-                      // Removed setActiveTab("overview") - let users stay on current tab
-                    }}
-                  >
-                    <div className="flex-1 flex items-center">
-                      {lesson.completed ? (
-                        <div className="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                          <Check className="h-3 w-3 text-green-600" />
-                        </div>
-                      ) : lesson.locked ? (
-                        <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center mr-3">
-                          <Lock className="h-3 w-3 text-muted-foreground" />
-                        </div>
-                      ) : lesson.contentType?.startsWith('image/') ? (
-                        <div className="h-6 w-6 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                          <FileImage className="h-3 w-3 text-blue-600" />
-                        </div>
-                      ) : lesson.contentType?.startsWith('video/') ? (
-                        <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center mr-3">
-                          <Video className="h-3 w-3 text-primary" />
-                        </div>
-                      ) : (
-                        <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center mr-3">
-                          <Play className="h-3 w-3 text-primary" />
-                        </div>
-                      )}
-                      <span className="truncate">{lesson.title}</span>
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {lesson.videoDuration
-                        ? `${Math.floor(lesson.videoDuration / 60)}:${(
-                            lesson.videoDuration % 60
-                          )
-                            .toString()
-                            .padStart(2, "0")}`
-                        : "--:--"}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          )}
+        <div className="lg:col-span-1">
+          <LearningSidebar
+            sections={courseData?.course?.Section}
+            selectedSectionId={selectedSection}
+            onSelectSection={(id) => setSelectedSection(id)}
+            currentLesson={currentLesson}
+            onSelectLesson={(l) => setCurrentLesson(l)}
+            isLessonDone={isLessonDone}
+            completedIds={completedIds}
+            lessonIndexMap={lessonIndexMap}
+            currentAbsIndex={currentAbsIndex}
+            progressPercent={progressPercent}
+          />
         </div>
       </div>
     </PageLayout>

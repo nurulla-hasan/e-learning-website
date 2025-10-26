@@ -81,7 +81,7 @@ const CourseByCategoryList = () => {
 
   return (
     <>
-      <header className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <PageLayout
           paddingSize="none"
           pagination={

@@ -62,6 +62,7 @@ export interface EnrolledCourse {
   isCompleted: boolean;
   enrolledAt: string;
   course: Course;
+  progressPercentage: number;
   currentLesson?: {
     id: string;
     title: string;
