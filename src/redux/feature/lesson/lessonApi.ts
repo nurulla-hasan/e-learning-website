@@ -41,6 +41,15 @@ const lessonApi = baseApi.injectEndpoints({
         providesTags: ["LEARNING"],
       }),
 
+      // GET CERTIFICATE TEMPLETE
+      getCertificate: builder.query({
+        query: (id: string) => ({
+          url: `/certificates/my-certificates/68e62a8fd033c0abad77bf3c`,
+          method: "GET",
+        }),
+        providesTags: ["LEARNING"],
+      }),
+
       //============================================
       // MARK LESSON AS COMPLETED
       markLessonAsCompleted: builder.mutation({
@@ -93,4 +102,6 @@ export const {
   useGetAllAttemptsTestsQuery,
   useGetSingleAttemptTestQuery,
   useGetSingleTestQuery,
+  useGetCertificateQuery,
+  useLazyGetCertificateQuery,
 } = lessonApi;

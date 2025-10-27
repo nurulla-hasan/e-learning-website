@@ -29,7 +29,7 @@ const LearningCourseList = () => {
               <div className="border rounded-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row gap-0">
                   {/* Image Skeleton */}
-                  <div className="md:w-80 flex-shrink-0">
+                  <div className="md:w-80 shrink-0">
                     <div className="w-full h-48 md:h-full bg-gray-200"></div>
                   </div>
                   {/* Content Skeleton */}

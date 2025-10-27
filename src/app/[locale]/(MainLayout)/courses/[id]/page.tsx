@@ -320,7 +320,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-baseline gap-2">
                     <span className="text-3xl font-bold">
-                      ${course.discountPrice || course.price}
+                      zł {course.discountPrice || course.price}
                     </span>
                     {course.discountPrice &&
                       course.discountPrice < course.price && (

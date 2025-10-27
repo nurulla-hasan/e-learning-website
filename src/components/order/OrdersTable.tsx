@@ -99,7 +99,7 @@ const OrdersTable = ({
                   </td>
                   <td className="p-4">
                     <span className="text-sm font-medium">
-                      ${order?.coursePrice}
+                      zł {order?.coursePrice}
                     </span>
                   </td>
                   <td className="p-4">
@@ -198,7 +198,7 @@ const OrdersTable = ({
                     ? new Date(order.enrolledAt).toLocaleDateString()
                     : "N/A"}
                 </span>
-                <span className="font-medium">${order?.coursePrice}</span>
+                <span className="font-medium">zł {order?.coursePrice}</span>
               </div>
 
               <div className="flex items-center justify-between pt-2">
