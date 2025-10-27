@@ -7,6 +7,8 @@ import type { Lesson, Section } from "@/types/course/enroll.details.type";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
+import ConfirmationModal from "@/components/modal/ConfirmationModal";
+
 interface Props {
   sections: Section[] | undefined;
   selectedSectionId: string | null;
@@ -35,6 +37,21 @@ const LearningSidebar: React.FC<Props> = ({
   courseId,
 }) => {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [selectedTest, setSelectedTest] = React.useState<any>(null);
+
+  const handleStartTest = (test: any) => {
+    setSelectedTest(test);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmTest = () => {
+    if (selectedTest) {
+      router.push(`/test-exam/${selectedTest.id}`);
+    }
+    setIsModalOpen(false);
+  };
+
   const selectedSection = sections?.find((s) => s.id === selectedSectionId);
   const lastSectionId = React.useMemo(() => {
     if (!sections || sections.length === 0) return null;
@@ -129,27 +146,29 @@ const LearningSidebar: React.FC<Props> = ({
               );
             })}
           </div>
-          {isLastSection && (
-            <div className="p-4">
-              {allLessonsCompleted ? (
+          <div className="p-4 space-y-2">
+            <h4 className="font-semibold">Tests</h4>
+            {selectedSection.Test?.map((test) => (
+              <div key={test.id} className="flex items-center justify-between">
+                <span className="text-sm">{test.title}</span>
                 <Button
-                  className="w-full"
-                  onClick={() => {
-                    if (courseId) router.push(`test-exam?courseId=${courseId}`);
-                    else router.push("test-exam");
-                  }}
+                  size="sm"
+                  onClick={() => handleStartTest(test)}
                 >
                   Start Test
                 </Button>
-              ) : (
-                <div className="text-sm text-muted-foreground text-center">
-                  Complete all lessons to unlock the test.
-                </div>
-              )}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
         </Card>
       )}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmTest}
+        title="Start Test"
+        description="Are you sure you want to start the test? You can only attempt this test once."
+      />
     </div>
   );
 };
