@@ -69,7 +69,7 @@ const CourseList = () => {
     isLoading,
     isError,
     setFilterParams,
-  } = useSmartFetchHook(useGetCoursesQuery);
+  } = useSmartFetchHook(useGetCoursesQuery, {limit:12});
 
   // Cast items to Course array for TypeScript
   const courses = items as Course[];
