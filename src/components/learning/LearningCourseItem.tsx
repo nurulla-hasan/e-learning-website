@@ -18,9 +18,17 @@ const LearningCourseItem = ({ course }: TProps) => {
   const progressPercentage = course.progress?.progressPercentage || 0;
   const isCompleted = progressPercentage === 100;
 
-  const [getCertificate, { data: certificateData, isLoading: isCertificateLoading }] = useLazyGetCertificateQuery();
+  const [getCertificate, { isLoading: isCertificateLoading }] = useLazyGetCertificateQuery();
 
-  const replacePlaceholders = (html: string, data: any) => {
+  interface CertificateData {
+    fullName?: string;
+    startDate: string | Date;
+    endDate: string | Date;
+    dob?: string | Date;
+    certificateNumber?: string;
+  }
+
+  const replacePlaceholders = (html: string, data: CertificateData) => {
     return html
       .replace(/\${fullName}/g, data.fullName || 'N/A')
       .replace(/&{startDate}/g, new Date(data.startDate).toLocaleDateString())
@@ -35,6 +43,7 @@ const LearningCourseItem = ({ course }: TProps) => {
   const handleDownloadCertificate = async () => {
     try {
       const response = await getCertificate(course.courseId).unwrap();
+      console.log("API Response:", response); // Debug log
       const certificateHtml = response?.data?.certificateHtmlContent;
 
       if (!certificateHtml) {
@@ -136,21 +145,20 @@ const LearningCourseItem = ({ course }: TProps) => {
         <CardContent className="p-0">
           <div className="flex flex-col md:flex-row gap-0">
             {/* Course Image - Left Side */}
-            <div className="md:w-96 shrink-0">
+            <div className="md:w-96 shrink-0 relative">
               <div className="relative w-full h-48 md:h-full overflow-hidden">
-                <Link href={`/my-learning/${course.courseId}`}>
-                  <Image
-                    src={course.courseThumbnail || "/placeholder.svg"}
-                    alt={course.courseTitle}
-                    className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
-                    fill
-                    placeholder="blur"
-                    blurDataURL={course.courseThumbnail || "/placeholder.svg"}
-                    sizes=" (max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    priority
-                  />
-                </Link>
+                <Image
+                  src={course.courseThumbnail || "/placeholder.svg"}
+                  alt={course.courseTitle}
+                  className="object-cover transition-transform duration-200 group-hover:scale-105"
+                  fill
+                  placeholder="blur"
+                  blurDataURL={course.courseThumbnail || "/placeholder.svg"}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority
+                />
               </div>
+              <Link href={`/my-learning/${course.courseId}`} className="absolute inset-0 z-10" />
             </div>
 
             {/* Course Content - Right Side */}

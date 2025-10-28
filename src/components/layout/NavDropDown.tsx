@@ -61,7 +61,7 @@ const NavDropDown = ({
         </div>
       ) : isAuthenticated ? (
         <>
-          <DropdownMenuTrigger asChild className="md:hidden">
+          <DropdownMenuTrigger asChild className="md:hidden lg:flex">
             <Button
               variant="ghost"
               className="flex items-center space-x-2 ml-4 hover:bg-gray-50"

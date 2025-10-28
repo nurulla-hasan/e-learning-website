@@ -4,12 +4,12 @@ import React, { Suspense } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+// import { useSearchParams } from 'next/navigation';
 // import { toast } from 'sonner';
 import PageLayout from '@/tools/PageLayout';
 
 const SuccessContent = () => {
-  const params = useSearchParams();
+  // const params = useSearchParams();
 //   const sessionId = params.get('session_id');
 
 //   const { isPending, isError, error } = useQuery({

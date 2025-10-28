@@ -9,10 +9,15 @@ import { useRouter } from "next/navigation";
 
 import ConfirmationModal from "@/components/modal/ConfirmationModal";
 
+interface Test {
+  id: string;
+  title: string;
+  // Add other test properties as needed
+}
+
 interface Props {
   sections: Section[] | undefined;
   selectedSectionId: string | null;
-  onSelectSection: (id: string) => void;
   currentLesson: Lesson | null;
   onSelectLesson: (lesson: Lesson) => void;
   isLessonDone: (l: Lesson) => boolean;
@@ -20,13 +25,12 @@ interface Props {
   lessonIndexMap: Record<string, number>;
   currentAbsIndex: number;
   progressPercent: number;
-  courseId?: string;
+  onSectionChange: (sectionId: string) => void;
 }
 
 const LearningSidebar: React.FC<Props> = ({
   sections,
   selectedSectionId,
-  onSelectSection,
   currentLesson,
   onSelectLesson,
   isLessonDone,
@@ -34,13 +38,13 @@ const LearningSidebar: React.FC<Props> = ({
   lessonIndexMap,
   currentAbsIndex,
   progressPercent,
-  courseId,
+  onSectionChange,
 }) => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [selectedTest, setSelectedTest] = React.useState<any>(null);
+  const [selectedTest, setSelectedTest] = React.useState<Test | null>(null);
 
-  const handleStartTest = (test: any) => {
+  const handleStartTest = (test: Test) => {
     setSelectedTest(test);
     setIsModalOpen(true);
   };
@@ -52,19 +56,17 @@ const LearningSidebar: React.FC<Props> = ({
     setIsModalOpen(false);
   };
 
-  const selectedSection = sections?.find((s) => s.id === selectedSectionId);
-  const lastSectionId = React.useMemo(() => {
-    if (!sections || sections.length === 0) return null;
-    // choose the section with the highest order, fallback to last index
-    const byOrder = [...sections].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-    return (byOrder[byOrder.length - 1] || sections[sections.length - 1]).id;
-  }, [sections]);
-  const isLastSection = selectedSection?.id && lastSectionId ? selectedSection.id === lastSectionId : false;
-  const allLessonsCompleted = React.useMemo(() => {
-    const list = sections?.flatMap((s) => s?.Lesson || []) || [];
-    if (list.length === 0) return false;
-    return list.every((l) => isLessonDone(l) || completedIds.has(l.id));
-  }, [sections, isLessonDone, completedIds]);
+  const selectedSection = React.useMemo(() => {
+    return (
+      sections?.find((s) => s.id === selectedSectionId) ||
+      (sections?.length ? sections[0] : null)
+    );
+  }, [sections, selectedSectionId]);
+
+  // Handle section selection
+  const handleSectionSelect = (sectionId: string) => {
+    onSectionChange(sectionId);
+  };
 
   return (
     <div className="space-y-4 sticky top-22 max-h-[90vh] overflow-y-auto">
@@ -74,10 +76,10 @@ const LearningSidebar: React.FC<Props> = ({
           <div className="flex items-center justify-between text-sm mb-2">
             <span>Progress: {progressPercent || 0}%</span>
             <span className="text-muted-foreground">
-              {sections?.flatMap((s) => s?.Lesson || []).filter((l) => isLessonDone(l)).length || 0}
-              /
-              {sections?.flatMap((s) => s?.Lesson || []).length || 0}{" "}
-              lessons
+              {sections
+                ?.flatMap((s) => s?.Lesson || [])
+                .filter((l) => isLessonDone(l)).length || 0}
+              /{sections?.flatMap((s) => s?.Lesson || []).length || 0} lessons
             </span>
           </div>
           <Progress value={progressPercent || 0} className="h-2" />
@@ -87,7 +89,17 @@ const LearningSidebar: React.FC<Props> = ({
       {selectedSection && (
         <Card className="overflow-hidden p-0">
           <div className="p-4 border-b">
-            <h3 className="font-semibold">{selectedSection.title}</h3>
+            <select
+              className="w-full font-semibold bg-transparent border-none focus:ring-0 focus:ring-offset-0"
+              value={selectedSection?.id || ""}
+              onChange={(e) => handleSectionSelect(e.target.value)}
+            >
+              {sections?.map((section) => (
+                <option key={section.id} value={section.id}>
+                  {section.title}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="divide-y max-h-96 overflow-y-auto">
             {selectedSection.Lesson.map((lesson) => {
@@ -100,7 +112,9 @@ const LearningSidebar: React.FC<Props> = ({
                 <div
                   key={lesson.id}
                   className={`flex items-center p-3 text-sm ${
-                    isLocked ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+                    isLocked
+                      ? "cursor-not-allowed opacity-60"
+                      : "cursor-pointer"
                   } ${
                     lesson.id === currentLesson?.id
                       ? "bg-primary/10 text-primary"
@@ -137,7 +151,9 @@ const LearningSidebar: React.FC<Props> = ({
                   </div>
                   <span className="text-xs text-muted-foreground">
                     {lesson.videoDuration
-                      ? `${Math.floor(lesson.videoDuration / 60)}:${(lesson.videoDuration % 60)
+                      ? `${Math.floor(lesson.videoDuration / 60)}:${(
+                          lesson.videoDuration % 60
+                        )
                           .toString()
                           .padStart(2, "0")}`
                       : "--:--"}
@@ -146,20 +162,29 @@ const LearningSidebar: React.FC<Props> = ({
               );
             })}
           </div>
-          <div className="p-4 space-y-2">
-            <h4 className="font-semibold">Tests</h4>
-            {selectedSection.Test?.map((test) => (
-              <div key={test.id} className="flex items-center justify-between">
-                <span className="text-sm">{test.title}</span>
-                <Button
-                  size="sm"
-                  onClick={() => handleStartTest(test)}
+          {selectedSection.Test?.length > 0 ? (
+            <div className="p-4 space-y-2">
+              <h4 className="font-semibold">Tests</h4>
+              {selectedSection.Test?.map((test) => (
+                <div
+                  key={test.id}
+                  className="flex items-center justify-between"
                 >
-                  Start Test
-                </Button>
-              </div>
-            ))}
-          </div>
+                  <span className="text-sm">{test.title}</span>
+                  <Button size="sm" onClick={() => handleStartTest(test)}>
+                    Start Test
+                  </Button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="p-4 space-y-2">
+              <h4 className="font-semibold">Tests</h4>
+              <p className="text-sm text-muted-foreground">
+                No tests available for this section.
+              </p>
+            </div>
+          )}
         </Card>
       )}
       <ConfirmationModal

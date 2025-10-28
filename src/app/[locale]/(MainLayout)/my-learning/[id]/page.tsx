@@ -24,9 +24,9 @@ const MyLearningDetailsPage = () => {
     null
   );
 
-  // Treat both legacy `completed` and new `isCompleted` as completion
-  const isLessonDone = React.useCallback((l: Lesson) => {
-    return Boolean((l as any)?.isCompleted ?? l.completed);
+  // Check if a lesson is completed, supporting both `isCompleted` and legacy `completed` fields
+  const isLessonDone = React.useCallback((lesson: Lesson) => {
+    return Boolean('isCompleted' in lesson ? lesson.isCompleted : lesson.completed);
   }, []);
   const [activeTab, setActiveTab] = React.useState("overview");
   const [currentLesson, setCurrentLesson] = React.useState<Lesson | null>(null);
@@ -38,7 +38,9 @@ const MyLearningDetailsPage = () => {
     isError,
   } = useGetEnrolledCourseByIdQuery(id);
   const courseData = response?.data as EnrolledCourse | undefined;
-  const progressPercent = (courseData as any)?.progressPercentage ?? (typeof courseData?.progress === 'number' ? courseData.progress : 0);
+  const progressPercent = 'progressPercentage' in (courseData || {}) 
+    ? (courseData as { progressPercentage?: number }).progressPercentage ?? 0
+    : (typeof courseData?.progress === 'number' ? courseData.progress : 0);
 
   const [markLessonAsCompleted, { isLoading: isMarking }] =
     useMarkLessonAsCompletedMutation();
@@ -89,7 +91,7 @@ const MyLearningDetailsPage = () => {
       );
       setCompletedIds(seeded);
     }
-  }, [courseData]);
+  }, [courseData, isLessonDone]);
 
   // Navigation helpers
   const goToAbsIndex = (idx: number) => {
@@ -375,7 +377,6 @@ const MyLearningDetailsPage = () => {
           <LearningSidebar
             sections={courseData?.course?.Section}
             selectedSectionId={selectedSection}
-            onSelectSection={(id) => setSelectedSection(id)}
             currentLesson={currentLesson}
             onSelectLesson={(l) => setCurrentLesson(l)}
             isLessonDone={isLessonDone}
@@ -383,6 +384,7 @@ const MyLearningDetailsPage = () => {
             lessonIndexMap={lessonIndexMap}
             currentAbsIndex={currentAbsIndex}
             progressPercent={progressPercent}
+            onSectionChange={setSelectedSection}
           />
         </div>
       </div>

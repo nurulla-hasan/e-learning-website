@@ -8,10 +8,15 @@ import {
 } from "@/redux/feature/lesson/lessonApi";
 import { IQuestion, ITest } from "@/types/test.type";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Clock, Loader2 } from "lucide-react";
+
+interface ExamData extends ITest {
+  questions: IQuestion[];
+  // Other properties from ITest will be inherited
+}
 
 const TestExamPage = () => {
   const { id } = useParams();
@@ -19,10 +24,16 @@ const TestExamPage = () => {
   const { data, isLoading } = useGetSingleTestQuery(id);
   const [attemptTest, { isLoading: isSubmitting }] = useAttemptTestMutation();
 
-  const testData: ITest = data?.data;
+  const testData = data?.data as ExamData | undefined;
 
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
-  const [answers, setAnswers] = useState<any[]>([]);
+  // Extend IQuestion to include selectedOptions and shortAnswer
+  interface Answer extends Omit<IQuestion, 'options'> {
+    selectedOptions: string[];
+    shortAnswer?: string;
+  }
+
+  const [answers, setAnswers] = useState<Answer[]>([]);
 
   useEffect(() => {
     if (testData?.timeLimit) {
@@ -30,50 +41,10 @@ const TestExamPage = () => {
     }
   }, [testData]);
 
-  useEffect(() => {
-    if (timeLeft === 0) {
-      handleSubmit();
-    }
-    if (!timeLeft) return;
-    const intervalId = setInterval(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [timeLeft]);
-
-  const handleAnswerChange = (
-    questionId: string,
-    questionType: string,
-    selectedOptions: string[],
-    shortAnswer?: string
-  ) => {
-    const existingAnswerIndex = answers.findIndex(
-      (ans) => ans.questionId === questionId
-    );
-    const newAnswers = [...answers];
-
-    if (existingAnswerIndex !== -1) {
-      newAnswers[existingAnswerIndex] = {
-        questionId,
-        questionType,
-        selectedOptions,
-        shortAnswer,
-      };
-    } else {
-      newAnswers.push({
-        questionId,
-        questionType,
-        selectedOptions,
-        shortAnswer,
-      });
-    }
-    setAnswers(newAnswers);
-  };
-
-  const handleSubmit = async () => {
-    const totalTimeSpent =
-      testData.timeLimit - Math.floor((timeLeft || 0) / 60);
+  const handleSubmit = useCallback(async () => {
+    if (!testData) return;
+    
+    const totalTimeSpent = testData.timeLimit - Math.floor((timeLeft || 0) / 60);
     const payload = {
       testId: id,
       responses: answers,
@@ -82,12 +53,62 @@ const TestExamPage = () => {
 
     try {
       await attemptTest(payload).unwrap();
-      router.push("/test-result"); // Redirect to a result page
-    } catch (error: any) {
-      SuccessToast(error?.data?.message)
-      // console.error("Failed to submit test", error);
+      router.push("/test-result");
+    } catch (error: unknown) {
+      const errorMessage = error && 
+        typeof error === 'object' && 
+        'data' in error && 
+        error.data && 
+        typeof error.data === 'object' && 
+        'message' in error.data
+          ? String(error.data.message)
+          : "An error occurred while submitting the test";
+      SuccessToast(errorMessage);
     }
+  }, [testData, timeLeft, answers, id, attemptTest, router]);
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      handleSubmit();
+    }
+    if (!timeLeft) return;
+    const intervalId = setInterval(() => {
+      setTimeLeft(prev => prev ? prev - 1 : 0);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [timeLeft, handleSubmit]);
+
+  const handleAnswerChange = (
+    questionId: string,
+    questionType: string,
+    selectedOptions: string[],
+    shortAnswer?: string
+  ) => {
+    const existingAnswerIndex = answers.findIndex(
+      (ans) => ans.id === questionId
+    );
+    const newAnswers = [...answers];
+
+    if (existingAnswerIndex !== -1) {
+      newAnswers[existingAnswerIndex] = {
+        ...answers[existingAnswerIndex],
+        id: questionId,
+        type: questionType as 'MCQ' | 'TRUE_FALSE' | 'SHORT_ANSWER',
+        selectedOptions,
+        shortAnswer,
+      };
+    } else {
+      newAnswers.push({
+        id: questionId,
+        type: questionType as 'MCQ' | 'TRUE_FALSE' | 'SHORT_ANSWER',
+        selectedOptions,
+        shortAnswer,
+      } as Answer);
+    }
+    setAnswers(newAnswers);
   };
+
 
   if (isLoading) {
     return (
@@ -104,7 +125,7 @@ const TestExamPage = () => {
           <Card className="p-6">
             <h1 className="text-3xl font-bold mb-5">{testData?.title}</h1>
             <div>
-              {testData?.questions.map((question: IQuestion) => (
+              {testData?.questions?.map((question: IQuestion) => (
                 <div key={question.id} className="mb-8">
                   <h2 className="text-xl font-semibold mb-2">
                     {question.title}
@@ -145,7 +166,7 @@ const TestExamPage = () => {
                 .padStart(2, "0")}`}</span>
             </div>
             <div className="text-center mb-4">
-              {testData?.questions.length} Questions
+              {testData?.questions?.length || 0} Questions
             </div>
             <Button
               className="w-full"
