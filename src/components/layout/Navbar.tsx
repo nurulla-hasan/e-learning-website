@@ -54,7 +54,7 @@ const Navbar = () => {
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-0">
         <div className="flex justify-between items-center h-18">
-          <NextIntlLink href="/" className="flex-shrink-0">
+          <NextIntlLink href="/" className="shrink-0">
             <Image
               src="/images/logo.png"
               height={600}
@@ -65,7 +65,7 @@ const Navbar = () => {
             />
           </NextIntlLink>
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <div className="ml-10 flex items-baseline space-x-8">
               {navItems.map((item) => (
                 <Link

@@ -30,7 +30,6 @@ const Profile = () => {
 
   return (
     <PageLayout paddingSize="none">
-      <div className="flex items-center justify-center">
         <div className="flex flex-col lg:flex-row lg:justify-between">
           {/* Left Illustration */}
           <div className="w-full hidden lg:block lg:w-1/2 xl:w-2/5 relative">
@@ -46,7 +45,7 @@ const Profile = () => {
           </div>
 
           {/* Right Main Content */}
-          <div className="flex-1 py-12 lg:pl-8">
+          <div className="flex-1 md:py-12 py-4 lg:pl-8">
             <div className="space-y-8">
               {/* Profile Header */}
               <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -65,7 +64,7 @@ const Profile = () => {
               </div>
 
               {/* Login Details Card */}
-              <Card>
+              <Card className="w-full">
                 <CardHeader className="flex flex-col lg:flex-row items-center justify-between">
                   <CardTitle className="text-lg">{t("loginDetails")}</CardTitle>
                   <EditAccountModal isLoading={isLoading} user={user} />
@@ -102,6 +101,12 @@ const Profile = () => {
                       </label>
                       <p className="text-foreground font-medium">{user?.dateOfBirth}</p>
                     </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-muted-foreground">
+                        NIP ID
+                      </label>
+                      <p className="text-foreground font-medium">{user?.vatId}</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -126,7 +131,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-      </div>
     </PageLayout>
   );
 };

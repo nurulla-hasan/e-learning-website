@@ -9,7 +9,7 @@ export default function ProfilePage() {
   const title = t('profile');
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <PageHeader title={title} />
       <Profile />
     </div>

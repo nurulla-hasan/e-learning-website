@@ -106,7 +106,7 @@ const MobileMenu = ({
 
   return (
     <>
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <div className="flex items-center gap-3">
             <DropdownMenu>

@@ -76,7 +76,7 @@ const Footer = () => {
               {/* Logo */}
               <div className="w-12 h-12 bg-white flex items-center justify-center rounded-md">
                 {/* <div className="w-8 h-8 bg-white rounded transform rotate-12"></div> */}
-                <Link href="/" className="flex-shrink-0">
+                <Link href="/" className="shrink-0">
                 <Image src="/images/logo.png" height={600} width={600} alt="logo" className="h-[45px] w-[45px]" />
               </Link>
               </div>

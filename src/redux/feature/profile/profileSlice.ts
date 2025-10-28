@@ -12,6 +12,7 @@ interface UserProfile {
   image: string;
   createdAt: string;
   updatedAt: string;
+  vatId: string;
 }
 
 interface ProfileState {
