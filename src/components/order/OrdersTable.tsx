@@ -18,6 +18,31 @@ const OrdersTable = ({
   isLoading?: boolean;
   isError?: boolean;
 }) => {
+  const esc = (val: unknown) =>
+    String(val ?? "").replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    }[c] as string));
+
+  const handlePrintInvoice = (order: IOrder) => {
+    if (!order?.invoice) return;
+    const rows = Object.entries(order.invoice)
+      .map(
+        ([k, v]) =>
+          `<tr><td>${esc(k)}</td><td>${esc(v ?? "")}</td></tr>`
+      )
+      .join("");
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Invoice ${esc(order.invoice["Invoice Number"] ?? "")}</title><style>body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,Noto Sans,sans-serif;padding:24px;color:#0f172a} .container{max-width:800px;margin:0 auto} h1{font-size:24px;margin-bottom:16px} .meta{margin-bottom:16px} .meta div{margin:4px 0} table{width:100%;border-collapse:collapse} td{border:1px solid #e5e7eb;padding:8px;font-size:14px} td:first-child{width:40%;background:#f8fafc;font-weight:500}</style></head><body><div class="container"><h1>Invoice</h1><div class="meta"><div>Order ID: ${esc(order.id)}</div><div>Date: ${esc(new Date(order.enrolledAt).toLocaleDateString())}</div><div>Course: ${esc(order.courseTitle)}</div><div>Amount: ${esc(String(order.coursePrice))}</div></div><table>${rows}</table></div><script>window.onload=function(){window.focus();window.print();}</script></body></html>`;
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+  };
+
   return (
     <Card className="overflow-hidden p-0">
       <div className="hidden md:block overflow-x-auto">
@@ -119,14 +144,13 @@ const OrdersTable = ({
                     </Badge>
                   </td>
                   <td className="p-4">
-                    {order?.invoiceId ? (
+                    {order?.invoice ? (
                       <Button
                         variant="ghost"
-                        size="sm"
-                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-0 h-auto font-normal"
+                        size="icon"
+                        onClick={() => handlePrintInvoice(order)}
                       >
-                        <Download className="h-4 w-4 mr-1" />
-                        Download
+                        <Download className="text-blue-500"/>
                       </Button>
                     ) : (
                       <span className="text-sm text-muted-foreground">
@@ -137,12 +161,10 @@ const OrdersTable = ({
                   <td className="p-4">
                     <Link href={`/courses/${order?.courseId}`}>
                       <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-0 h-auto font-normal"
+                        variant="outline"
+                        size="icon"
                       >
-                        <Eye className="h-4 w-4 mr-1" />
-                        View Course
+                        <Eye />
                       </Button>
                     </Link>
                   </td>
@@ -202,11 +224,12 @@ const OrdersTable = ({
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                {order?.invoiceId ? (
+                {order?.invoice ? (
                   <Button
                     variant="ghost"
                     size="sm"
                     className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-0 h-auto font-normal"
+                    onClick={() => handlePrintInvoice(order)}
                   >
                     <Download className="h-4 w-4 mr-1" />
                     Download

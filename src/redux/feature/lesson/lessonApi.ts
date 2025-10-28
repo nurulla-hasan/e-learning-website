@@ -44,7 +44,7 @@ const lessonApi = baseApi.injectEndpoints({
       // GET CERTIFICATE TEMPLETE
       getCertificate: builder.query({
         query: (id: string) => ({
-          url: `/certificates/my-certificates/68e62a8fd033c0abad77bf3c`,
+          url: `/certificates/my-certificates/${id}`,
           method: "GET",
         }),
         providesTags: ["LEARNING"],

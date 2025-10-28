@@ -34,7 +34,7 @@ const LearningCourseItem = ({ course }: TProps) => {
 
   const handleDownloadCertificate = async () => {
     try {
-      const response = await getCertificate(course.id).unwrap();
+      const response = await getCertificate(course.courseId).unwrap();
       const certificateHtml = response?.data?.certificateHtmlContent;
 
       if (!certificateHtml) {
@@ -101,7 +101,7 @@ const LearningCourseItem = ({ course }: TProps) => {
 
   const handleViewCertificate = async () => {
     try {
-      const response = await getCertificate(course.id).unwrap();
+      const response = await getCertificate(course.courseId).unwrap();
       const certificateHtml = response?.data?.certificateHtmlContent;
 
       if (!certificateHtml) {
