@@ -10,11 +10,13 @@ import PageLayout from "@/tools/PageLayout";
 import { useGetUserProfileQuery } from "@/redux/feature/profile/profileApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useState } from "react";
 
 const Profile = () => {
   const t = useTranslations("ProfilePage");
   const { isLoading } = useGetUserProfileQuery({});
   const user = useSelector((state: RootState) => state.profile.profile);
+  const [imageError, setImageError] = useState(false);
   console.log(user);
 
   // Return loading state if user data is not yet loaded
@@ -37,9 +39,14 @@ const Profile = () => {
               <Image
                 width={600}
                 height={600}
-                src={user?.image}
+                src={
+                  imageError || !user?.image
+                    ? "/images/profile.png"
+                    : user.image
+                }
                 alt="profile image"
                 className="w-full object-cover rounded-xl"
+                onError={() => setImageError(true)}
               />
             </div>
           </div>
@@ -51,7 +58,11 @@ const Profile = () => {
               <div className="flex flex-col sm:flex-row items-center gap-6">
                 <Avatar className="h-24 w-24">
                   <AvatarImage
-                    src={user?.image}
+                    src={
+                      imageError || !user?.image
+                        ? "/images/profile.png"
+                        : user.image
+                    }
                     alt="Profile picture"
                   />
                   <AvatarFallback className="text-lg">LA</AvatarFallback>
