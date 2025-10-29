@@ -40,7 +40,7 @@ export function TrainingRequestModal({
       await requestForTraining({
         courseId,
         location,
-      });
+      }).unwrap();
       setOpen(false);
       setLocation("");
       SuccessToast("Training request submitted successfully");

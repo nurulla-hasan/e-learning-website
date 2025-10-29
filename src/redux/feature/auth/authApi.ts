@@ -1,5 +1,5 @@
 import { ErrorToast, SuccessToast } from "@/lib/utils";
-import { SetAccessToken } from "../auth/authSlice";
+import { SetAccessToken, SetUserRole } from "../auth/authSlice";
 import { baseApi } from "../baseApi";
 
 const authApi = baseApi.injectEndpoints({
@@ -16,25 +16,32 @@ const authApi = baseApi.injectEndpoints({
           const { data } = await queryFulfilled;
           const accessToken = data?.data?.accessToken;
           const user = data?.data;
+          const userRole = data?.data?.role;
 
           if (!accessToken || !user) {
             ErrorToast("Invalid login response.");
             return;
           }
 
-          if (user?.role !== "STUDENT" && user?.role !== "COMPANY") {
+          if (
+            user?.role !== "STUDENT" &&
+            user?.role !== "COMPANY" &&
+            user?.role !== "EMPLOYEE"
+          ) {
             ErrorToast("You are not authorized to login.");
             return;
           }
 
           // Set access token first
           localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("userRole", userRole);
           dispatch(SetAccessToken(accessToken));
+          dispatch(SetUserRole(userRole));
           SuccessToast("Login successful.");
           window.location.href = "/";
         } catch (error: unknown) {
           const err = error as { error?: { data?: { message?: string } } };
-          console.log(err)
+          console.log(err);
           ErrorToast(err?.error?.data?.message || "Login failed.");
         }
       },
@@ -181,7 +188,6 @@ const authApi = baseApi.injectEndpoints({
         }
       },
     }),
-
   }),
 });
 
@@ -193,5 +199,5 @@ export const {
   useVerifyOTPForResetPasswordMutation,
   useResendResetOTPMutation,
   useResendSignupOTPMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
 } = authApi;
