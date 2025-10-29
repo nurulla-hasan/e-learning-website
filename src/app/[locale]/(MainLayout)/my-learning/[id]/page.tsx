@@ -229,23 +229,25 @@ const MyLearningDetailsPage = () => {
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="resources">Resources</TabsTrigger>
               </TabsList>
-              <NavigationControls
-                canPrev={currentAbsIndex > 0}
-                onPrev={handlePrevLesson}
-                isLast={
-                  currentAbsIndex >= 0 &&
-                  currentAbsIndex === flatLessons.length - 1
-                }
-                onNext={handleNextLesson}
-                onCompleteCourse={handleCompleteCourse}
-                nextDisabled={
-                  currentAbsIndex === -1 ||
-                  currentAbsIndex >= flatLessons.length - 1 ||
-                  isMarking
-                }
-                completingCourse={isCompletingCourse}
-                markingLesson={isMarking}
-              />
+              {userRole !== "COMPANY" && (
+                <NavigationControls
+                  canPrev={currentAbsIndex > 0}
+                  onPrev={handlePrevLesson}
+                  isLast={
+                    currentAbsIndex >= 0 &&
+                    currentAbsIndex === flatLessons.length - 1
+                  }
+                  onNext={handleNextLesson}
+                  onCompleteCourse={handleCompleteCourse}
+                  nextDisabled={
+                    currentAbsIndex === -1 ||
+                    currentAbsIndex >= flatLessons.length - 1 ||
+                    isMarking
+                  }
+                  completingCourse={isCompletingCourse}
+                  markingLesson={isMarking}
+                />
+              )}
             </div>
             <div className="mt-4 p-6 border rounded-lg">
               <TabsContent value="overview">
@@ -438,9 +440,12 @@ const MyLearningDetailsPage = () => {
             isLessonDone={isLessonDone}
             completedIds={completedIds}
             lessonIndexMap={lessonIndexMap}
-            currentAbsIndex={currentAbsIndex}
+            currentAbsIndex={
+              userRole === "COMPANY" ? flatLessons.length : currentAbsIndex
+            }
             progressPercent={progressPercent}
             onSectionChange={setSelectedSection}
+            userRole={userRole}
           />
         </div>
       </div>

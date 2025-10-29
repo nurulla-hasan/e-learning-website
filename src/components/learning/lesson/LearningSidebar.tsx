@@ -26,6 +26,7 @@ interface Props {
   currentAbsIndex: number;
   progressPercent: number;
   onSectionChange: (sectionId: string) => void;
+  userRole: string | null;
 }
 
 const LearningSidebar: React.FC<Props> = ({
@@ -39,6 +40,7 @@ const LearningSidebar: React.FC<Props> = ({
   currentAbsIndex,
   progressPercent,
   onSectionChange,
+  userRole,
 }) => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -171,9 +173,11 @@ const LearningSidebar: React.FC<Props> = ({
                   className="flex items-center justify-between"
                 >
                   <span className="text-sm">{test.title}</span>
-                  <Button size="sm" onClick={() => handleStartTest(test)}>
-                    Start Test
-                  </Button>
+                  {userRole !== "COMPANY" && (
+                    <Button size="sm" onClick={() => handleStartTest(test)}>
+                      Start Test
+                    </Button>
+                  )}
                 </div>
               ))}
             </div>
