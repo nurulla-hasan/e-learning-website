@@ -1,4 +1,3 @@
-
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,6 +8,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,17 +20,27 @@ import { useRegisterMutation } from "@/redux/feature/auth/authApi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CompanySignUpForm from "./CompanySignUpForm";
 
-const registerSchema = z.object({
-  fullname: z.string().min(1, { message: "Full name is required." }),
-  email: z
-    .string()
-    .min(1, { message: "Email is required." })
-    .email({ message: "Invalid email address." }),
-  dateOfBirth: z.string().min(1, { message: "Date of birth is required." }).regex(/^\d{2}-\d{2}-\d{4}$/, { message: "Date must be in dd-mm-yyyy format." }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters." }),
-});
+const registerSchema = z
+  .object({
+    fullname: z.string().min(1, { message: "Full name is required." }),
+    email: z.email({ message: "Invalid email address." }),
+    dateOfBirth: z
+      .string()
+      .min(1, { message: "Date of birth is required." })
+      .regex(/^\d{2}-\d{2}-\d{4}$/, {
+        message: "Date must be in dd-mm-yyyy format.",
+      }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters." }),
+    confirmPassword: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters." }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match.",
+    path: ["confirmPassword"],
+  });
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,6 +54,7 @@ const Register = () => {
       email: "",
       dateOfBirth: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -80,7 +91,10 @@ const Register = () => {
               </TabsList>
               <TabsContent value="student">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 pt-6">
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-6 pt-6"
+                  >
                     <FormField
                       control={form.control}
                       name="fullname"
@@ -90,6 +104,7 @@ const Register = () => {
                           <FormControl>
                             <Input placeholder="John Doe" {...field} />
                           </FormControl>
+                          <FormMessage/>
                         </FormItem>
                       )}
                     />
@@ -107,6 +122,7 @@ const Register = () => {
                               {...field}
                             />
                           </FormControl>
+                          <FormMessage/>
                         </FormItem>
                       )}
                     />
@@ -124,6 +140,7 @@ const Register = () => {
                               {...field}
                             />
                           </FormControl>
+                          <FormMessage/>
                         </FormItem>
                       )}
                     />
@@ -154,11 +171,46 @@ const Register = () => {
                               </button>
                             </div>
                           </FormControl>
+                          <FormMessage/>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Confirm Password</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="********"
+                                {...field}
+                              />
+                              <button
+                                type="button"
+                                className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
+                                onClick={togglePasswordVisibility}
+                              >
+                                {showPassword ? (
+                                  <EyeOff size={20} />
+                                ) : (
+                                  <Eye size={20} />
+                                )}
+                              </button>
+                            </div>
+                          </FormControl>
+                          <FormMessage/>
                         </FormItem>
                       )}
                     />
 
-                    <Button type="submit" className="w-full" loading={isLoading}>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      loading={isLoading}
+                    >
                       Create Account
                     </Button>
                   </form>
@@ -182,4 +234,3 @@ const Register = () => {
 };
 
 export default Register;
-

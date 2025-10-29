@@ -8,7 +8,10 @@ import { Card } from "@/components/ui/card";
 import { ChevronRight, Play } from "lucide-react";
 import PageLayout from "@/tools/PageLayout";
 import { useGetEnrolledCourseByIdQuery } from "@/redux/feature/course/courseApi";
-import { useMarkLessonAsCompletedMutation, useMarkCourseAsCompletedMutation } from "@/redux/feature/lesson/lessonApi";
+import {
+  useMarkLessonAsCompletedMutation,
+  useMarkCourseAsCompletedMutation,
+} from "@/redux/feature/lesson/lessonApi";
 import VideoPlayer from "@/components/learning/lesson/VideoPlayer";
 import NavigationControls from "@/components/learning/lesson/NavigationControls";
 import LearningSidebar from "@/components/learning/lesson/LearningSidebar";
@@ -16,21 +19,27 @@ import type {
   EnrolledCourse,
   Lesson,
 } from "@/types/course/enroll.details.type";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const MyLearningDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  // console.log(id);
+  const userRole = useSelector((state: RootState) => state.auth.userRole);
   const [selectedSection, setSelectedSection] = React.useState<string | null>(
     null
   );
 
   // Check if a lesson is completed, supporting both `isCompleted` and legacy `completed` fields
   const isLessonDone = React.useCallback((lesson: Lesson) => {
-    return Boolean('isCompleted' in lesson ? lesson.isCompleted : lesson.completed);
+    return Boolean(
+      "isCompleted" in lesson ? lesson.isCompleted : lesson.completed
+    );
   }, []);
   const [activeTab, setActiveTab] = React.useState("overview");
   const [currentLesson, setCurrentLesson] = React.useState<Lesson | null>(null);
-  const [completedIds, setCompletedIds] = React.useState<Set<string>>(new Set());
+  const [completedIds, setCompletedIds] = React.useState<Set<string>>(
+    new Set()
+  );
 
   const {
     data: response,
@@ -38,9 +47,12 @@ const MyLearningDetailsPage = () => {
     isError,
   } = useGetEnrolledCourseByIdQuery(id);
   const courseData = response?.data as EnrolledCourse | undefined;
-  const progressPercent = 'progressPercentage' in (courseData || {}) 
-    ? (courseData as { progressPercentage?: number }).progressPercentage ?? 0
-    : (typeof courseData?.progress === 'number' ? courseData.progress : 0);
+  const progressPercent =
+    "progressPercentage" in (courseData || {})
+      ? (courseData as { progressPercentage?: number }).progressPercentage ?? 0
+      : typeof courseData?.progress === "number"
+      ? courseData.progress
+      : 0;
 
   const [markLessonAsCompleted, { isLoading: isMarking }] =
     useMarkLessonAsCompletedMutation();
@@ -125,7 +137,11 @@ const MyLearningDetailsPage = () => {
     if (!courseId) return;
     try {
       // ensure the last lesson is marked completed first
-      if (currentLesson?.id && !isLessonDone(currentLesson) && !completedIds.has(currentLesson.id)) {
+      if (
+        currentLesson?.id &&
+        !isLessonDone(currentLesson) &&
+        !completedIds.has(currentLesson.id)
+      ) {
         await markLessonAsCompleted({ lessonId: currentLesson.id }).unwrap();
         setCompletedIds((prev) => new Set(prev).add(currentLesson.id));
       }
@@ -189,7 +205,10 @@ const MyLearningDetailsPage = () => {
           <Card className="aspect-video bg-black rounded-lg overflow-hidden">
             <div className="w-full h-full flex items-center justify-center">
               {currentLesson ? (
-                <VideoPlayer lesson={currentLesson} poster={courseData?.course?.courseThumbnail} />
+                <VideoPlayer
+                  lesson={currentLesson}
+                  poster={courseData?.course?.courseThumbnail}
+                />
               ) : (
                 <div className="text-center">
                   <Play className="h-16 w-16 text-white mx-auto mb-2" />
@@ -213,10 +232,17 @@ const MyLearningDetailsPage = () => {
               <NavigationControls
                 canPrev={currentAbsIndex > 0}
                 onPrev={handlePrevLesson}
-                isLast={currentAbsIndex >= 0 && currentAbsIndex === flatLessons.length - 1}
+                isLast={
+                  currentAbsIndex >= 0 &&
+                  currentAbsIndex === flatLessons.length - 1
+                }
                 onNext={handleNextLesson}
                 onCompleteCourse={handleCompleteCourse}
-                nextDisabled={currentAbsIndex === -1 || currentAbsIndex >= flatLessons.length - 1 || isMarking}
+                nextDisabled={
+                  currentAbsIndex === -1 ||
+                  currentAbsIndex >= flatLessons.length - 1 ||
+                  isMarking
+                }
                 completingCourse={isCompletingCourse}
                 markingLesson={isMarking}
               />
@@ -226,23 +252,33 @@ const MyLearningDetailsPage = () => {
                 <div className="space-y-8">
                   {/* Course Description */}
                   <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-foreground">About This Course</h2>
+                    <h2 className="text-2xl font-bold text-foreground">
+                      About This Course
+                    </h2>
                     <div className="prose prose-gray max-w-none">
                       <p className="text-muted-foreground leading-relaxed text-lg">
-                        {courseData?.course?.courseDescription || "No description available"}
+                        {courseData?.course?.courseDescription ||
+                          "No description available"}
                       </p>
                     </div>
                   </div>
 
                   {/* Instructor Information */}
                   <div className="space-y-6">
-                    <h2 className="text-2xl font-bold text-foreground">Your Instructor</h2>
+                    <h2 className="text-2xl font-bold text-foreground">
+                      Your Instructor
+                    </h2>
                     <Card className="p-6">
                       <div className="flex items-start space-x-6">
                         <div className="shrink-0">
                           <Image
-                            src={courseData?.course?.instructorImage || "/placeholder-avatar.png"}
-                            alt={courseData?.course?.instructorName || "Instructor"}
+                            src={
+                              courseData?.course?.instructorImage ||
+                              "/placeholder-avatar.png"
+                            }
+                            alt={
+                              courseData?.course?.instructorName || "Instructor"
+                            }
                             className="w-20 h-20 rounded-full object-cover"
                             width={80}
                             height={80}
@@ -251,14 +287,17 @@ const MyLearningDetailsPage = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center space-x-2 mb-2">
                             <h3 className="text-xl font-semibold text-foreground">
-                              {courseData?.course?.instructorName || "Unknown Instructor"}
+                              {courseData?.course?.instructorName ||
+                                "Unknown Instructor"}
                             </h3>
                           </div>
                           <p className="text-primary font-medium mb-3">
-                            {courseData?.course?.instructorDesignation || "Course Instructor"}
+                            {courseData?.course?.instructorDesignation ||
+                              "Course Instructor"}
                           </p>
                           <p className="text-muted-foreground leading-relaxed">
-                            {courseData?.course?.instructorDescription || "Experienced professional in the field"}
+                            {courseData?.course?.instructorDescription ||
+                              "Experienced professional in the field"}
                           </p>
                         </div>
                       </div>
@@ -271,13 +310,17 @@ const MyLearningDetailsPage = () => {
                       <div className="text-2xl font-bold text-primary mb-1">
                         {courseData?.course?.totalLessons || 0}
                       </div>
-                      <div className="text-sm text-muted-foreground">Lessons</div>
+                      <div className="text-sm text-muted-foreground">
+                        Lessons
+                      </div>
                     </Card>
                     <Card className="p-4 text-center">
                       <div className="text-2xl font-bold text-primary mb-1">
                         {courseData?.course?.totalSections || 0}
                       </div>
-                      <div className="text-sm text-muted-foreground">Sections</div>
+                      <div className="text-sm text-muted-foreground">
+                        Sections
+                      </div>
                     </Card>
                     <Card className="p-4 text-center">
                       <div className="text-2xl font-bold text-primary mb-1">
@@ -289,7 +332,9 @@ const MyLearningDetailsPage = () => {
                       <div className="text-2xl font-bold text-primary mb-1">
                         {courseData?.course?.difficulty || "Easy"}
                       </div>
-                      <div className="text-sm text-muted-foreground">Difficulty</div>
+                      <div className="text-sm text-muted-foreground">
+                        Difficulty
+                      </div>
                     </Card>
                   </div>
                 </div>
@@ -328,11 +373,13 @@ const MyLearningDetailsPage = () => {
                               ) : (
                                 <div className="h-2 w-2 rounded-full bg-muted-foreground/30"></div>
                               )}
-                              <h3 className={`font-medium ${
-                                selectedSection === section.id
-                                  ? "text-primary"
-                                  : "text-foreground"
-                              }`}>
+                              <h3
+                                className={`font-medium ${
+                                  selectedSection === section.id
+                                    ? "text-primary"
+                                    : "text-foreground"
+                                }`}
+                              >
                                 {section.title}
                               </h3>
                             </div>
@@ -342,21 +389,30 @@ const MyLearningDetailsPage = () => {
                                   Active
                                 </span>
                               )}
-                              <ChevronRight className={`h-4 w-4 transition-transform ${
-                                selectedSection === section.id
-                                  ? "text-primary rotate-90"
-                                  : "text-muted-foreground"
-                              }`} />
+                              <ChevronRight
+                                className={`h-4 w-4 transition-transform ${
+                                  selectedSection === section.id
+                                    ? "text-primary rotate-90"
+                                    : "text-muted-foreground"
+                                }`}
+                              />
                             </div>
                           </div>
-                          <div className={`text-sm mt-2 flex items-center justify-between ${
-                            selectedSection === section.id
-                              ? "text-primary"
-                              : "text-muted-foreground"
-                          }`}>
+                          <div
+                            className={`text-sm mt-2 flex items-center justify-between ${
+                              selectedSection === section.id
+                                ? "text-primary"
+                                : "text-muted-foreground"
+                            }`}
+                          >
                             <span>
-                              {(section.Lesson || []).filter((l) => isLessonDone(l)).length}{" "}
-                              of {(section.Lesson || []).length} lessons completed
+                              {
+                                (section.Lesson || []).filter((l) =>
+                                  isLessonDone(l)
+                                ).length
+                              }{" "}
+                              of {(section.Lesson || []).length} lessons
+                              completed
                             </span>
                             <span className="text-xs">
                               Module {section.order}

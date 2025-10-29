@@ -93,6 +93,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = React.use(params);
   const token = useSelector((state: RootState) => state.auth.accessToken);
   const router = useRouter();
+  const userRole = useSelector((state: RootState) => state.auth.userRole);
 
   // Use RTK Query's skip option for conditional queries
   const {
@@ -330,7 +331,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                       )}
                   </div>
 
-                  {token && (
+                  {token && userRole !== "EMPLOYEE" && (
                     <Button
                       variant="ghost"
                       size="sm"
@@ -350,33 +351,35 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   )}
                 </div>
 
-                <div className="space-y-3">
-                  <Button
-                    className="w-full"
-                    size="lg"
-                    onClick={handleAddToCart}
-                    disabled={cartLoading}
-                  >
-                    Add To Cart
-                  </Button>
-                  <Button
-                    className="w-full"
-                    size="lg"
-                    onClick={handleAddToCheckout}
-                    disabled={checkoutLoading}
-                    loading={checkoutLoading || cartLoading}
-                  >
-                    Buy Now
-                  </Button>
-                  <TrainingRequestModal
-                    courseId={course.id}
-                    courseName={course.courseTitle}
-                  >
-                    <Button variant="outline" className="w-full text-primary">
-                      Request In-Person Training
+                {userRole !== "EMPLOYEE" && (
+                  <div className="space-y-3">
+                    <Button
+                      className="w-full"
+                      size="lg"
+                      onClick={handleAddToCart}
+                      disabled={cartLoading}
+                    >
+                      Add To Cart
                     </Button>
-                  </TrainingRequestModal>
-                </div>
+                    <Button
+                      className="w-full"
+                      size="lg"
+                      onClick={handleAddToCheckout}
+                      disabled={checkoutLoading}
+                      loading={checkoutLoading || cartLoading}
+                    >
+                      Buy Now
+                    </Button>
+                    <TrainingRequestModal
+                      courseId={course.id}
+                      courseName={course.courseTitle}
+                    >
+                      <Button variant="outline" className="w-full text-primary">
+                        Request In-Person Training
+                      </Button>
+                    </TrainingRequestModal>
+                  </div>
+                )}
 
                 {/* Course Stats */}
                 <div className="space-y-3 pt-4 border-t">

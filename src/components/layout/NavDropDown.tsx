@@ -12,9 +12,10 @@ import {
 import { LogOut, User, BookOpen, Clock, Package, LogIn } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/redux/feature/auth/authSlice";
 import { getInitials } from "@/lib/utils";
+import { RootState } from "@/redux/store";
 
 interface UserProfile {
   id: string;
@@ -43,6 +44,7 @@ const NavDropDown = ({
   const router = useRouter();
   const t = useTranslations("DropDown");
   const dispatch = useDispatch();
+  const userRole = useSelector((state: RootState) => state.auth.userRole);
   const handleNavigate = (path: string) => {
     router.push(path);
   };
@@ -68,11 +70,11 @@ const NavDropDown = ({
             >
               <Avatar className="h-8 w-8">
                 <AvatarImage src={user?.image} alt={user?.fullName} />
-                <AvatarFallback>{getInitials(user?.fullName || "")}</AvatarFallback>
+                <AvatarFallback>
+                  {getInitials(user?.fullName || "")}
+                </AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium">
-                {user?.fullName}
-              </span>
+              <span className="text-sm font-medium">{user?.fullName}</span>
             </Button>
           </DropdownMenuTrigger>
 
@@ -105,24 +107,26 @@ const NavDropDown = ({
               <span>{t("learning_history")}</span>
             </DropdownMenuItem>
 
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem
-              onClick={() => handleNavigate("/orders")}
-              className="cursor-pointer"
-            >
-              <Package />
-              <span>{t("my_orders")}</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem
-              onClick={() => handleNavigate("/training-request")}
-              className="cursor-pointer"
-            >
-              <Package />
-              <span>{t("training_request")}</span>
-            </DropdownMenuItem>
+            {userRole !== "EMPLOYEE" && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => handleNavigate("/orders")}
+                  className="cursor-pointer"
+                >
+                  <Package />
+                  <span>{t("my_orders")}</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => handleNavigate("/training-request")}
+                  className="cursor-pointer"
+                >
+                  <Package />
+                  <span>{t("training_request")}</span>
+                </DropdownMenuItem>
+              </>
+            )}
 
             <DropdownMenuSeparator />
 

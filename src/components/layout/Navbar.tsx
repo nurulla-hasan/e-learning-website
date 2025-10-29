@@ -31,9 +31,10 @@ const Navbar = () => {
   const user = useSelector((state: RootState) => state.profile.profile);
   const isAuthenticated = Boolean(token && user);
   const cartLength = useSelector((state: RootState) => state.cart.totalItems);
+  const userRole = useSelector((state: RootState) => state.auth.userRole);
 
   useGetCartQuery(undefined, {
-    skip: !token,
+    skip: !token || userRole === "EMPLOYEE",
   });
   const { isLoading } = useGetUserProfileQuery(undefined, {
     skip: !token,
@@ -93,31 +94,32 @@ const Navbar = () => {
                     <Skeleton className="h-8 w-8 rounded-full" />
                   </>
                 ) : (
-                  isAuthenticated && (
-                    <>
-                      <Button
-                        onClick={() => handleNavigate("/favorites")}
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-full"
-                      >
-                        <Bookmark />
-                      </Button>
-                      <Button
-                        onClick={() => handleNavigate("/cart")}
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-full relative"
-                      >
-                        <ShoppingCart />
-                        {cartLength > 0 && (
-                          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                            {cartLength > 99 ? "99+" : cartLength}
-                          </span>
-                        )}
-                      </Button>
-                    </>
-                  )
+                  isAuthenticated &&
+                    userRole !== "EMPLOYEE" && (
+                      <>
+                        <Button
+                          onClick={() => handleNavigate("/favorites")}
+                          variant="ghost"
+                          size="icon"
+                          className="rounded-full"
+                        >
+                          <Bookmark />
+                        </Button>
+                        <Button
+                          onClick={() => handleNavigate("/cart")}
+                          variant="ghost"
+                          size="icon"
+                          className="rounded-full relative"
+                        >
+                          <ShoppingCart />
+                          {cartLength > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                              {cartLength > 99 ? "99+" : cartLength}
+                            </span>
+                          )}
+                        </Button>
+                      </>
+                    )
                 )}
               </>
             )}
@@ -131,10 +133,7 @@ const Navbar = () => {
             )}
           </div>
           {/* Mobile menu button */}
-          <MobileMenu
-            user={user}
-            isAuthenticated={isAuthenticated}
-          />
+          <MobileMenu user={user} isAuthenticated={isAuthenticated} />
         </div>
       </div>
     </nav>

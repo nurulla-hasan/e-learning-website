@@ -33,12 +33,12 @@ const Profile = () => {
         <div className="flex flex-col lg:flex-row lg:justify-between">
           {/* Left Illustration */}
           <div className="w-full hidden lg:block lg:w-1/2 xl:w-2/5 relative">
-            <div className="h-64 relative">
+            <div className="relative">
               <Image
                 width={600}
                 height={600}
                 src={user?.image}
-                alt="Account Management"
+                alt="profile image"
                 className="w-full object-cover rounded-xl"
               />
             </div>
