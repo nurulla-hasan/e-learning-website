@@ -16,7 +16,7 @@ import { useGetCoursesQuery } from "@/redux/feature/course/courseApi";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import { Course } from "@/types/course.type";
 import PageLayout from "@/tools/PageLayout";
-import CustomPagination from "@/tools/CustomPagination";
+import CustomPagination from "@/tools/CustomPagination"; 
 
 const CourseByCategoryList = () => {
   const { category } = useParams();

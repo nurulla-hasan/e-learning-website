@@ -31,6 +31,9 @@ const LanguageDropDown = () => {
                 <DropdownMenuItem onClick={() => handleLanguageChange('pl')}>
                     PL
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange('uk')}>
+                    UK
+                </DropdownMenuItem>
             </DropdownMenuContent>
          </DropdownMenu>
         </>

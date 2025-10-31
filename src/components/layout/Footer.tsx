@@ -52,7 +52,7 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={tFooter("email_placeholder")}
-                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                className="flex-1 px-4 py-2 dark:placeholder-gray-400 rounded-lg border border-gray-300 text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                 required
               />
               <button

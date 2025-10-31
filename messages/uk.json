@@ -1,0 +1,154 @@
+{
+  "Navbar": {
+    "home": "Головна",
+    "courses": "Курси",
+    "about": "Про нас",
+    "contact": "Контакти",
+    "language": "Мова"
+  },
+  "Header": {
+    "profile": "Мій профіль",
+    "learning": "Моє навчання",
+    "history": "Історія навчання",
+    "orders": "Мої замовлення",
+    "contact": "Зв'яжіться з нами",
+    "about": "Про нас",
+    "terms": "Правила та умови",
+    "privacy": "Політика конфіденційності",
+    "faqs": "Часті запитання",
+    "help": "Центр допомоги",
+    "favorites": "Вибране",
+    "cart": "Кошик",
+    "checkout": "Оформити замовлення",
+    "training_request": "Запит на тренінг",
+    "training_request_description": "Надішліть свій запит на тренінг тут."
+  },
+  "TrainingRequest": {
+    "training_requests": "Запити на тренінг",
+    "pending_requests": "Запити в очікуванні",
+    "accepted_requests": "Прийняті запити",
+    "no_pending_requests": "Запитів на тренінг в очікуванні не знайдено.",
+    "no_accepted_requests": "Прийнятих запитів на тренінг не знайдено.",
+    "request_training": "Подати запит на очний тренінг",
+    "request_training_description": "Будь ласка, вкажіть деталі свого запиту на очний тренінг.",
+    "course_name": "Назва курсу",
+    "location": "Локація",
+    "enter_location": "наприклад, Нью-Йоркський навчальний центр, кімната 204",
+    "cancel": "Скасувати",
+    "submit_request": "Надіслати запит",
+    "submitting": "Надсилання..."
+  },
+  "Hero": {
+    "title": "Навчайся, розвивайся та досягай успіху будь-де й будь-коли",
+    "subtitle": "Отримайте доступ до курсів від експертів, відстежуйте свій прогрес і отримуйте визнані сертифікати. Розпочніть свою навчальну подорож уже сьогодні з надійною e-learning платформою Польщі.",
+    "button": "Почати навчання"
+  },
+  "DropDown": {
+    "profile": "Профіль",
+    "my_learning": "Моє навчання",
+    "learning_history": "Історія навчання",
+    "my_orders": "Мої замовлення",
+    "training_request": "Запит на тренінг",
+    "sign_in": "Увійти",
+    "logout": "Вийти"
+  },
+  "HomePage": {
+    "our_top_categories": "Наші найпопулярніші категорії",
+    "popular_courses": "Популярні курси",
+    "platform": {
+      "title": "Чому обирають нашу платформу?",
+      "subtitle": "Усе, що потрібно для навчання, успіху й сертифікації — в одному місці."
+    },
+    "testimonials": {
+      "title": "Що кажуть наші слухачі",
+      "description": "Живі голоси. Реальні враження. Дізнайтеся, як Blue Oak формує впевнених, компетентних та турботливих учнів."
+    }
+  },
+  "Footer": {
+    "subscribe_title": "Підпишіться на нашу розсилку",
+    "email_placeholder": "Ваша електронна пошта",
+    "subscribe_button": "Підписатися",
+    "find_us_on": "Ми в соцмережах",
+    "contact_info": "Контактна інформація",
+    "about_and_legal": "Про нас та юридична інформація",
+    "help_and_support": "Допомога та підтримка",
+    "copyright": "© 2025 Платформа електронного навчання. Усі права захищено."
+  },
+  "ContactPage": {
+    "contact_info_title": "Контактна інформація",
+    "contact_info_subtitle": "Зв'яжіться з нашою командою для отримання юридичної підтримки, консультацій чи запису на зустріч.",
+    "location_title": "Місцезнаходження",
+    "email_title": "Електронна пошта",
+    "phone_title": "Телефон",
+    "contact_us_form_title": "Зв'яжіться з нами",
+    "email_label": "Електронна пошта",
+    "email_placeholder": "Введіть свою електронну пошту",
+    "phone_label": "Номер телефону",
+    "phone_placeholder": "Введіть свій номер телефону",
+    "message_label": "Повідомлення",
+    "message_placeholder": "Напишіть тут...",
+    "send_message_button": "Надіслати повідомлення"
+  },
+  "CoursesPage": {
+    "course_bradcramb": "Головна / Курси",
+    "search_placeholder": "Шукайте курси...",
+    "showing": "Показано",
+    "results": "результатів",
+    "sort_by": "Сортувати за",
+    "price_sort": "Ціна: від нижчої до вищої",
+    "filter_by": "Фільтрувати за",
+    "category_title": "Категорія",
+    "level_title": "Рівень",
+    "price_range_title": "Діапазон цін",
+    "rating_title": "Рейтинг"
+  },
+  "CartPage": {
+    "cart_title": "курси у кошику",
+    "order_overview": "Огляд замовлення",
+    "total_courses": "Усього курсів",
+    "subtotal": "Проміжний підсумок",
+    "checkout_button": "Оформити покупку",
+    "no_items": "У кошику немає товарів",
+    "error_message": "Помилка завантаження товарів кошика",
+    "empty_cart": "Ваш кошик порожній"
+  },
+  "CheckoutPage": {
+    "page_title": "Курси",
+    "payment_details": "Платіжні дані",
+    "subtotal": "Проміжний підсумок",
+    "total": "Всього",
+    "payment_options": "Способи оплати",
+    "pay_button": "Сплатити зараз",
+    "error_loading_checkout": "Помилка завантаження елементів оформлення",
+    "try_again": "Спробувати ще раз",
+    "no_checkout_items": "Немає товарів для оформлення"
+  },
+  "ProfilePage": {
+    "loginDetails": "Дані для входу",
+    "editAccount": "Редагувати акаунт",
+    "fullName": "Повне ім'я",
+    "email": "Електронна пошта",
+    "phoneNumber": "Номер телефону",
+    "dateOfBirth": "Дата народження",
+    "password": "Пароль",
+    "currentPassword": "Поточний пароль",
+    "changePassword": "Змінити пароль",
+    "ChangePasswordModal": {
+      "title": "Змінити пароль",
+      "currentPassword": "Поточний пароль",
+      "newPassword": "Новий пароль",
+      "confirmNewPassword": "Підтвердіть новий пароль",
+      "changePasswordButton": "Змінити пароль",
+      "passwordsDoNotMatch": "Паролі не збігаються",
+      "passwordMinLength": "Пароль має містити щонайменше 6 символів",
+      "passwordChanged": "Пароль успішно змінено",
+      "passwordChangeFailed": "Не вдалося змінити пароль",
+      "changingPassword": "Зміна..."
+    }
+  },
+  "OrdersPage": {
+    "title": "Панель замовлень",
+    "subtitle": "Керуйте та відстежуйте свої замовлення на курси"
+  }
+}
+

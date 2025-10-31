@@ -21,17 +21,17 @@ const Hero = () =>{
 
       {/* Animated Digital Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Floating circles */}
+        {/* Floating circles
         <div className="absolute top-20 right-20 w-4 h-4 border-2 border-cyan-400 rounded-full animate-pulse"></div>
         <div className="absolute top-40 right-40 w-6 h-6 border border-cyan-300 rounded-full animate-bounce"></div>
         <div className="absolute bottom-32 right-16 w-3 h-3 bg-cyan-400 rounded-full animate-ping"></div>
 
         {/* Digital lines */}
-        <div className="absolute top-32 right-32 w-20 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
-        <div className="absolute top-60 right-24 w-16 h-px bg-gradient-to-r from-cyan-400 to-transparent rotate-45 animate-pulse"></div>
+        {/* <div className="absolute top-32 right-32 w-20 h-px bg-linear-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
+        <div className="absolute top-60 right-24 w-16 h-px bg-linear-to-r from-cyan-400 to-transparent rotate-45 animate-pulse"></div> */}
 
         {/* Tech icons simulation */}
-        <div className="absolute top-24 right-60 text-cyan-400 animate-pulse">
+        {/* <div className="absolute top-24 right-60 text-cyan-400 animate-pulse">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
@@ -40,9 +40,9 @@ const Hero = () =>{
               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
             />
           </svg>
-        </div>
+        </div> */}
 
-        <div className="absolute bottom-40 right-32 text-cyan-300 animate-bounce">
+        {/* <div className="absolute bottom-40 right-32 text-cyan-300 animate-bounce">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
@@ -52,23 +52,23 @@ const Hero = () =>{
             />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-        </div>
+        </div> */}
 
         {/* Digital HUD elements */}
-        <div className="absolute top-16 right-16 border border-cyan-400/30 rounded-lg p-2 backdrop-blur-sm">
+        {/* <div className="absolute top-16 right-16 border border-cyan-400/30 rounded-lg p-2 backdrop-blur-sm">
           <div className="text-xs text-cyan-400 font-mono">E-Learning</div>
-        </div>
-
+        </div> */}
+{/* 
         <div className="absolute bottom-24 right-20 border border-cyan-300/30 rounded-lg p-3 backdrop-blur-sm">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
             <div className="text-xs text-cyan-300 font-mono">Online</div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex items-center min-h-screen">
+      <div className="relative z-10 flex items-center h-[calc(100vh-65px)]">
         <div className="container max-w-7xl mx-auto px-6 lg:px-8">
           <div className="max-w-2xl">
             {/* Main Heading */}
@@ -98,7 +98,7 @@ const Hero = () =>{
       </div>
 
       {/* Additional floating elements for depth */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* <div className="absolute inset-0 pointer-events-none">
         <div
           className="absolute top-1/3 right-1/4 w-32 h-32 border border-cyan-400/20 rounded-full animate-spin"
           style={{ animationDuration: "20s" }}
@@ -107,7 +107,7 @@ const Hero = () =>{
           className="absolute bottom-1/3 right-1/3 w-24 h-24 border-2 border-cyan-300/10 rounded-full animate-spin"
           style={{ animationDuration: "15s", animationDirection: "reverse" }}
         ></div>
-      </div>
+      </div> */}
     </div>
   )
 }
