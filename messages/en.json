@@ -198,9 +198,23 @@
       }
     }
   },
+  "Favorites": {
+    "card": {
+      "price": "zł {value}",
+      "view_details": "View Details"
+    }
+  },
   "HomePage": {
     "our_top_categories": "Our Top Categories",
     "popular_courses": "Popular Courses",
+    "popular": {
+      "error": "Unable to load popular courses. Please try again later.",
+      "empty": "No popular courses available at the moment.",
+      "hint": "Swipe or use navigation buttons to browse courses",
+      "price": "zł {value}",
+      "lessons": "{count, plural, one {{count} lesson} other {{count} lessons}}",
+      "learners": "{count, plural, one {{count} learner} other {{count} learners}}"
+    },
     "categories": {
       "business_development": "Business Development",
       "art_design": "Art & Design",

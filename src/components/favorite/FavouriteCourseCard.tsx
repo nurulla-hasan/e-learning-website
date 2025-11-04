@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useFavorite from "@/hooks/useFavorite";
+import { useTranslations } from "next-intl";
 
 // Define the type for the nested course object
 interface Course {
@@ -34,6 +35,7 @@ type TProps = {
 
 const FavouriteCourseCard = ({ favorite }: TProps) => {
   const router = useRouter();
+  const t = useTranslations("Favorites.card");
   // A course on the favorite page is always favorited initially.
   const { isFavorite, onFavoriteToggle } = useFavorite(true);
 
@@ -43,6 +45,8 @@ const FavouriteCourseCard = ({ favorite }: TProps) => {
   }
 
   const { course } = favorite;
+
+  const formatPrice = (value: number) => t("price", { value });
 
   return (
     <Card className="overflow-hidden h-full flex flex-col pt-0 gap-3 hover:shadow-lg transition-shadow relative">
@@ -64,7 +68,7 @@ const FavouriteCourseCard = ({ favorite }: TProps) => {
           priority
         />
       </Link>
-      <CardHeader className="pb-3">
+      <CardHeader>
         <CardTitle className="text-lg leading-tight">{course.courseTitle}</CardTitle>
       </CardHeader>
       <CardContent className="pb-3 flex-1">
@@ -84,11 +88,13 @@ const FavouriteCourseCard = ({ favorite }: TProps) => {
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
             <span className="text-xl font-bold text-primary">
-              ${course.discountPrice || course.price}
+              {course.discountPrice
+                ? formatPrice(course.discountPrice)
+                : formatPrice(course.price)}
             </span>
             {course.discountPrice && course.discountPrice < course.price && (
               <span className="text-sm text-muted-foreground line-through">
-                ${course.price}
+                {formatPrice(course.price)}
               </span>
             )}
           </div>
@@ -97,7 +103,7 @@ const FavouriteCourseCard = ({ favorite }: TProps) => {
             className="bg-primary hover:bg-primary/90"
             onClick={() => router.push(`/courses/${course.id}`)}
           >
-            View Details
+            {t("view_details")}
           </Button>
         </div>
       </CardFooter>

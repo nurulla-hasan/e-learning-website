@@ -53,9 +53,23 @@
     "sign_up": "Зареєструватися",
     "logout": "Вийти"
   },
+  "Favorites": {
+    "card": {
+      "price": "зл {value}",
+      "view_details": "Переглянути деталі"
+    }
+  },
   "HomePage": {
     "our_top_categories": "Наші найпопулярніші категорії",
     "popular_courses": "Популярні курси",
+    "popular": {
+      "error": "Не вдалося завантажити популярні курси. Спробуйте пізніше.",
+      "empty": "Наразі популярні курси недоступні.",
+      "hint": "Проведіть пальцем або скористайтеся кнопками навігації, щоб переглянути курси",
+      "price": "zł {value}",
+      "lessons": "{count, plural, one {{count} урок} few {{count} уроки} many {{count} уроків} other {{count} уроків}}",
+      "learners": "{count, plural, one {{count} слухач} few {{count} слухачі} many {{count} слухачів} other {{count} слухачів}}"
+    },
     "categories": {
       "business_development": "Розвиток бізнесу",
       "art_design": "Мистецтво та дизайн",

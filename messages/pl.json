@@ -198,9 +198,23 @@
       }
     }
   },
+  "Favorites": {
+    "card": {
+      "price": "zł {value}",
+      "view_details": "Zobacz szczegóły"
+    }
+  },
   "HomePage": {
     "our_top_categories": "Nasze Najlepsze Kategorie",
     "popular_courses": "Popularne Kursy",
+    "popular": {
+      "error": "Nie udało się wczytać popularnych kursów. Spróbuj ponownie później.",
+      "empty": "Brak popularnych kursów w tej chwili.",
+      "hint": "Przesuń lub użyj przycisków nawigacyjnych, aby przeglądać kursy",
+      "price": "zł {value}",
+      "lessons": "{count, plural, one {{count} lekcja} few {{count} lekcje} many {{count} lekcji} other {{count} lekcji}}",
+      "learners": "{count, plural, one {{count} uczestnik} few {{count} uczestników} many {{count} uczestników} other {{count} uczestników}}"
+    },
     "categories": {
       "business_development": "Rozwój biznesu",
       "art_design": "Sztuka i design",

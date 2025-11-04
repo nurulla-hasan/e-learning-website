@@ -9,6 +9,7 @@ import { useRef } from "react"
 
 const PopularCourses = () => {
   const t = useTranslations("HomePage")
+  const popularT = useTranslations("HomePage.popular")
   const autoplay = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }))
 
   const { data, isLoading, isError } = useGetPopularCoursesQuery({})
@@ -36,7 +37,7 @@ const PopularCourses = () => {
           <h2 className="text-3xl font-bold text-gray-900">{t('popular_courses')}</h2>
         </div>
         <div className="text-center py-12">
-          <p className="text-muted-foreground">Unable to load popular courses. Please try again later.</p>
+          <p className="text-muted-foreground">{popularT("error")}</p>
         </div>
       </section>
     )
@@ -78,14 +79,14 @@ const PopularCourses = () => {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No popular courses available at the moment.</p>
+          <p className="text-muted-foreground">{popularT("empty")}</p>
         </div>
       )}
 
       {/* Mobile navigation hint */}
       <div className="flex md:hidden items-center justify-center gap-2 mt-6">
         <p className="text-center text-gray-400 text-sm">
-          Swipe or use navigation buttons to browse courses
+          {popularT("hint")}
         </p>
       </div>
     </section>

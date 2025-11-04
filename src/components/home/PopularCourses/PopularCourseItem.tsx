@@ -3,12 +3,18 @@ import { Star, Clock, Users } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 type TProps = {
   course: IPopularCourse;
 };
 
 const PopularCourseItem = ({ course }: TProps) => {
+  const t = useTranslations("HomePage.popular");
+
+  const formatPrice = (value?: number) =>
+    t("price", { value: (value ?? 0).toFixed(2) });
+
   return (
     <>
       <Link href={`/courses/${course.id}`}>
@@ -65,18 +71,20 @@ const PopularCourseItem = ({ course }: TProps) => {
               </div>
               <div className="flex items-center gap-1 text-xs text-gray-500">
                 <Users className="h-3 w-3" />
-                <span>{course.totalEnrollments || 0}</span>
+                <span>{t("learners", { count: course.totalEnrollments || 0 })}</span>
               </div>
             </div>
 
             {/* Price */}
             <div className="flex items-center gap-2 mt-auto">
               <span className="text-xl font-bold text-primary">
-                ${course.discountPrice?.toFixed(2) || course.price?.toFixed(2)}
+                {course.discountPrice !== undefined
+                  ? formatPrice(course.discountPrice)
+                  : formatPrice(course.price)}
               </span>
               {course.discountPrice && course.discountPrice < course.price && (
                 <span className="text-sm text-gray-500 line-through">
-                  ${course.price?.toFixed(2)}
+                  {formatPrice(course.price)}
                 </span>
               )}
             </div>
@@ -88,7 +96,7 @@ const PopularCourseItem = ({ course }: TProps) => {
               </Badge>
               <div className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
-                <span>{course.totalLessons || 0} lessons</span>
+                <span>{t("lessons", { count: course.totalLessons || 0 })}</span>
               </div>
             </div>
           </div>
