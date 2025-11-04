@@ -1,8 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ChevronDown, ChevronRight, Play } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { useState } from "react";
+import { ChevronDown, ChevronRight, Play } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
 // Define types based on API response
 interface Lesson {
@@ -34,16 +35,21 @@ interface CurriculamTabProps {
 }
 
 const CurriculamTab = ({ sections }: CurriculamTabProps) => {
-  const [expandedSections, setExpandedSections] = useState<string[]>([])
+  const t = useTranslations("CourseDetails.curriculum");
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const toggleSection = (sectionId: string) => {
-    setExpandedSections((prev) => (prev.includes(sectionId) ? prev.filter((id) => id !== sectionId) : [...prev, sectionId]))
-  }
+    setExpandedSections((prev) =>
+      prev.includes(sectionId)
+        ? prev.filter((id) => id !== sectionId)
+        : [...prev, sectionId]
+    );
+  };
 
   return (
     <div className="space-y-4">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Course Content:</h2>
+        <h2 className="text-xl font-semibold mb-2">{t("title")}</h2>
       </div>
 
       {sections.map((section) => (
@@ -59,37 +65,42 @@ const CurriculamTab = ({ sections }: CurriculamTabProps) => {
                 <ChevronRight className="h-4 w-4 text-muted-foreground" />
               )}
               <span className="font-medium">
-                Section {section.order}: {section.title}
+                {t("section_title", { order: section.order, title: section.title })}
               </span>
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>{section.totalLessons} Lessons</span>
-              <span>{section.totalLength} min</span>
+              <span>
+                {t("lesson_count", { count: section.totalLessons })}
+              </span>
+              <span>{t("duration", { minutes: section.totalLength })}</span>
             </div>
           </div>
 
-          {expandedSections.includes(section.id) && section.Lesson.length > 0 && (
-            <CardContent className="pt-0 pb-4">
-              <div className="space-y-2">
-                {section.Lesson.map((lesson, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between py-2 px-4 hover:bg-muted/30 rounded-md transition-colors cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Play className="h-4 w-4 text-blue-500" />
-                      <span className="text-sm">{lesson.title}</span>
+          {expandedSections.includes(section.id) &&
+            section.Lesson.length > 0 && (
+              <CardContent className="pt-0 pb-4">
+                <div className="space-y-2">
+                  {section.Lesson.map((lesson, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between py-2 px-4 hover:bg-muted/30 rounded-md transition-colors cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Play className="h-4 w-4 text-blue-500" />
+                        <span className="text-sm">{lesson.title}</span>
+                      </div>
+                      <span className="text-sm text-muted-foreground">
+                        {t("lesson_label", { order: lesson.order })}
+                      </span>
                     </div>
-                    <span className="text-sm text-muted-foreground">Lesson {lesson.order}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          )}
+                  ))}
+                </div>
+              </CardContent>
+            )}
         </Card>
       ))}
     </div>
-  )
-}
+  );
+};
 
 export default CurriculamTab;

@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useAddToCheckoutMutation } from "@/redux/feature/checkout/checkoutApi";
 import { useRouter } from "next/navigation";
 import { useAddToCartMutation } from "@/redux/feature/cart/cartApi";
+import { useTranslations } from "next-intl";
 interface CourseListItemProps {
   course: {
     id: string;
@@ -36,14 +37,17 @@ interface CourseListItemProps {
 }
 
 const CourseListItem = ({ course }: CourseListItemProps) => {
-
   const router = useRouter();
+  const t = useTranslations("CoursesPage");
 
   const [addToCart, { isLoading: cartLoading }] = useAddToCartMutation();
-  const [addToCheckout, { isLoading: checkoutLoading }] =useAddToCheckoutMutation();
+  const [addToCheckout, { isLoading: checkoutLoading }] =
+    useAddToCheckoutMutation();
 
-
-  const handleEnroll = async(e: React.MouseEvent<HTMLButtonElement>, courseId: string) => {
+  const handleEnroll = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    courseId: string
+  ) => {
     e.preventDefault();
     try {
       await addToCart({ courseId: courseId }).unwrap();
@@ -52,8 +56,7 @@ const CourseListItem = ({ course }: CourseListItemProps) => {
     } catch {
       // console.log(error);
     }
-  }
-
+  };
 
   return (
     <Link href={`/courses/${course?.id}`}>
@@ -72,7 +75,7 @@ const CourseListItem = ({ course }: CourseListItemProps) => {
         </div>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle className="text-lg leading-tight">
+            <CardTitle className="text-lg leading-tight line-clamp-2">
               {course?.courseTitle}
             </CardTitle>
             <div className="flex items-center gap-1">
@@ -111,8 +114,13 @@ const CourseListItem = ({ course }: CourseListItemProps) => {
                   </span>
                 )}
             </div>
-            <Button loading={cartLoading || checkoutLoading} onClick={(e) => handleEnroll(e, course?.id)} size="sm" className="bg-primary hover:bg-primary/90">
-              Enroll Now
+            <Button
+              loading={cartLoading || checkoutLoading}
+              onClick={(e) => handleEnroll(e, course?.id)}
+              size="sm"
+              className="bg-primary hover:bg-primary/90"
+            >
+              {t("enroll_now")}
             </Button>
           </div>
         </CardFooter>

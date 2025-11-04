@@ -1,6 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card } from "@/components/ui/card"
-import { StarRating } from "@/tools/StarRating"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import { StarRating } from "@/tools/StarRating";
+import { useTranslations } from "next-intl";
 
 // Define types based on API response
 interface Review {
@@ -21,12 +22,16 @@ interface ReviewTabProps {
 
 const ReviewTab = ({ reviews }: ReviewTabProps) => {
   // Calculate overall rating from reviews
-  const overallRating = reviews.length > 0 ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) : "0.0";
+  const overallRating =
+    reviews.length > 0
+      ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1)
+      : "0.0";
+  const t = useTranslations("CourseDetails.reviews");
 
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Review & Rating:</h2>
+        <h2 className="text-xl font-semibold mb-2">{t("title")}</h2>
       </div>
 
       {/* Overall Rating */}
@@ -37,13 +42,13 @@ const ReviewTab = ({ reviews }: ReviewTabProps) => {
             <StarRating rating={parseFloat(overallRating)} totalStars={5} size={20} />
             <span className="text-muted-foreground">({reviews.length})</span>
           </div>
-          <div className="text-muted-foreground">Overall Rating</div>
+          <div className="text-muted-foreground">{t("overall_label")}</div>
         </div>
       </Card>
 
       {/* Individual Reviews */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">All Review & Rating:</h3>
+        <h3 className="text-lg font-semibold">{t("list_title")}</h3>
 
         {reviews.length > 0 ? (
           reviews.map((review) => (
@@ -71,11 +76,11 @@ const ReviewTab = ({ reviews }: ReviewTabProps) => {
             </Card>
           ))
         ) : (
-          <p className="text-muted-foreground">No reviews yet.</p>
+          <p className="text-muted-foreground">{t("empty")}</p>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ReviewTab;

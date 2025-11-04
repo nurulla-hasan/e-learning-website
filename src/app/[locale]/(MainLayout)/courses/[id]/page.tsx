@@ -22,6 +22,7 @@ import { SuccessToast } from "@/lib/utils";
 import { useAddToCartMutation } from "@/redux/feature/cart/cartApi";
 import { useAddToCheckoutMutation } from "@/redux/feature/checkout/checkoutApi";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // Define types based on API response
 interface Lesson {
@@ -94,6 +95,8 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const token = useSelector((state: RootState) => state.auth.accessToken);
   const router = useRouter();
   const userRole = useSelector((state: RootState) => state.auth.userRole);
+  const t = useTranslations("CourseDetails");
+  const tCourses = useTranslations("CoursesPage");
 
   // Use RTK Query's skip option for conditional queries
   const {
@@ -126,7 +129,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const handleAddToCart = async () => {
     try {
       await addToCart({ courseId: course?.id }).unwrap();
-      SuccessToast("Course added to cart");
+      SuccessToast(t("toast.added_to_cart"));
     } catch {
       // console.log(error);
     }
@@ -138,7 +141,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
     try {
       await addToCart({ courseId: course?.id }).unwrap();
       await addToCheckout({ courseIds: [course?.id] }).unwrap();
-      SuccessToast("Course added to checkout");
+      SuccessToast(t("toast.added_to_checkout"));
       router.push("/checkout");
     } catch {
       // console.log(error);
@@ -158,7 +161,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   if (error || !course) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-lg text-red-500">Error loading course details</div>
+        <div className="text-lg text-red-500">{t("error_loading")}</div>
       </div>
     );
   }
@@ -169,9 +172,9 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
       <header className="bg-card">
         <PageLayout paddingSize="none">
           <nav className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span>Home</span>
+            <span>{tCourses("course_bradcramb_home")}</span>
             <span>/</span>
-            <span>Courses</span>
+            <span>{tCourses("course_bradcramb_courses")}</span>
             <span>/</span>
             <span>{course.categoryName}</span>
           </nav>
@@ -211,14 +214,17 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 <div className="flex items-center gap-1">
                   <Users className="w-4 h-4" />
                   <span>
-                    {course?.totalEnrollments} enrolled in this course
+                    {t("stats.enrolled", {
+                      count: course?.totalEnrollments || 0,
+                    })}
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
                   <span>
-                    Last update{" "}
-                    {new Date(course?.lastUpdated).toLocaleDateString()}
+                    {t("stats.last_update", {
+                      date: new Date(course?.lastUpdated).toLocaleDateString(),
+                    })}
                   </span>
                 </div>
               </div>
@@ -226,7 +232,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
               {/* Instructor */}
               <div className="flex items-center gap-3">
                 <span className="text-sm text-muted-foreground">
-                  Instructor:
+                  {t("labels.instructor")}
                 </span>
                 <div className="flex items-center gap-2">
                   <Avatar className="w-6 h-6">
@@ -245,21 +251,29 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
             {/* Tabs */}
             <Tabs defaultValue="description" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="description">Description</TabsTrigger>
-                <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
-                <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                <TabsTrigger value="description">
+                  {t("tabs.description")}
+                </TabsTrigger>
+                <TabsTrigger value="curriculum">
+                  {t("tabs.curriculum")}
+                </TabsTrigger>
+                <TabsTrigger value="reviews">{t("tabs.reviews")}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="description" className="space-y-6 mt-6">
                 <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">About the Course:</h3>
+                  <h3 className="text-xl font-semibold">
+                    {t("description.about_title")}
+                  </h3>
                   <p className="text-muted-foreground leading-relaxed">
                     {course?.courseDescription}
                   </p>
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">Instructor:</h3>
+                  <h3 className="text-xl font-semibold">
+                    {t("description.instructor_title")}
+                  </h3>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Avatar className="w-20 h-20">
                       <AvatarImage src={course?.instructorImage} />
@@ -312,7 +326,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                       className="rounded-full"
                     >
                       <Play className="w-6 h-6 mr-2" />
-                      PREVIEW
+                      {t("preview_button")}
                     </Button>
                   </div>
                 </div>
@@ -359,7 +373,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                       onClick={handleAddToCart}
                       disabled={cartLoading}
                     >
-                      Add To Cart
+                      {tCourses("add_to_cart")}
                     </Button>
                     <Button
                       className="w-full"
@@ -368,14 +382,14 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                       disabled={checkoutLoading}
                       loading={checkoutLoading || cartLoading}
                     >
-                      Buy Now
+                      {tCourses("buy_now")}
                     </Button>
                     <TrainingRequestModal
                       courseId={course.id}
                       courseName={course.courseTitle}
                     >
                       <Button variant="outline" className="w-full text-primary">
-                        Request In-Person Training
+                        {t("actions.request_training")}
                       </Button>
                     </TrainingRequestModal>
                   </div>
@@ -386,7 +400,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Play className="w-4 h-4" />
-                      <span className="text-sm">Lessons</span>
+                      <span className="text-sm">{t("stats.lessons")}</span>
                     </div>
                     <span className="text-sm font-medium">
                       {course.totalLessons}
@@ -395,7 +409,7 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4" />
-                      <span className="text-sm">Quizzes</span>
+                      <span className="text-sm">{t("stats.quizzes")}</span>
                     </div>
                     <span className="text-sm font-medium">
                       {course.Section?.reduce(
@@ -407,18 +421,18 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
-                      <span className="text-sm">Duration</span>
+                      <span className="text-sm">{t("stats.duration")}</span>
                     </div>
                     <span className="text-sm font-medium">
                       {course.totalDuration > 0
                         ? `${course.totalDuration} min`
-                        : "N/A"}
+                        : t("stats.not_available")}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Award className="w-4 h-4" />
-                      <span className="text-sm">Skill Level</span>
+                      <span className="text-sm">{t("stats.skill_level")}</span>
                     </div>
                     <span className="text-sm font-medium">
                       {course.skillLevel}
@@ -427,19 +441,23 @@ const CourseDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Award className="w-4 h-4" />
-                      <span className="text-sm">Certificate</span>
+                      <span className="text-sm">{t("stats.certificate")}</span>
                     </div>
                     <span className="text-sm font-medium">
-                      {course.certificate ? "Yes" : "No"}
+                      {course.certificate ? t("common.yes") : t("common.no")}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
-                      <span className="text-sm">Full Lifetime Access</span>
+                      <span className="text-sm">
+                        {tCourses("stats.lifetime_access")}
+                      </span>
                     </div>
                     <span className="text-sm font-medium">
-                      {course.lifetimeAccess ? "Yes" : "No"}
+                      {course.lifetimeAccess
+                        ? t("common.yes")
+                        : t("common.no")}
                     </span>
                   </div>
                 </div>

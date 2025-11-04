@@ -116,16 +116,77 @@
   },
   "CoursesPage": {
     "course_bradcramb": "Dom / Kursy",
+    "course_bradcramb_home": "Dom",
+    "course_bradcramb_courses": "Kursy",
     "search_placeholder": "Szukaj kursów...",
     "showing": "Pokazywanie",
     "results": "wyników",
     "sort_by": "Sortuj według",
+    "sort_placeholder": "Wybierz opcję",
+    "price_sort_low": "Cena: od najniższej do najwyższej",
+    "price_sort_high": "Cena: od najwyższej do najniższej",
     "price_sort": "Cena: od najniższej do najwyższej",
     "filter_by": "Filtruj według",
     "category_title": "Kategoria",
     "level_title": "Poziom",
     "price_range_title": "Zakres cen",
-    "rating_title": "Ocena"
+    "rating_title": "Ocena",
+    "enroll_now": "Zapisz się teraz",
+    "add_to_cart": "Dodaj do koszyka",
+    "buy_now": "Kup teraz",
+    "stats": {
+      "lifetime_access": "Dostęp na całe życie"
+    }
+  },
+  "CourseDetails": {
+    "toast": {
+      "added_to_cart": "Kurs dodany do koszyka",
+      "added_to_checkout": "Kurs dodany do zakupu"
+    },
+    "error_loading": "Błąd podczas ładowania szczegółów kursu",
+    "preview_button": "Podgląd",
+    "labels": {
+      "instructor": "Instruktor:"
+    },
+    "tabs": {
+      "description": "Opis",
+      "curriculum": "Program",
+      "reviews": "Opinie"
+    },
+    "description": {
+      "about_title": "O kursie",
+      "instructor_title": "Instruktor"
+    },
+    "curriculum": {
+      "title": "Zawartość kursu",
+      "section_title": "Sekcja {order}: {title}",
+      "lesson_count": "{count} lekcji",
+      "duration": "{minutes} min",
+      "lesson_label": "Lekcja {order}"
+    },
+    "actions": {
+      "request_training": "Zgłoś szkolenie stacjonarne"
+    },
+    "stats": {
+      "enrolled": "{count} osób zapisanych na ten kurs",
+      "last_update": "Ostatnia aktualizacja {date}",
+      "lessons": "Lekcje",
+      "quizzes": "Quizy",
+      "duration": "Czas trwania",
+      "not_available": "Brak danych",
+      "skill_level": "Poziom umiejętności",
+      "certificate": "Certyfikat"
+    },
+    "reviews": {
+      "title": "Opinie i oceny",
+      "overall_label": "Ocena ogólna",
+      "list_title": "Wszystkie opinie i oceny",
+      "empty": "Brak opinii."
+    },
+    "common": {
+      "yes": "Tak",
+      "no": "Nie"
+    }
   },
   "CartPage": {
     "cart_title": "kursów w koszyku",

@@ -116,16 +116,77 @@
   },
   "CoursesPage": {
     "course_bradcramb": "Головна / Курси",
+    "course_bradcramb_home": "Головна",
+    "course_bradcramb_courses": "Курси",
     "search_placeholder": "Шукайте курси...",
     "showing": "Показано",
     "results": "результатів",
     "sort_by": "Сортувати за",
+    "sort_placeholder": "Оберіть опцію",
+    "price_sort_low": "Ціна: від нижчої до вищої",
+    "price_sort_high": "Ціна: від вищої до нижчої",
     "price_sort": "Ціна: від нижчої до вищої",
     "filter_by": "Фільтрувати за",
     "category_title": "Категорія",
     "level_title": "Рівень",
     "price_range_title": "Діапазон цін",
-    "rating_title": "Рейтинг"
+    "rating_title": "Рейтинг",
+    "enroll_now": "Записатися зараз",
+    "add_to_cart": "Додати до кошика",
+    "buy_now": "Придбати зараз",
+    "stats": {
+      "lifetime_access": "Довічний доступ"
+    }
+  },
+  "CourseDetails": {
+    "toast": {
+      "added_to_cart": "Курс додано до кошика",
+      "added_to_checkout": "Курс додано до оформлення"
+    },
+    "error_loading": "Помилка завантаження деталей курсу",
+    "preview_button": "Попередній перегляд",
+    "labels": {
+      "instructor": "Інструктор:"
+    },
+    "tabs": {
+      "description": "Опис",
+      "curriculum": "Програма",
+      "reviews": "Відгуки"
+    },
+    "description": {
+      "about_title": "Про курс",
+      "instructor_title": "Інструктор"
+    },
+    "curriculum": {
+      "title": "Зміст курсу",
+      "section_title": "Розділ {order}: {title}",
+      "lesson_count": "{count} уроків",
+      "duration": "{minutes} хв",
+      "lesson_label": "Урок {order}"
+    },
+    "actions": {
+      "request_training": "Запросити очне навчання"
+    },
+    "stats": {
+      "enrolled": "{count} записано на цей курс",
+      "last_update": "Останнє оновлення {date}",
+      "lessons": "Уроки",
+      "quizzes": "Тести",
+      "duration": "Тривалість",
+      "not_available": "Н/Д",
+      "skill_level": "Рівень",
+      "certificate": "Сертифікат"
+    },
+    "reviews": {
+      "title": "Відгуки та оцінки",
+      "overall_label": "Загальна оцінка",
+      "list_title": "Усі відгуки та оцінки",
+      "empty": "Ще немає відгуків."
+    },
+    "common": {
+      "yes": "Так",
+      "no": "Ні"
+    }
   },
   "CartPage": {
     "cart_title": "курси у кошику",

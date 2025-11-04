@@ -116,16 +116,77 @@
   },
   "CoursesPage": {
     "course_bradcramb": "Home / Courses",
+    "course_bradcramb_home": "Home",
+    "course_bradcramb_courses": "Courses",
     "search_placeholder": "Search courses...",
     "showing": "Showing",
     "results": "results",
     "sort_by": "Sort by",
+    "sort_placeholder": "Select an option",
+    "price_sort_low": "Price: Low to High",
+    "price_sort_high": "Price: High to Low",
     "price_sort": "Price: Low to High",
     "filter_by": "Filter By",
     "category_title": "Category",
     "level_title": "Level",
     "price_range_title": "Price Range",
-    "rating_title": "Rating"
+    "rating_title": "Rating",
+    "enroll_now": "Enroll Now",
+    "add_to_cart": "Add To Cart",
+    "buy_now": "Buy Now",
+    "stats": {
+      "lifetime_access": "Full Lifetime Access"
+    }
+  },
+  "CourseDetails": {
+    "toast": {
+      "added_to_cart": "Course added to cart",
+      "added_to_checkout": "Course added to checkout"
+    },
+    "error_loading": "Error loading course details",
+    "preview_button": "Preview",
+    "labels": {
+      "instructor": "Instructor:"
+    },
+    "tabs": {
+      "description": "Description",
+      "curriculum": "Curriculum",
+      "reviews": "Reviews"
+    },
+    "description": {
+      "about_title": "About the Course",
+      "instructor_title": "Instructor"
+    },
+    "curriculum": {
+      "title": "Course Content",
+      "section_title": "Section {order}: {title}",
+      "lesson_count": "{count} Lessons",
+      "duration": "{minutes} min",
+      "lesson_label": "Lesson {order}"
+    },
+    "actions": {
+      "request_training": "Request In-Person Training"
+    },
+    "stats": {
+      "enrolled": "{count} enrolled in this course",
+      "last_update": "Last update {date}",
+      "lessons": "Lessons",
+      "quizzes": "Quizzes",
+      "duration": "Duration",
+      "not_available": "N/A",
+      "skill_level": "Skill Level",
+      "certificate": "Certificate"
+    },
+    "reviews": {
+      "title": "Review & Rating",
+      "overall_label": "Overall Rating",
+      "list_title": "All Review & Rating",
+      "empty": "No reviews yet."
+    },
+    "common": {
+      "yes": "Yes",
+      "no": "No"
+    }
   },
   "CartPage": {
     "cart_title": "courses in cart",
