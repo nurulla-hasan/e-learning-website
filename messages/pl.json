@@ -55,9 +55,34 @@
   "HomePage": {
     "our_top_categories": "Nasze Najlepsze Kategorie",
     "popular_courses": "Popularne Kursy",
+    "categories": {
+      "business_development": "Rozwój biznesu",
+      "art_design": "Sztuka i design",
+      "it_software": "IT i oprogramowanie",
+      "health_fitness": "Zdrowie i fitness",
+      "digital_marketing": "Marketing cyfrowy"
+    },
     "platform": {
       "title": "Dlaczego Wybrać Naszą Platformę?",
-      "subtitle": "Wszystko, czego potrzebujesz, aby się uczyć, odnieść sukces i uzyskać certyfikat - wszystko w jednym miejscu."
+      "subtitle": "Wszystko, czego potrzebujesz, aby się uczyć, odnieść sukces i uzyskać certyfikat - wszystko w jednym miejscu.",
+      "features": {
+        "access": {
+          "title": "Dostęp 24/7",
+          "subtitle": "Ucz się w dowolnym czasie i miejscu"
+        },
+        "materials": {
+          "title": "Materiały szkoleniowe w pakiecie",
+          "subtitle": "Wideo, PDF-y, DOCX i więcej"
+        },
+        "certificates": {
+          "title": "Natychmiastowe certyfikaty",
+          "subtitle": "Automatycznie generowane PDF-y po ukończeniu"
+        },
+        "payment": {
+          "title": "Bezpieczne płatności",
+          "subtitle": "Integracja z Przelewy24"
+        }
+      }
     },
     "testimonials": {
       "title": "Co mówią nasi uczniowie",

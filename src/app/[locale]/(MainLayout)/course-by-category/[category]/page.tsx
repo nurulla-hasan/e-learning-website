@@ -1,15 +1,13 @@
-
-import CourseByCategoryList from "@/components/CourseByCategory/CourseByCategoryList"
+import CourseByCategoryList from "@/components/CourseByCategory/CourseByCategoryList";
 
 const CourseByCategoryPage = () => {
-
   return (
     <>
       <div className="min-h-screen bg-background">
-        <CourseByCategoryList/>
+        <CourseByCategoryList />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CourseByCategoryPage
+export default CourseByCategoryPage;

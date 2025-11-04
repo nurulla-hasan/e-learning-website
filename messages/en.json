@@ -55,9 +55,34 @@
   "HomePage": {
     "our_top_categories": "Our Top Categories",
     "popular_courses": "Popular Courses",
+    "categories": {
+      "business_development": "Business Development",
+      "art_design": "Art & Design",
+      "it_software": "IT & Software",
+      "health_fitness": "Health & Fitness",
+      "digital_marketing": "Digital Marketing"
+    },
     "platform": {
       "title": "Why Choose Our Platform?",
-      "subtitle": "Everything you need to learn, succeed, and certify — all in one place."
+      "subtitle": "Everything you need to learn, succeed, and certify — all in one place.",
+      "features": {
+        "access": {
+          "title": "24/7 Access",
+          "subtitle": "Learn anytime, anywhere"
+        },
+        "materials": {
+          "title": "Course Materials Included",
+          "subtitle": "Videos, PDFs, DOCX, and more"
+        },
+        "certificates": {
+          "title": "Instant Certificates",
+          "subtitle": "Auto-generated PDFs on completion"
+        },
+        "payment": {
+          "title": "Secure Payment",
+          "subtitle": "Integrated with Przelewy24"
+        }
+      }
     },
     "testimonials": {
       "title": "What Our Learners Say",

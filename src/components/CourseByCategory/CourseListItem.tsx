@@ -20,22 +20,25 @@ type TProps = {
 };
 
 const CourseListItem = ({ course }: TProps) => {
-    const router = useRouter();
-  
-    const [addToCart, { isLoading: cartLoading }] = useAddToCartMutation();
-    const [addToCheckout, { isLoading: checkoutLoading }] =useAddToCheckoutMutation();
-  
-  
-    const handleEnroll = async(e: React.MouseEvent<HTMLButtonElement>, courseId: string) => {
-      e.preventDefault();
-      try {
-        await addToCart({ courseId: courseId }).unwrap();
-        await addToCheckout({ courseIds: [courseId] }).unwrap();
-        router.push("/checkout");
-      } catch {
-        // console.log(error);
-      }
+  const router = useRouter();
+
+  const [addToCart, { isLoading: cartLoading }] = useAddToCartMutation();
+  const [addToCheckout, { isLoading: checkoutLoading }] =
+    useAddToCheckoutMutation();
+
+  const handleEnroll = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    courseId: string
+  ) => {
+    e.preventDefault();
+    try {
+      await addToCart({ courseId: courseId }).unwrap();
+      await addToCheckout({ courseIds: [courseId] }).unwrap();
+      router.push("/checkout");
+    } catch {
+      // console.log(error);
     }
+  };
   return (
     <>
       <Link href={`/courses/${course?.id}`}>
@@ -54,7 +57,7 @@ const CourseListItem = ({ course }: TProps) => {
           </div>
           <CardHeader>
             <div className="flex justify-between items-center">
-              <CardTitle className="text-lg leading-tight">
+              <CardTitle className="text-lg leading-tight line-clamp-2">
                 {course?.courseTitle}
               </CardTitle>
               <div className="flex items-center gap-1">
