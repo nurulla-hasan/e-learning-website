@@ -3,6 +3,7 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { ChevronRight, Play } from "lucide-react";
@@ -25,6 +26,7 @@ import { RootState } from "@/redux/store";
 const MyLearningDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const userRole = useSelector((state: RootState) => state.auth.userRole);
+  const t = useTranslations("MyLearning.details");
   const [selectedSection, setSelectedSection] = React.useState<string | null>(
     null
   );
@@ -127,8 +129,8 @@ const MyLearningDetailsPage = () => {
       if (currentAbsIndex < flatLessons.length - 1) {
         goToAbsIndex(currentAbsIndex + 1);
       }
-    } catch (e) {
-      console.error("Failed to mark lesson completed", e);
+    } catch {
+      // console.error("Failed to mark lesson completed", e);
     }
   };
 
@@ -147,9 +149,9 @@ const MyLearningDetailsPage = () => {
       }
       await markCourseAsCompleted({ courseId }).unwrap();
       // optionally: navigate or show toast
-      console.log("Course marked as completed");
-    } catch (e) {
-      console.error("Failed to mark course completed", e);
+      // console.log("Course marked as completed");
+    } catch {
+      // console.error("Failed to mark course completed", e);
     }
   };
 
@@ -167,9 +169,11 @@ const MyLearningDetailsPage = () => {
     return (
       <PageLayout paddingSize="none">
         <div className="text-center py-12 h-[90vh]">
-          <h2 className="text-xl font-semibold mb-2">Error loading course</h2>
+          <h2 className="text-xl font-semibold mb-2">
+            {t("errors.loading_title")}
+          </h2>
           <p className="text-muted-foreground">
-            There was an error loading the course. Please try again later.
+            {t("errors.loading_description")}
           </p>
         </div>
       </PageLayout>
@@ -180,9 +184,11 @@ const MyLearningDetailsPage = () => {
     return (
       <PageLayout paddingSize="none">
         <div className="text-center py-12 h-[90vh]">
-          <h2 className="text-xl font-semibold mb-2">Course not found</h2>
+          <h2 className="text-xl font-semibold mb-2">
+            {t("errors.not_found_title")}
+          </h2>
           <p className="text-muted-foreground">
-            The requested course could not be loaded.
+            {t("errors.not_found_description")}
           </p>
         </div>
       </PageLayout>
@@ -212,7 +218,7 @@ const MyLearningDetailsPage = () => {
               ) : (
                 <div className="text-center">
                   <Play className="h-16 w-16 text-white mx-auto mb-2" />
-                  <p className="text-white">Select a lesson to begin</p>
+                  <p className="text-white">{t("player.select_lesson")}</p>
                 </div>
               )}
             </div>
@@ -226,8 +232,8 @@ const MyLearningDetailsPage = () => {
           >
             <div className="flex items-center justify-between">
               <TabsList>
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="resources">Resources</TabsTrigger>
+                <TabsTrigger value="overview">{t("tabs.overview")}</TabsTrigger>
+                <TabsTrigger value="resources">{t("tabs.resources")}</TabsTrigger>
               </TabsList>
               {userRole !== "COMPANY" && (
                 <NavigationControls
@@ -255,12 +261,12 @@ const MyLearningDetailsPage = () => {
                   {/* Course Description */}
                   <div className="space-y-4">
                     <h2 className="text-2xl font-bold text-foreground">
-                      About This Course
+                      {t("overview.title")}
                     </h2>
                     <div className="prose prose-gray max-w-none">
                       <p className="text-muted-foreground leading-relaxed text-lg">
                         {courseData?.course?.courseDescription ||
-                          "No description available"}
+                          t("overview.no_description")}
                       </p>
                     </div>
                   </div>
@@ -268,7 +274,7 @@ const MyLearningDetailsPage = () => {
                   {/* Instructor Information */}
                   <div className="space-y-6">
                     <h2 className="text-2xl font-bold text-foreground">
-                      Your Instructor
+                      {t("instructor.title")}
                     </h2>
                     <Card className="p-6">
                       <div className="flex items-start space-x-6">
@@ -279,7 +285,8 @@ const MyLearningDetailsPage = () => {
                               "/placeholder-avatar.png"
                             }
                             alt={
-                              courseData?.course?.instructorName || "Instructor"
+                              courseData?.course?.instructorName ||
+                              t("instructor.unknown_name")
                             }
                             className="w-20 h-20 rounded-full object-cover"
                             width={80}
@@ -290,16 +297,16 @@ const MyLearningDetailsPage = () => {
                           <div className="flex items-center space-x-2 mb-2">
                             <h3 className="text-xl font-semibold text-foreground">
                               {courseData?.course?.instructorName ||
-                                "Unknown Instructor"}
+                                t("instructor.unknown_name")}
                             </h3>
                           </div>
                           <p className="text-primary font-medium mb-3">
                             {courseData?.course?.instructorDesignation ||
-                              "Course Instructor"}
+                              t("instructor.default_designation")}
                           </p>
                           <p className="text-muted-foreground leading-relaxed">
                             {courseData?.course?.instructorDescription ||
-                              "Experienced professional in the field"}
+                              t("instructor.default_bio")}
                           </p>
                         </div>
                       </div>
@@ -313,7 +320,7 @@ const MyLearningDetailsPage = () => {
                         {courseData?.course?.totalLessons || 0}
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        Lessons
+                        {t("stats.lessons")}
                       </div>
                     </Card>
                     <Card className="p-4 text-center">
@@ -321,21 +328,23 @@ const MyLearningDetailsPage = () => {
                         {courseData?.course?.totalSections || 0}
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        Sections
+                        {t("stats.sections")}
                       </div>
                     </Card>
                     <Card className="p-4 text-center">
                       <div className="text-2xl font-bold text-primary mb-1">
-                        {courseData?.course?.courseLevel || "Beginner"}
-                      </div>
-                      <div className="text-sm text-muted-foreground">Level</div>
-                    </Card>
-                    <Card className="p-4 text-center">
-                      <div className="text-2xl font-bold text-primary mb-1">
-                        {courseData?.course?.difficulty || "Easy"}
+                        {courseData?.course?.courseLevel || t("stats.default_level")}
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        Difficulty
+                        {t("stats.level")}
+                      </div>
+                    </Card>
+                    <Card className="p-4 text-center">
+                      <div className="text-2xl font-bold text-primary mb-1">
+                        {courseData?.course?.difficulty || t("stats.default_difficulty")}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {t("stats.difficulty")}
                       </div>
                     </Card>
                   </div>
@@ -345,9 +354,11 @@ const MyLearningDetailsPage = () => {
               <TabsContent value="resources" className="space-y-6">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Course Modules</h2>
+                    <h2 className="text-xl font-semibold">{t("resources.title")}</h2>
                     <div className="text-sm text-muted-foreground">
-                      {courseData?.course?.Section?.length || 0} modules
+                      {t("resources.module_count", {
+                        count: courseData?.course?.Section?.length || 0,
+                      })}
                     </div>
                   </div>
                   <div className="space-y-3">
@@ -388,7 +399,7 @@ const MyLearningDetailsPage = () => {
                             <div className="flex items-center space-x-2">
                               {selectedSection === section.id && (
                                 <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full">
-                                  Active
+                                  {t("resources.active")}
                                 </span>
                               )}
                               <ChevronRight
@@ -408,16 +419,15 @@ const MyLearningDetailsPage = () => {
                             }`}
                           >
                             <span>
-                              {
-                                (section.Lesson || []).filter((l) =>
+                              {t("resources.lessons_completed", {
+                                completed: (section.Lesson || []).filter((l) =>
                                   isLessonDone(l)
-                                ).length
-                              }{" "}
-                              of {(section.Lesson || []).length} lessons
-                              completed
+                                ).length,
+                                total: (section.Lesson || []).length,
+                              })}
                             </span>
                             <span className="text-xs">
-                              Module {section.order}
+                              {t("resources.module_label", { order: section.order })}
                             </span>
                           </div>
                         </div>

@@ -10,8 +10,9 @@ import CustomPagination from "@/tools/CustomPagination";
 import { LearningHistoryItem } from "@/types/learning-history.type";
 
 const LearningHistoryPage = () => {
-  const t = useTranslations("Header");
-  const title = t("history");
+  const tHeader = useTranslations("Header");
+  const t = useTranslations("LearningHistory");
+  const title = tHeader("history");
 
   const { currentPage, setCurrentPage, totalPages, items, isLoading, isError } =
     useSmartFetchHook(useGetMyLearningHistoryQuery);
@@ -31,11 +32,9 @@ const LearningHistoryPage = () => {
       >
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-foreground mb-2">
-            My Courses
+            {t("title")}
           </h1>
-          <p className="text-muted-foreground">
-            Track your completed courses and certificates
-          </p>
+          <p className="text-muted-foreground">{t("description")}</p>
         </div>
         <CourseTable
           items={items as LearningHistoryItem[]}

@@ -50,7 +50,153 @@
     "my_orders": "My Orders",
     "training_request": "Training Request",
     "sign_in": "Sign In",
+    "sign_up": "Sign Up",
     "logout": "Logout"
+  },
+  "Auth": {
+    "signup": {
+      "title": "Create an account",
+      "subtitle": "Enter your details below to create your account.",
+      "tabs": {
+        "student": "Student",
+        "company": "Company"
+      },
+      "labels": {
+        "fullname": "Full Name",
+        "email": "Email",
+        "date_of_birth": "Date of Birth",
+        "password": "Password",
+        "confirm_password": "Confirm Password"
+      },
+      "placeholders": {
+        "fullname": "John Doe",
+        "email": "example@email.com",
+        "date_of_birth": "dd-mm-yyyy",
+        "password": "********",
+        "confirm_password": "********"
+      },
+      "buttons": {
+        "submit": "Create Account"
+      },
+      "links": {
+        "have_account": "Already have an account?",
+        "login": "Log in"
+      },
+      "errors": {
+        "fullname_required": "Full name is required.",
+        "email_required": "Email is required.",
+        "email_invalid": "Invalid email address.",
+        "date_required": "Date of birth is required.",
+        "date_format": "Date must be in dd-mm-yyyy format.",
+        "password_min": "Password must be at least 6 characters.",
+        "confirm_password_min": "Confirm password must be at least 6 characters.",
+        "password_mismatch": "Passwords don't match."
+      }
+    },
+    "company": {
+      "labels": {
+        "company_name": "Company Name",
+        "company_email": "Company Email",
+        "company_address": "Company Address",
+        "company_vat": "VAT ID",
+        "password": "Password",
+        "confirm_password": "Confirm Password"
+      },
+      "placeholders": {
+        "company_name": "Enter company name",
+        "company_email": "company@example.com",
+        "company_address": "Enter company address",
+        "company_vat": "Enter VAT ID",
+        "password": "********",
+        "confirm_password": "********"
+      },
+      "buttons": {
+        "submit": "Create Company Account"
+      },
+      "errors": {
+        "company_name_required": "Company name is required.",
+        "company_email_required": "Company email is required.",
+        "company_email_invalid": "Invalid email address.",
+        "company_address_required": "Company address is required.",
+        "vat_required": "VAT ID is required.",
+        "password_min": "Password must be at least 6 characters.",
+        "confirm_password_min": "Confirm password must be at least 6 characters.",
+        "password_mismatch": "Passwords don't match."
+      }
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Enter your credentials to continue.",
+      "labels": {
+        "email": "Email",
+        "password": "Password"
+      },
+      "placeholders": {
+        "email": "Enter your email",
+        "password": "********"
+      },
+      "buttons": {
+        "submit": "Log in"
+      },
+      "links": {
+        "forgot_password": "Forgot your password?",
+        "no_account": "Don't have an account?",
+        "sign_up": "Sign up"
+      },
+      "errors": {
+        "email_required": "Email is required.",
+        "email_invalid": "Invalid email address.",
+        "password_min": "Password must be at least 6 characters."
+      }
+    },
+    "forgot": {
+      "title": "Forgot Your Password?",
+      "subtitle": "Enter your email to reset your password.",
+      "labels": {
+        "email": "Email"
+      },
+      "placeholders": {
+        "email": "Enter your email"
+      },
+      "buttons": {
+        "submit": "Send Reset Code"
+      },
+      "errors": {
+        "email_required": "Email is required.",
+        "email_invalid": "Invalid email address."
+      }
+    },
+    "reset": {
+      "title": "Reset Your Password",
+      "subtitle": "Enter your new password below.",
+      "labels": {
+        "new_password": "New Password",
+        "confirm_new_password": "Confirm New Password"
+      },
+      "placeholders": {
+        "new_password": "********",
+        "confirm_new_password": "********"
+      },
+      "buttons": {
+        "submit": "Reset Password"
+      },
+      "errors": {
+        "password_min": "Password must be at least 6 characters.",
+        "confirm_password_min": "Confirm password must be at least 6 characters.",
+        "password_mismatch": "Passwords don't match."
+      }
+    },
+    "otp": {
+      "title": "Verify your code",
+      "subtitle": "Enter the verification code we sent to your email.",
+      "instructions": "Enter the {length}-digit code",
+      "buttons": {
+        "submit": "Verify"
+      },
+      "input": {
+        "aria_label": "Verification digit {index}"
+      }
+    }
   },
   "HomePage": {
     "our_top_categories": "Our Top Categories",
@@ -87,6 +233,46 @@
     "testimonials": {
       "title": "What Our Learners Say",
       "description": "Real voices. Real experiences. Discover how Blue Oak is shaping confident, capable, and compassionate learners."
+    }
+  },
+  "Orders": {
+    "table": {
+      "headers": {
+        "course_name": "Course Name",
+        "date": "Date",
+        "amount": "Amount",
+        "status": "Status",
+        "invoice": "Invoice",
+        "action": "Action"
+      },
+      "states": {
+        "error": "Failed to load orders"
+      },
+      "status": {
+        "unknown": "Unknown",
+        "pending": "Pending",
+        "completed": "Completed",
+        "processing": "Processing",
+        "failed": "Failed",
+        "cancelled": "Cancelled",
+        "refunded": "Refunded"
+      },
+      "amount": "zł {value}",
+      "actions": {
+        "view_course": "View Course"
+      },
+      "invoice": {
+        "title": "Invoice",
+        "none": "No invoice",
+        "download": "Download Invoice",
+        "meta": {
+          "order_id": "Order ID",
+          "date": "Date",
+          "course": "Course",
+          "amount": "Amount"
+        }
+      },
+      "not_available": "N/A"
     }
   },
   "Footer": {
@@ -186,6 +372,130 @@
     "common": {
       "yes": "Yes",
       "no": "No"
+    }
+  },
+  "MyLearning": {
+    "list": {
+      "error_loading": "Error loading courses",
+      "retry": "Try Again",
+      "showing": "Showing {count, plural, one {# course} other {# courses}}",
+      "empty_title": "No enrolled courses found",
+      "empty_subtitle": "Start learning by enrolling in a course"
+    },
+    "item": {
+      "lifetime_access": "Lifetime Access",
+      "instructor_prefix": "By {name}",
+      "stats": {
+        "lesson_section": "{lessons} lessons • {sections} sections",
+        "progress_label": "Progress",
+        "progress_value": "{value}% Complete"
+      },
+      "certificate": {
+        "not_available": "N/A",
+        "content_missing": "Certificate content not found. Please try again later.",
+        "print_window_error": "Failed to open print window. Please check your popup blocker.",
+        "generic_error": "Failed to download certificate. Please check your connection and try again.",
+        "popup_error": "Failed to open new window. Please check your popup blocker settings.",
+        "view_error": "Failed to view certificate. Please check your connection and try again.",
+        "loading": "Loading...",
+        "download": "Download & Print",
+        "view": "View Certificate"
+      }
+    },
+    "details": {
+      "errors": {
+        "loading_title": "Error loading course",
+        "loading_description": "There was an error loading the course. Please try again later.",
+        "not_found_title": "Course not found",
+        "not_found_description": "The requested course could not be loaded."
+      },
+      "player": {
+        "select_lesson": "Select a lesson to begin"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "resources": "Resources"
+      },
+      "overview": {
+        "title": "About This Course",
+        "no_description": "No description available"
+      },
+      "instructor": {
+        "title": "Your Instructor",
+        "unknown_name": "Unknown Instructor",
+        "default_designation": "Course Instructor",
+        "default_bio": "Experienced professional in the field"
+      },
+      "stats": {
+        "lessons": "Lessons",
+        "sections": "Sections",
+        "level": "Level",
+        "difficulty": "Difficulty",
+        "default_level": "Beginner",
+        "default_difficulty": "Easy"
+      },
+      "resources": {
+        "title": "Course Modules",
+        "module_count": "{count, plural, one {# module} other {# modules}}",
+        "active": "Active",
+        "lessons_completed": "{completed} of {total} lessons completed",
+        "module_label": "Module {order}"
+      }
+    },
+    "sidebar": {
+      "title": "Course Content",
+      "progress_label": "Progress: {value}%",
+      "progress_summary": "{completed}/{total} lessons",
+      "tests": {
+        "title": "Tests",
+        "start_button": "Start Test",
+        "empty": "No tests available for this section.",
+        "modal_title": "Start Test",
+        "modal_description": "Are you sure you want to start the test? You can only attempt this test once."
+      }
+    }
+  },
+  "TestExam": {
+    "toast": {
+      "submit_error": "An error occurred while submitting the test"
+    },
+    "summary": {
+      "questions": "{count, plural, one {# question} other {# questions}}"
+    },
+    "buttons": {
+      "submitting": "Submitting...",
+      "submit": "Submit Test"
+    }
+  },
+  "LearningHistory": {
+    "title": "My Courses",
+    "description": "Track your completed courses and certificates",
+    "table": {
+      "headers": {
+        "course_name": "Course Name",
+        "status": "Status",
+        "enrolled_date": "Enrolled Date",
+        "progress": "Progress",
+        "action": "Action"
+      },
+      "states": {
+        "error": "Failed to load learning history"
+      },
+      "status": {
+        "unknown": "Unknown",
+        "pending": "Pending",
+        "completed": "Completed",
+        "failed": "Failed",
+        "cancelled": "Cancelled"
+      },
+      "progress": {
+        "completed": "Completed",
+        "lessons": "{count, plural, one {# lesson} other {# lessons}}"
+      },
+      "actions": {
+        "view_course": "View Course"
+      },
+      "not_available": "N/A"
     }
   },
   "CartPage": {

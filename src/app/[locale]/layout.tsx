@@ -12,9 +12,12 @@ export default async function LngLayout({ children, params }: TProps) {
   if (!hasLocale(routing.locales, locale)) {
     return notFound();
   }
+  const messages = (
+    await import(`../../../messages/${locale}.json`)
+  ).default;
   return (
     <div lang={locale}>
-      <NextIntlClientProvider>
+      <NextIntlClientProvider locale={locale} messages={messages}>
         {children}
       </NextIntlClientProvider>
     </div>

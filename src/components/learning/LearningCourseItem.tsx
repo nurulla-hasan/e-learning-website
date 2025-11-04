@@ -9,16 +9,19 @@ import { Badge } from "@/components/ui/badge";
 
 import { useLazyGetCertificateQuery } from "@/redux/feature/lesson/lessonApi";
 import { ErrorToast } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 type TProps = {
   course: ILearningCourse;
 };
 
 const LearningCourseItem = ({ course }: TProps) => {
+  const t = useTranslations("MyLearning.item");
   const progressPercentage = course.progress?.progressPercentage || 0;
   const isCompleted = progressPercentage === 100;
 
-  const [getCertificate, { isLoading: isCertificateLoading }] = useLazyGetCertificateQuery();
+  const [getCertificate, { isLoading: isCertificateLoading }] =
+    useLazyGetCertificateQuery();
 
   interface CertificateData {
     fullName?: string;
@@ -28,38 +31,46 @@ const LearningCourseItem = ({ course }: TProps) => {
     certificateNumber?: string;
   }
 
+  const fallbackValue = t("certificate.not_available");
+
   const replacePlaceholders = (html: string, data: CertificateData) => {
     return html
-      .replace(/\${fullName}/g, data.fullName || 'N/A')
+      .replace(/\${fullName}/g, data.fullName || fallbackValue)
       .replace(/&{startDate}/g, new Date(data.startDate).toLocaleDateString())
       .replace(/\${startDate}/g, new Date(data.startDate).toLocaleDateString())
       .replace(/&{endDate}/g, new Date(data.endDate).toLocaleDateString())
       .replace(/\${endDate}/g, new Date(data.endDate).toLocaleDateString())
-      .replace(/\${dob}/g, data.dob ? new Date(data.dob).toLocaleDateString() : 'N/A')
-      .replace(/\${certificateNumber}/g, data.certificateNumber || 'N/A')
-      .replace(/&{certificateNumber}/g, data.certificateNumber || 'N/A');
+      .replace(
+        /\${dob}/g,
+        data.dob ? new Date(data.dob).toLocaleDateString() : fallbackValue
+      )
+      .replace(/\${certificateNumber}/g, data.certificateNumber || fallbackValue)
+      .replace(/&{certificateNumber}/g, data.certificateNumber || fallbackValue);
   };
 
   const handleDownloadCertificate = async () => {
     try {
       const response = await getCertificate(course.courseId).unwrap();
-      console.log("API Response:", response); // Debug log
+      // console.log("API Response:", response); // Debug log
       const certificateHtml = response?.data?.certificateHtmlContent;
 
       if (!certificateHtml) {
-        console.log("API Response:", response); // Debug log
-        ErrorToast("Certificate content not found. Please try again later.");
+        // console.log("API Response:", response); // Debug log
+        ErrorToast(t("certificate.content_missing"));
         return;
       }
 
       if (certificateHtml) {
-        const processedHtml = replacePlaceholders(certificateHtml, response.data);
-        console.log("Processed HTML:", processedHtml); // Debug
+        const processedHtml = replacePlaceholders(
+          certificateHtml,
+          response.data
+        );
+        // console.log("Processed HTML:", processedHtml); // Debug
 
         // Create a new window for printing
-        const printWindow = window.open('', '_blank', 'width=800,height=600');
+        const printWindow = window.open("", "_blank", "width=800,height=600");
         if (!printWindow) {
-          ErrorToast("Failed to open print window. Please check your popup blocker.");
+          ErrorToast(t("certificate.print_window_error"));
           return;
         }
 
@@ -86,7 +97,7 @@ const LearningCourseItem = ({ course }: TProps) => {
         printWindow.document.close();
 
         printWindow.onload = () => {
-          console.log("Print window loaded successfully"); // Debug
+          // console.log("Print window loaded successfully"); // Debug
           // SuccessToast("Certificate opened successfully! Print dialog will open shortly.");
 
           // Small delay to ensure everything is loaded
@@ -102,9 +113,9 @@ const LearningCourseItem = ({ course }: TProps) => {
         };
         window.addEventListener("focus", afterPrint);
       }
-    } catch (error) {
-      console.error("Failed to download certificate", error);
-      ErrorToast("Failed to download certificate. Please check your connection and try again.");
+    } catch {
+      // console.error("Failed to download certificate", error);
+      ErrorToast(t("certificate.generic_error"));
     }
   };
 
@@ -114,16 +125,19 @@ const LearningCourseItem = ({ course }: TProps) => {
       const certificateHtml = response?.data?.certificateHtmlContent;
 
       if (!certificateHtml) {
-        console.log("API Response:", response); // Debug log
-        ErrorToast("Certificate content not found. Please try again later.");
+        // console.log("API Response:", response);
+        ErrorToast(t("certificate.content_missing"));
         return;
       }
 
       if (certificateHtml) {
-        const processedHtml = replacePlaceholders(certificateHtml, response.data);
+        const processedHtml = replacePlaceholders(
+          certificateHtml,
+          response.data
+        );
         const win = window.open("", "_blank");
         if (!win) {
-          ErrorToast("Failed to open new window. Please check your popup blocker settings.");
+          ErrorToast(t("certificate.popup_error"));
           return;
         }
         win.document.open();
@@ -132,12 +146,11 @@ const LearningCourseItem = ({ course }: TProps) => {
         // SuccessToast("Certificate opened successfully in new window!");
         win.focus();
       }
-    } catch (error) {
-      console.error("Failed to view certificate", error);
-      ErrorToast("Failed to view certificate. Please check your connection and try again.");
+    } catch {
+      // console.error("Failed to view certificate", error);
+      ErrorToast(t("certificate.view_error"));
     }
   };
-
 
   return (
     <>
@@ -158,7 +171,10 @@ const LearningCourseItem = ({ course }: TProps) => {
                   priority
                 />
               </div>
-              <Link href={`/my-learning/${course.courseId}`} className="absolute inset-0 z-10" />
+              <Link
+                href={`/my-learning/${course.courseId}`}
+                className="absolute inset-0 z-10"
+              />
             </div>
 
             {/* Course Content - Right Side */}
@@ -168,10 +184,10 @@ const LearningCourseItem = ({ course }: TProps) => {
                   <h3 className="font-semibold text-card-foreground text-lg leading-tight">
                     {course.courseTitle}
                   </h3>
-                  {course.lifetimeAccess && <Badge>Lifetime Access</Badge>}
+                  {course.lifetimeAccess && <Badge>{t("lifetime_access")}</Badge>}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  By {course.instructorName}
+                  {t("instructor_prefix", { name: course.instructorName })}
                 </p>
                 <p className="text-sm text-muted-foreground line-clamp-2">
                   {course.courseShortDescription}
@@ -186,16 +202,18 @@ const LearningCourseItem = ({ course }: TProps) => {
                   {course.courseLevel}
                 </span>
                 <span className="text-xs">
-                  {course.totalLessons} lessons • {course.totalSections}{" "}
-                  sections
+                  {t("stats.lesson_section", {
+                    lessons: course.totalLessons,
+                    sections: course.totalSections,
+                  })}
                 </span>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Progress</span>
+                  <span className="text-muted-foreground">{t("stats.progress_label")}</span>
                   <span className="font-medium text-card-foreground">
-                    {progressPercentage}% Complete
+                    {t("stats.progress_value", { value: progressPercentage })}
                   </span>
                 </div>
                 <Progress value={progressPercentage} className="h-2" />
@@ -205,28 +223,32 @@ const LearningCourseItem = ({ course }: TProps) => {
                 {isCompleted && (
                   <div className="flex flex-wrap gap-2">
                     {/* {course.certificate && ( */}
-                      <>
-                        <Button
-                          onClick={handleDownloadCertificate}
-                          variant="outline"
-                          size="sm"
-                          className="gap-2"
-                          disabled={isCertificateLoading}
-                        >
-                          <Download className="h-4 w-4" />
-                          {isCertificateLoading ? "Loading..." : "Download & Print"}
-                        </Button>
-                        <Button
-                          onClick={handleViewCertificate}
-                          variant="outline"
-                          size="sm"
-                          className="gap-2"
-                          disabled={isCertificateLoading}
-                        >
-                          <Eye className="h-4 w-4" />
-                          {isCertificateLoading ? "Loading..." : "View Certificate"}
-                        </Button>
-                      </>
+                    <>
+                      <Button
+                        onClick={handleDownloadCertificate}
+                        variant="outline"
+                        size="sm"
+                        className="gap-2"
+                        disabled={isCertificateLoading}
+                      >
+                        <Download className="h-4 w-4" />
+                        {isCertificateLoading
+                          ? t("certificate.loading")
+                          : t("certificate.download")}
+                      </Button>
+                      <Button
+                        onClick={handleViewCertificate}
+                        variant="outline"
+                        size="sm"
+                        className="gap-2"
+                        disabled={isCertificateLoading}
+                      >
+                        <Eye className="h-4 w-4" />
+                        {isCertificateLoading
+                          ? t("certificate.loading")
+                          : t("certificate.view")}
+                      </Button>
+                    </>
                     {/* )} */}
                   </div>
                 )}

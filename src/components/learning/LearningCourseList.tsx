@@ -5,10 +5,12 @@ import { useGetMyCoursesQuery } from "@/redux/feature/course/courseApi";
 import { ILearningCourse } from "@/types/course.type";
 import PageLayout from "@/tools/PageLayout";
 import CustomPagination from "@/tools/CustomPagination";
+import { useTranslations } from "next-intl";
 
 const LearningCourseList = () => {
   const { currentPage, setCurrentPage, totalPages, items, isLoading, isError } =
     useSmartFetchHook<ILearningCourse>(useGetMyCoursesQuery);
+  const t = useTranslations("MyLearning.list");
 
   if (isLoading) {
     return (
@@ -69,12 +71,12 @@ const LearningCourseList = () => {
     return (
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center py-8">
-          <p className="text-red-500 mb-4">Error loading courses</p>
+          <p className="text-red-500 mb-4">{t("error_loading")}</p>
           <button
             className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
             onClick={() => window.location.reload()}
           >
-            Try Again
+            {t("retry")}
           </button>
         </div>
       </div>
@@ -95,7 +97,7 @@ const LearningCourseList = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <h1 className="text-sm font-medium text-muted-foreground">
-          Showing {items.length} {items.length === 1 ? "course" : "courses"}
+          {t("showing", { count: items.length })}
         </h1>
       </div>
 
@@ -104,15 +106,15 @@ const LearningCourseList = () => {
         {items.length === 0 ? (
           <div className="col-span-full text-center py-12">
             <p className="text-muted-foreground text-lg">
-              No enrolled courses found
+              {t("empty_title")}
             </p>
             <p className="text-muted-foreground text-sm mt-2">
-              Start learning by enrolling in a course
+              {t("empty_subtitle")}
             </p>
           </div>
         ) : (
           items
-            .filter((course: ILearningCourse) => course != null && course.id != null)
+            .filter((course: ILearningCourse) => course !== null && course.id !== null)
             .map((course: ILearningCourse, index: number) => (
               <LearningCourseItem key={course.id || index} course={course} />
             ))

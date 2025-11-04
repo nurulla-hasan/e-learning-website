@@ -1,4 +1,3 @@
-
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,40 +12,64 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRegisterMutation } from "@/redux/feature/auth/authApi";
+import { useTranslations } from "next-intl";
 
-const companyRegisterSchema = z
-  .object({
-    companyName: z.string().min(1, { message: "Company name is required." }),
-    companyEmail: z
-      .string()
-      .min(1, { message: "Company email is required." })
-      .email({ message: "Invalid email address." }),
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters." }),
-    confirmPassword: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters." }),
-    companyAddress: z
-      .string()
-      .min(1, { message: "Company address is required." }),
-    companyVatId: z.string().min(1, { message: "VAT ID is required." }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ["confirmPassword"],
-  });
+type TranslationFn = (
+  key: string,
+  values?: Record<string, string | number | Date>
+) => string;
+
+const createCompanySchema = (t: TranslationFn) =>
+  z
+    .object({
+      companyName: z
+        .string()
+        .min(1, { message: t("errors.company_name_required") }),
+      companyEmail: z
+        .string()
+        .min(1, { message: t("errors.company_email_required") })
+        .email({ message: t("errors.company_email_invalid") }),
+      password: z
+        .string()
+        .min(6, { message: t("errors.password_min") }),
+      confirmPassword: z
+        .string()
+        .min(6, { message: t("errors.confirm_password_min") }),
+      companyAddress: z
+        .string()
+        .min(1, { message: t("errors.company_address_required") }),
+      companyVatId: z
+        .string()
+        .min(1, { message: t("errors.vat_required") }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("errors.password_mismatch"),
+      path: ["confirmPassword"],
+    });
+
+type CompanyFormSchema = z.infer<ReturnType<typeof createCompanySchema>>;
 
 const CompanySignUpForm = () => {
+  const t = useTranslations("Auth.company");
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const [register, { isLoading }] = useRegisterMutation();
 
-  const form = useForm({
-    resolver: zodResolver(companyRegisterSchema),
+  const translationFn = useMemo<TranslationFn>(
+    () => (key, values) => t(key, values),
+    [t]
+  );
+
+  const formSchema = useMemo(
+    () => createCompanySchema(translationFn),
+    [translationFn]
+  );
+
+  const form = useForm<CompanyFormSchema>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       companyName: "",
       companyEmail: "",
@@ -57,7 +80,7 @@ const CompanySignUpForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof companyRegisterSchema>) => {
+  const onSubmit = (data: CompanyFormSchema) => {
     const payload = {
       fullName: data.companyName,
       email: data.companyEmail,
@@ -67,7 +90,7 @@ const CompanySignUpForm = () => {
       companyAddress: data.companyAddress,
       companyVatId: data.companyVatId,
     };
-    console.log(payload);
+    // console.log(payload);
     register(payload);
   };
 
@@ -79,9 +102,12 @@ const CompanySignUpForm = () => {
           name="companyName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Company Name</FormLabel>
+              <FormLabel>{t("labels.company_name")}</FormLabel>
               <FormControl>
-                <Input placeholder="Enter company name" {...field} />
+                <Input
+                  placeholder={t("placeholders.company_name")}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -93,11 +119,11 @@ const CompanySignUpForm = () => {
           name="companyEmail"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Company Email</FormLabel>
+              <FormLabel>{t("labels.company_email")}</FormLabel>
               <FormControl>
                 <Input
                   type="email"
-                  placeholder="company@example.com"
+                  placeholder={t("placeholders.company_email")}
                   {...field}
                 />
               </FormControl>
@@ -111,9 +137,12 @@ const CompanySignUpForm = () => {
           name="companyAddress"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Company Address</FormLabel>
+              <FormLabel>{t("labels.company_address")}</FormLabel>
               <FormControl>
-                <Input placeholder="Enter company address" {...field} />
+                <Input
+                  placeholder={t("placeholders.company_address")}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -125,9 +154,12 @@ const CompanySignUpForm = () => {
           name="companyVatId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>NIP ID</FormLabel>
+              <FormLabel>{t("labels.company_vat")}</FormLabel>
               <FormControl>
-                <Input placeholder="Enter NIP ID" {...field} />
+                <Input
+                  placeholder={t("placeholders.company_vat")}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -139,12 +171,12 @@ const CompanySignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{t("labels.password")}</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder="********"
+                    placeholder={t("placeholders.password")}
                     {...field}
                   />
                   <button
@@ -152,11 +184,7 @@ const CompanySignUpForm = () => {
                     className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
                     onClick={togglePasswordVisibility}
                   >
-                    {showPassword ? (
-                      <EyeOff size={20} />
-                    ) : (
-                      <Eye size={20} />
-                    )}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
               </FormControl>
@@ -170,12 +198,12 @@ const CompanySignUpForm = () => {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel>{t("labels.confirm_password")}</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder="********"
+                    placeholder={t("placeholders.confirm_password")}
                     {...field}
                   />
                   <button
@@ -183,11 +211,7 @@ const CompanySignUpForm = () => {
                     className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
                     onClick={togglePasswordVisibility}
                   >
-                    {showPassword ? (
-                      <EyeOff size={20} />
-                    ) : (
-                      <Eye size={20} />
-                    )}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
               </FormControl>
@@ -197,7 +221,7 @@ const CompanySignUpForm = () => {
         />
 
         <Button type="submit" className="w-full" loading={isLoading}>
-          Create Company Account
+          {t("buttons.submit")}
         </Button>
       </form>
     </Form>

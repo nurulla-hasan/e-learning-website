@@ -6,6 +6,7 @@ import { Check, Lock, Video, FileImage, Play } from "lucide-react";
 import type { Lesson, Section } from "@/types/course/enroll.details.type";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import ConfirmationModal from "@/components/modal/ConfirmationModal";
 
@@ -43,6 +44,7 @@ const LearningSidebar: React.FC<Props> = ({
   userRole,
 }) => {
   const router = useRouter();
+  const t = useTranslations("MyLearning.sidebar");
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedTest, setSelectedTest] = React.useState<Test | null>(null);
 
@@ -70,21 +72,29 @@ const LearningSidebar: React.FC<Props> = ({
     onSectionChange(sectionId);
   };
 
+  const progressValue = progressPercent ?? 0;
+  const completedLessons =
+    sections
+      ?.flatMap((s) => s?.Lesson || [])
+      .filter((lesson) => isLessonDone(lesson)).length || 0;
+  const totalLessons =
+    sections?.flatMap((s) => s?.Lesson || []).length ?? 0;
+
   return (
     <div className="space-y-4 sticky top-22 max-h-[90vh] overflow-y-auto">
       <Card className="p-4">
-        <h3 className="font-semibold mb-3">Course Content</h3>
+        <h3 className="font-semibold mb-3">{t("title")}</h3>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm mb-2">
-            <span>Progress: {progressPercent || 0}%</span>
+            <span>{t("progress_label", { value: progressValue })}</span>
             <span className="text-muted-foreground">
-              {sections
-                ?.flatMap((s) => s?.Lesson || [])
-                .filter((l) => isLessonDone(l)).length || 0}
-              /{sections?.flatMap((s) => s?.Lesson || []).length || 0} lessons
+              {t("progress_summary", {
+                completed: completedLessons,
+                total: totalLessons,
+              })}
             </span>
           </div>
-          <Progress value={progressPercent || 0} className="h-2" />
+          <Progress value={progressValue} className="h-2" />
         </div>
       </Card>
 
@@ -166,7 +176,7 @@ const LearningSidebar: React.FC<Props> = ({
           </div>
           {selectedSection.Test?.length > 0 ? (
             <div className="p-4 space-y-2">
-              <h4 className="font-semibold">Tests</h4>
+              <h4 className="font-semibold">{t("tests.title")}</h4>
               {selectedSection.Test?.map((test) => (
                 <div
                   key={test.id}
@@ -175,7 +185,7 @@ const LearningSidebar: React.FC<Props> = ({
                   <span className="text-sm">{test.title}</span>
                   {userRole !== "COMPANY" && (
                     <Button size="sm" onClick={() => handleStartTest(test)}>
-                      Start Test
+                      {t("tests.start_button")}
                     </Button>
                   )}
                 </div>
@@ -183,9 +193,9 @@ const LearningSidebar: React.FC<Props> = ({
             </div>
           ) : (
             <div className="p-4 space-y-2">
-              <h4 className="font-semibold">Tests</h4>
+              <h4 className="font-semibold">{t("tests.title")}</h4>
               <p className="text-sm text-muted-foreground">
-                No tests available for this section.
+                {t("tests.empty")}
               </p>
             </div>
           )}
@@ -195,8 +205,8 @@ const LearningSidebar: React.FC<Props> = ({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmTest}
-        title="Start Test"
-        description="Are you sure you want to start the test? You can only attempt this test once."
+        title={t("tests.modal_title")}
+        description={t("tests.modal_description")}
       />
     </div>
   );

@@ -50,7 +50,153 @@
     "my_orders": "Moje Zamówienia",
     "training_request": "Zgłoszenie szkoleniowe",
     "sign_in": "Zaloguj się",
+    "sign_up": "Zarejestruj się",
     "logout": "Wyloguj się"
+  },
+  "Auth": {
+    "signup": {
+      "title": "Utwórz konto",
+      "subtitle": "Wprowadź swoje dane, aby utworzyć konto.",
+      "tabs": {
+        "student": "Student",
+        "company": "Firma"
+      },
+      "labels": {
+        "fullname": "Imię i nazwisko",
+        "email": "Email",
+        "date_of_birth": "Data urodzenia",
+        "password": "Hasło",
+        "confirm_password": "Potwierdź hasło"
+      },
+      "placeholders": {
+        "fullname": "Jan Kowalski",
+        "email": "przyklad@email.com",
+        "date_of_birth": "dd-mm-rrrr",
+        "password": "********",
+        "confirm_password": "********"
+      },
+      "buttons": {
+        "submit": "Utwórz konto"
+      },
+      "links": {
+        "have_account": "Masz już konto?",
+        "login": "Zaloguj się"
+      },
+      "errors": {
+        "fullname_required": "Imię i nazwisko jest wymagane.",
+        "email_required": "Email jest wymagany.",
+        "email_invalid": "Nieprawidłowy adres email.",
+        "date_required": "Data urodzenia jest wymagana.",
+        "date_format": "Data musi być w formacie dd-mm-rrrr.",
+        "password_min": "Hasło musi mieć co najmniej 6 znaków.",
+        "confirm_password_min": "Potwierdzenie hasła musi mieć co najmniej 6 znaków.",
+        "password_mismatch": "Hasła nie są takie same."
+      }
+    },
+    "company": {
+      "labels": {
+        "company_name": "Nazwa firmy",
+        "company_email": "Email firmy",
+        "company_address": "Adres firmy",
+        "company_vat": "NIP",
+        "password": "Hasło",
+        "confirm_password": "Potwierdź hasło"
+      },
+      "placeholders": {
+        "company_name": "Wpisz nazwę firmy",
+        "company_email": "firma@przyklad.com",
+        "company_address": "Wpisz adres firmy",
+        "company_vat": "Wpisz NIP",
+        "password": "********",
+        "confirm_password": "********"
+      },
+      "buttons": {
+        "submit": "Utwórz konto firmowe"
+      },
+      "errors": {
+        "company_name_required": "Nazwa firmy jest wymagana.",
+        "company_email_required": "Email firmy jest wymagany.",
+        "company_email_invalid": "Nieprawidłowy adres email.",
+        "company_address_required": "Adres firmy jest wymagany.",
+        "vat_required": "NIP jest wymagany.",
+        "password_min": "Hasło musi mieć co najmniej 6 znaków.",
+        "confirm_password_min": "Potwierdzenie hasła musi mieć co najmniej 6 znaków.",
+        "password_mismatch": "Hasła nie są takie same."
+      }
+    },
+    "login": {
+      "title": "Witaj ponownie",
+      "subtitle": "Podaj swoje dane logowania, aby kontynuować.",
+      "labels": {
+        "email": "Email",
+        "password": "Hasło"
+      },
+      "placeholders": {
+        "email": "Wpisz swój email",
+        "password": "********"
+      },
+      "buttons": {
+        "submit": "Zaloguj się"
+      },
+      "links": {
+        "forgot_password": "Zapomniałeś hasła?",
+        "no_account": "Nie masz konta?",
+        "sign_up": "Zarejestruj się"
+      },
+      "errors": {
+        "email_required": "Email jest wymagany.",
+        "email_invalid": "Nieprawidłowy adres email.",
+        "password_min": "Hasło musi mieć co najmniej 6 znaków."
+      }
+    },
+    "forgot": {
+      "title": "Zapomniałeś hasła?",
+      "subtitle": "Podaj swój email, aby zresetować hasło.",
+      "labels": {
+        "email": "Email"
+      },
+      "placeholders": {
+        "email": "Wpisz swój email"
+      },
+      "buttons": {
+        "submit": "Wyślij kod resetujący"
+      },
+      "errors": {
+        "email_required": "Email jest wymagany.",
+        "email_invalid": "Nieprawidłowy adres email."
+      }
+    },
+    "reset": {
+      "title": "Zresetuj swoje hasło",
+      "subtitle": "Wpisz nowe hasło poniżej.",
+      "labels": {
+        "new_password": "Nowe hasło",
+        "confirm_new_password": "Potwierdź nowe hasło"
+      },
+      "placeholders": {
+        "new_password": "********",
+        "confirm_new_password": "********"
+      },
+      "buttons": {
+        "submit": "Zresetuj hasło"
+      },
+      "errors": {
+        "password_min": "Hasło musi mieć co najmniej 6 znaków.",
+        "confirm_password_min": "Potwierdzenie hasła musi mieć co najmniej 6 znaków.",
+        "password_mismatch": "Hasła nie są takie same."
+      }
+    },
+    "otp": {
+      "title": "Zweryfikuj kod",
+      "subtitle": "Wpisz kod weryfikacyjny wysłany na Twój email.",
+      "instructions": "Podaj {length}-cyfrowy kod",
+      "buttons": {
+        "submit": "Zweryfikuj"
+      },
+      "input": {
+        "aria_label": "Cyfra weryfikacyjna {index}"
+      }
+    }
   },
   "HomePage": {
     "our_top_categories": "Nasze Najlepsze Kategorie",
@@ -186,6 +332,170 @@
     "common": {
       "yes": "Tak",
       "no": "Nie"
+    }
+  },
+  "MyLearning": {
+    "list": {
+      "error_loading": "Błąd podczas ładowania kursów",
+      "retry": "Spróbuj ponownie",
+      "showing": "Wyświetlanie {count, plural, one {# kursu} few {# kursy} many {# kursów} other {# kursów}}",
+      "empty_title": "Brak zapisanych kursów",
+      "empty_subtitle": "Rozpocznij naukę zapisując się na kurs"
+    },
+    "item": {
+      "lifetime_access": "Dostęp na całe życie",
+      "instructor_prefix": "Prowadzący: {name}",
+      "stats": {
+        "lesson_section": "{lessons} lekcji • {sections} sekcji",
+        "progress_label": "Postęp",
+        "progress_value": "{value}% ukończone"
+      },
+      "certificate": {
+        "not_available": "Brak danych",
+        "content_missing": "Nie znaleziono treści certyfikatu. Spróbuj ponownie później.",
+        "print_window_error": "Nie udało się otworzyć okna wydruku. Sprawdź blokadę wyskakujących okien.",
+        "generic_error": "Nie udało się pobrać certyfikatu. Sprawdź połączenie i spróbuj ponownie.",
+        "popup_error": "Nie udało się otworzyć nowego okna. Sprawdź ustawienia blokady wyskakujących okien.",
+        "view_error": "Nie udało się wyświetlić certyfikatu. Sprawdź połączenie i spróbuj ponownie.",
+        "loading": "Ładowanie...",
+        "download": "Pobierz i wydrukuj",
+        "view": "Zobacz certyfikat"
+      }
+    },
+    "details": {
+      "errors": {
+        "loading_title": "Błąd ładowania kursu",
+        "loading_description": "Wystąpił błąd podczas ładowania kursu. Spróbuj ponownie później.",
+        "not_found_title": "Nie znaleziono kursu",
+        "not_found_description": "Nie udało się wczytać żądanego kursu."
+      },
+      "player": {
+        "select_lesson": "Wybierz lekcję, aby rozpocząć"
+      },
+      "tabs": {
+        "overview": "Przegląd",
+        "resources": "Materiały"
+      },
+      "overview": {
+        "title": "O tym kursie",
+        "no_description": "Brak opisu"
+      },
+      "instructor": {
+        "title": "Twój instruktor",
+        "unknown_name": "Nieznany instruktor",
+        "default_designation": "Instruktor kursu",
+        "default_bio": "Doświadczony specjalista w swojej dziedzinie"
+      },
+      "stats": {
+        "lessons": "Lekcje",
+        "sections": "Sekcje",
+        "level": "Poziom",
+        "difficulty": "Trudność",
+        "default_level": "Początkujący",
+        "default_difficulty": "Łatwy"
+      },
+      "resources": {
+        "title": "Moduły kursu",
+        "module_count": "{count, plural, one {# moduł} few {# moduły} many {# modułów} other {# modułów}}",
+        "active": "Aktywny",
+        "lessons_completed": "{completed} z {total} lekcji ukończonych",
+        "module_label": "Moduł {order}"
+      }
+    },
+    "sidebar": {
+      "title": "Zawartość kursu",
+      "progress_label": "Postęp: {value}%",
+      "progress_summary": "{completed}/{total} lekcji",
+      "tests": {
+        "title": "Testy",
+        "start_button": "Rozpocznij test",
+        "empty": "Brak testów dostępnych dla tej sekcji.",
+        "modal_title": "Rozpocznij test",
+        "modal_description": "Czy na pewno chcesz rozpocząć test? Możesz podejść do niego tylko raz."
+      }
+    }
+  },
+  "TestExam": {
+    "toast": {
+      "submit_error": "Wystąpił błąd podczas przesyłania testu"
+    },
+    "summary": {
+      "questions": "{count, plural, one {# pytanie} few {# pytania} many {# pytań} other {# pytań}}"
+    },
+    "buttons": {
+      "submitting": "Przesyłanie...",
+      "submit": "Zatwierdź test"
+    }
+  },
+  "LearningHistory": {
+    "title": "Moje kursy",
+    "description": "Śledź ukończone kursy i certyfikaty",
+    "table": {
+      "headers": {
+        "course_name": "Nazwa kursu",
+        "status": "Status",
+        "enrolled_date": "Data zapisania",
+        "progress": "Postęp",
+        "action": "Działanie"
+      },
+      "states": {
+        "error": "Nie udało się wczytać historii nauki"
+      },
+      "status": {
+        "unknown": "Nieznany",
+        "pending": "Oczekujący",
+        "completed": "Ukończony",
+        "failed": "Niepowodzenie",
+        "cancelled": "Anulowany"
+      },
+      "progress": {
+        "completed": "Ukończono",
+        "lessons": "{count, plural, one {# lekcja} few {# lekcje} many {# lekcji} other {# lekcji}}"
+      },
+      "actions": {
+        "view_course": "Zobacz kurs"
+      },
+      "not_available": "Brak danych"
+    }
+  },
+  "Orders": {
+    "table": {
+      "headers": {
+        "course_name": "Nazwa kursu",
+        "date": "Data",
+        "amount": "Kwota",
+        "status": "Status",
+        "invoice": "Faktura",
+        "action": "Akcja"
+      },
+      "states": {
+        "error": "Nie udało się wczytać zamówień"
+      },
+      "status": {
+        "unknown": "Nieznany",
+        "pending": "Oczekujące",
+        "completed": "Zakończone",
+        "processing": "Przetwarzanie",
+        "failed": "Niepowodzenie",
+        "cancelled": "Anulowane",
+        "refunded": "Zwrócone"
+      },
+      "amount": "zł {value}",
+      "actions": {
+        "view_course": "Zobacz kurs"
+      },
+      "invoice": {
+        "title": "Faktura",
+        "none": "Brak faktury",
+        "download": "Pobierz fakturę",
+        "meta": {
+          "order_id": "ID zamówienia",
+          "date": "Data",
+          "course": "Kurs",
+          "amount": "Kwota"
+        }
+      },
+      "not_available": "Brak danych"
     }
   },
   "CartPage": {

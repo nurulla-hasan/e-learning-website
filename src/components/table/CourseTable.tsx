@@ -7,6 +7,7 @@ import { Eye } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslations } from "next-intl";
 
 import { LearningHistoryItem } from "@/types/learning-history.type";
 
@@ -19,6 +20,32 @@ const CourseTable = ({
   isLoading?: boolean;
   isError?: boolean;
 }) => {
+  const t = useTranslations("LearningHistory.table");
+
+  const getPaymentStatusLabel = (status?: string | null) => {
+    if (!status) {
+      return t("status.unknown");
+    }
+    const key = status.toLowerCase();
+    return t(`status.${key}`, { defaultMessage: status });
+  };
+
+  const getProgressLabel = (course: LearningHistoryItem) => {
+    if (course.isCompleted) {
+      return t("progress.completed");
+    }
+    return t("progress.lessons", {
+      count: course.totalLessons ?? 0,
+    });
+  };
+
+  const getEnrolledDate = (date?: string | null) => {
+    if (!date) {
+      return t("not_available");
+    }
+    return new Date(date).toLocaleDateString();
+  };
+
   return (
     <Card className="overflow-hidden p-0 mb-4">
       {/* Desktop Table View */}
@@ -26,11 +53,21 @@ const CourseTable = ({
         <table className="w-full">
           <thead className="border-b bg-muted/50">
             <tr>
-              <th className="text-left p-4 font-semibold text-foreground">Course Name</th>
-              <th className="text-left p-4 font-semibold text-foreground">Status</th>
-              <th className="text-left p-4 font-semibold text-foreground">Enrolled Date</th>
-              <th className="text-left p-4 font-semibold text-foreground">Progress</th>
-              <th className="text-left p-4 font-semibold text-foreground">Action</th>
+              <th className="text-left p-4 font-semibold text-foreground">
+                {t("headers.course_name")}
+              </th>
+              <th className="text-left p-4 font-semibold text-foreground">
+                {t("headers.status")}
+              </th>
+              <th className="text-left p-4 font-semibold text-foreground">
+                {t("headers.enrolled_date")}
+              </th>
+              <th className="text-left p-4 font-semibold text-foreground">
+                {t("headers.progress")}
+              </th>
+              <th className="text-left p-4 font-semibold text-foreground">
+                {t("headers.action")}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -47,15 +84,20 @@ const CourseTable = ({
             ) : isError ? (
               <tr>
                 <td colSpan={5} className="p-4">
-                  <p className="text-center text-red-500">Failed to load learning history</p>
+                  <p className="text-center text-red-500">
+                    {t("states.error")}
+                  </p>
                 </td>
               </tr>
             ) : (
               items.map((course, index) => (
-                <tr key={course.id} className={index !== items.length - 1 ? "border-b" : ""}>
+                <tr
+                  key={course.id}
+                  className={index !== items.length - 1 ? "border-b" : ""}
+                >
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <div className="relative h-10 w-10 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                      <div className="relative h-10 w-10 rounded-lg overflow-hidden bg-muted shrink-0">
                         <Image
                           src={course.courseThumbnail || "/placeholder.svg"}
                           alt={course.courseTitle}
@@ -64,23 +106,33 @@ const CourseTable = ({
                           className="object-cover"
                         />
                       </div>
-                      <span className="font-medium text-foreground text-pretty">{course.courseTitle}</span>
+                      <span className="font-medium text-foreground text-pretty">
+                        {course.courseTitle}
+                      </span>
                     </div>
                   </td>
                   <td className="p-4">
                     <Badge
-                      variant={course.paymentStatus === "COMPLETED" ? "default" : "secondary"}
-                      className={course.paymentStatus === "COMPLETED" ? "bg-green-100 text-green-800" : ""}
+                      variant={
+                        course.paymentStatus === "COMPLETED"
+                          ? "default"
+                          : "secondary"
+                      }
+                      className={
+                        course.paymentStatus === "COMPLETED"
+                          ? "bg-green-100 text-green-800"
+                          : ""
+                      }
                     >
-                      {course.paymentStatus}
+                      {getPaymentStatusLabel(course.paymentStatus)}
                     </Badge>
                   </td>
                   <td className="p-4 text-muted-foreground">
-                    {course.enrolledAt ? new Date(course.enrolledAt).toLocaleDateString() : "N/A"}
+                    {getEnrolledDate(course.enrolledAt)}
                   </td>
                   <td className="p-4">
                     <span className="text-sm text-muted-foreground">
-                      {course.isCompleted ? "Completed" : `${course.totalLessons} lessons`}
+                      {getProgressLabel(course)}
                     </span>
                   </td>
                   <td className="p-4">
@@ -91,7 +143,7 @@ const CourseTable = ({
                         className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                       >
                         <Eye className="h-4 w-4 mr-1" />
-                        View Course
+                        {t("actions.view_course")}
                       </Button>
                     </Link>
                   </td>
@@ -111,12 +163,14 @@ const CourseTable = ({
             <Skeleton className="h-20 w-full" />
           </>
         ) : isError ? (
-          <p className="text-center text-red-500 py-8">Failed to load learning history</p>
+          <p className="text-center text-red-500 py-8">
+            {t("states.error")}
+          </p>
         ) : (
           items.map((course) => (
             <Card key={course.id} className="p-4 space-y-3">
               <div className="flex items-start gap-3">
-                <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-muted shrink-0">
                   <Image
                     src={course.courseThumbnail || "/placeholder.svg"}
                     alt={course.courseTitle}
@@ -131,17 +185,25 @@ const CourseTable = ({
                   </h3>
                   <div className="flex items-center gap-2 mt-1">
                     <Badge
-                      variant={course.paymentStatus === "COMPLETED" ? "default" : "secondary"}
-                      className={course.paymentStatus === "COMPLETED" ? "bg-green-100 text-green-800" : ""}
+                      variant={
+                        course.paymentStatus === "COMPLETED"
+                          ? "default"
+                          : "secondary"
+                      }
+                      className={
+                        course.paymentStatus === "COMPLETED"
+                          ? "bg-green-100 text-green-800"
+                          : ""
+                      }
                     >
-                      {course.paymentStatus}
+                      {getPaymentStatusLabel(course.paymentStatus)}
                     </Badge>
                     <span className="text-sm text-muted-foreground">
-                      {course.enrolledAt ? new Date(course.enrolledAt).toLocaleDateString() : "N/A"}
+                      {getEnrolledDate(course.enrolledAt)}
                     </span>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {course.isCompleted ? "Completed" : `${course.totalLessons} lessons`}
+                    {getProgressLabel(course)}
                   </p>
                 </div>
               </div>
@@ -154,7 +216,7 @@ const CourseTable = ({
                     className="w-full text-blue-600 border-blue-200 hover:bg-blue-50"
                   >
                     <Eye className="h-4 w-4 mr-1" />
-                    View Course
+                    {t("actions.view_course")}
                   </Button>
                 </Link>
               </div>

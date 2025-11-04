@@ -154,6 +154,13 @@ const NavDropDown = ({
               <LogIn />
               <span>{t("sign_in")}</span>
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleNavigate("/sign-up")}
+              className="cursor-pointer"
+            >
+              <LogIn />
+              <span>{t("sign_up")}</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </>
       )}

@@ -8,6 +8,7 @@ import Image from "next/image";
 import { IOrder } from "@/types/order.type";
 import { Skeleton } from "../ui/skeleton";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 const OrdersTable = ({
   items,
@@ -18,29 +19,68 @@ const OrdersTable = ({
   isLoading?: boolean;
   isError?: boolean;
 }) => {
+  const t = useTranslations("Orders.table");
+
+  const getStatusLabel = (status?: string | null) => {
+    if (!status) {
+      return t("status.unknown");
+    }
+    const key = status.toLowerCase();
+    return t(`status.${key}`, { defaultMessage: status });
+  };
+
+  const getFormattedDate = (date?: string | null) => {
+    if (!date) {
+      return t("not_available");
+    }
+    return new Date(date).toLocaleDateString();
+  };
+
+  const formatAmount = (amount?: number | null) => {
+    const value = amount ?? 0;
+    return t("amount", { value });
+  };
+
   const esc = (val: unknown) =>
-    String(val ?? "").replace(/[&<>"']/g, (c) => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-    }[c] as string));
+    String(val ?? "").replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        }[c] as string)
+    );
 
   const handlePrintInvoice = (order: IOrder) => {
     if (!order?.invoice) return;
+    const invoiceTitle = t("invoice.title");
+    const metaOrderId = t("invoice.meta.order_id");
+    const metaDate = t("invoice.meta.date");
+    const metaCourse = t("invoice.meta.course");
+    const metaAmount = t("invoice.meta.amount");
     const rows = Object.entries(order.invoice)
-      .map(
-        ([k, v]) =>
-          `<tr><td>${esc(k)}</td><td>${esc(v ?? "")}</td></tr>`
-      )
+      .map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v ?? "")}</td></tr>`)
       .join("");
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Invoice ${esc(order.invoice["Invoice Number"] ?? "")}</title><style>body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,Noto Sans,sans-serif;padding:24px;color:#0f172a} .container{max-width:800px;margin:0 auto} h1{font-size:24px;margin-bottom:16px} .meta{margin-bottom:16px} .meta div{margin:4px 0} table{width:100%;border-collapse:collapse} td{border:1px solid #e5e7eb;padding:8px;font-size:14px} td:first-child{width:40%;background:#f8fafc;font-weight:500}</style></head><body><div class="container"><h1>Invoice</h1><div class="meta"><div>Order ID: ${esc(order.id)}</div><div>Date: ${esc(new Date(order.enrolledAt).toLocaleDateString())}</div><div>Course: ${esc(order.courseTitle)}</div><div>Amount: ${esc(String(order.coursePrice))}</div></div><table>${rows}</table></div><script>window.onload=function(){window.focus();window.print();}</script></body></html>`;
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1" /><title>${esc(
+      order.invoice["Invoice Number"] ?? ""
+    )}</title><style>body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,Noto Sans,sans-serif;padding:24px;color:#0f172a} .container{max-width:800px;margin:0 auto} h1{font-size:24px;margin-bottom:16px} .meta{margin-bottom:16px} .meta div{margin:4px 0} table{width:100%;border-collapse:collapse} td{border:1px solid #e5e7eb;padding:8px;font-size:14px} td:first-child{width:40%;background:#f8fafc;font-weight:500}</style></head><body><div class="container"><h1>${esc(
+      invoiceTitle
+    )}</h1><div class="meta"><div>${esc(metaOrderId)}: ${esc(
+      order.id
+    )}</div><div>${esc(metaDate)}: ${esc(
+      getFormattedDate(order.enrolledAt)
+    )}</div><div>${esc(metaCourse)}: ${esc(
+      order.courseTitle
+    )}</div><div>${esc(metaAmount)}: ${esc(
+      formatAmount(order.coursePrice)
+    )}</div></div><table>${rows}</table></div><script>window.onload=function(){window.focus();window.print();}</script></body></html>`;
     const w = window.open("", "_blank");
     if (!w) return;
     w.document.open();
     w.document.write(html);
-    w.document.close();
   };
 
   return (
@@ -50,22 +90,22 @@ const OrdersTable = ({
           <thead>
             <tr className="border-b bg-muted/50">
               <th className="text-left p-4 font-medium text-muted-foreground">
-                Course Name
+                {t("headers.course_name")}
               </th>
               <th className="text-left p-4 font-medium text-muted-foreground">
-                Date
+                {t("headers.date")}
               </th>
               <th className="text-left p-4 font-medium text-muted-foreground">
-                Amount
+                {t("headers.amount")}
               </th>
               <th className="text-left p-4 font-medium text-muted-foreground">
-                Status
+                {t("headers.status")}
               </th>
               <th className="text-left p-4 font-medium text-muted-foreground">
-                Invoice
+                {t("headers.invoice")}
               </th>
               <th className="text-left p-4 font-medium text-muted-foreground">
-                Action
+                {t("headers.action")}
               </th>
             </tr>
           </thead>
@@ -87,7 +127,7 @@ const OrdersTable = ({
               <tr>
                 <td colSpan={7} className="p-4">
                   <p className="text-center text-red-500">
-                    Failed to load orders
+                    {t("states.error")}
                   </p>
                 </td>
               </tr>
@@ -117,14 +157,12 @@ const OrdersTable = ({
                   </td>
                   <td className="p-4">
                     <span className="text-sm text-muted-foreground">
-                      {order?.enrolledAt
-                        ? new Date(order.enrolledAt).toLocaleDateString()
-                        : "N/A"}
+                      {getFormattedDate(order?.enrolledAt)}
                     </span>
                   </td>
                   <td className="p-4">
                     <span className="text-sm font-medium">
-                      zł {order?.coursePrice}
+                      {formatAmount(order?.coursePrice)}
                     </span>
                   </td>
                   <td className="p-4">
@@ -140,7 +178,7 @@ const OrdersTable = ({
                           : ""
                       }
                     >
-                      {order?.paymentStatus}
+                      {getStatusLabel(order?.paymentStatus)}
                     </Badge>
                   </td>
                   <td className="p-4">
@@ -150,20 +188,17 @@ const OrdersTable = ({
                         size="icon"
                         onClick={() => handlePrintInvoice(order)}
                       >
-                        <Download className="text-blue-500"/>
+                        <Download className="text-blue-500" />
                       </Button>
                     ) : (
                       <span className="text-sm text-muted-foreground">
-                        --------
+                        {t("invoice.none")}
                       </span>
                     )}
                   </td>
                   <td className="p-4">
                     <Link href={`/courses/${order?.courseId}`}>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                      >
+                      <Button variant="outline" size="icon">
                         <Eye />
                       </Button>
                     </Link>
@@ -193,7 +228,7 @@ const OrdersTable = ({
                       : ""
                   }
                 >
-                  {order.paymentStatus}
+                  {getStatusLabel(order.paymentStatus)}
                 </Badge>
               </div>
 
@@ -215,12 +250,17 @@ const OrdersTable = ({
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">
-                  {order?.enrolledAt
-                    ? new Date(order.enrolledAt).toLocaleDateString()
-                    : "N/A"}
+                <span className="text-sm text-muted-foreground">
+                  {getFormattedDate(order?.enrolledAt)}
                 </span>
-                <span className="font-medium">zł {order?.coursePrice}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>{formatAmount(order?.coursePrice)}</span>
+                <Link href={`/courses/${order?.courseId}`}>
+                  <Button variant="link" size="sm" className="px-0">
+                    {t("actions.view_course")}
+                  </Button>
+                </Link>
               </div>
 
               <div className="flex items-center justify-between pt-2">
@@ -232,11 +272,11 @@ const OrdersTable = ({
                     onClick={() => handlePrintInvoice(order)}
                   >
                     <Download className="h-4 w-4 mr-1" />
-                    Download
+                    {t("invoice.download")}
                   </Button>
                 ) : (
                   <span className="text-sm text-muted-foreground">
-                    No invoice
+                    {t("invoice.none")}
                   </span>
                 )}
 
@@ -246,7 +286,7 @@ const OrdersTable = ({
                   className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-0 h-auto font-normal"
                 >
                   <Eye className="h-4 w-4 mr-1" />
-                  View Course
+                  {t("actions.view_course")}
                 </Button>
               </div>
             </Card>

@@ -1,12 +1,12 @@
-import { IPopularCourse } from "@/types/course.type"
-import { Star, Clock, Users } from "lucide-react"
-import Image from "next/image"
-import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
+import { IPopularCourse } from "@/types/course.type";
+import { Star, Clock, Users } from "lucide-react";
+import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 type TProps = {
-    course: IPopularCourse
-}
+  course: IPopularCourse;
+};
 
 const PopularCourseItem = ({ course }: TProps) => {
   return (
@@ -47,7 +47,9 @@ const PopularCourseItem = ({ course }: TProps) => {
                 width={24}
                 height={24}
               />
-              <span className="text-sm text-gray-600">{course.instructorName}</span>
+              <span className="text-sm text-gray-600">
+                {course.instructorName}
+              </span>
             </div>
 
             {/* Rating and stats */}
@@ -93,7 +95,7 @@ const PopularCourseItem = ({ course }: TProps) => {
         </div>
       </Link>
     </>
-  )
-}
+  );
+};
 
-export default PopularCourseItem
+export default PopularCourseItem;

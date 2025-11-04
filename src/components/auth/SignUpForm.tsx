@@ -14,41 +14,64 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useRegisterMutation } from "@/redux/feature/auth/authApi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CompanySignUpForm from "./CompanySignUpForm";
+import { useTranslations } from "next-intl";
 
-const registerSchema = z
-  .object({
-    fullname: z.string().min(1, { message: "Full name is required." }),
-    email: z.email({ message: "Invalid email address." }),
-    dateOfBirth: z
-      .string()
-      .min(1, { message: "Date of birth is required." })
-      .regex(/^\d{2}-\d{2}-\d{4}$/, {
-        message: "Date must be in dd-mm-yyyy format.",
-      }),
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters." }),
-    confirmPassword: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters." }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ["confirmPassword"],
-  });
+type TranslationFn = (
+  key: string,
+  values?: Record<string, string | number | Date>
+) => string;
+
+const createRegisterSchema = (t: TranslationFn) =>
+  z
+    .object({
+      fullname: z.string().min(1, { message: t("errors.fullname_required") }),
+      email: z
+        .string()
+        .min(1, { message: t("errors.email_required") })
+        .email({ message: t("errors.email_invalid") }),
+      dateOfBirth: z
+        .string()
+        .min(1, { message: t("errors.date_required") })
+        .regex(/^\d{2}-\d{2}-\d{4}$/, {
+          message: t("errors.date_format"),
+        }),
+      password: z
+        .string()
+        .min(6, { message: t("errors.password_min") }),
+      confirmPassword: z
+        .string()
+        .min(6, { message: t("errors.confirm_password_min") }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("errors.password_mismatch"),
+      path: ["confirmPassword"],
+    });
+
+type RegisterFormSchema = z.infer<ReturnType<typeof createRegisterSchema>>;
 
 const Register = () => {
+  const t = useTranslations("Auth.signup");
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const [register, { isLoading }] = useRegisterMutation();
 
-  const form = useForm({
-    resolver: zodResolver(registerSchema),
+  const translationFn = useMemo<TranslationFn>(
+    () => (key, values) => t(key, values),
+    [t]
+  );
+
+  const formSchema = useMemo(
+    () => createRegisterSchema(translationFn),
+    [translationFn]
+  );
+
+  const form = useForm<RegisterFormSchema>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       fullname: "",
       email: "",
@@ -58,7 +81,7 @@ const Register = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof registerSchema>) => {
+  const onSubmit = (data: RegisterFormSchema) => {
     const payload = {
       fullName: data.fullname,
       email: data.email,
@@ -78,16 +101,14 @@ const Register = () => {
           <div className="flex flex-col gap-6 mt-6">
             <div className="flex flex-col items-center text-center">
               <h1 className="text-2xl font-semibold text-title">
-                Create an account
+                {t("title")}
               </h1>
-              <p className="text-sm text-subtitle">
-                Enter your details below to create your account.
-              </p>
+              <p className="text-sm text-subtitle">{t("subtitle")}</p>
             </div>
             <Tabs defaultValue="student" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="student">Student</TabsTrigger>
-                <TabsTrigger value="company">Company</TabsTrigger>
+                <TabsTrigger value="student">{t("tabs.student")}</TabsTrigger>
+                <TabsTrigger value="company">{t("tabs.company")}</TabsTrigger>
               </TabsList>
               <TabsContent value="student">
                 <Form {...form}>
@@ -100,11 +121,14 @@ const Register = () => {
                       name="fullname"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Full Name</FormLabel>
+                          <FormLabel>{t("labels.fullname")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input
+                              placeholder={t("placeholders.fullname")}
+                              {...field}
+                            />
                           </FormControl>
-                          <FormMessage/>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -114,15 +138,15 @@ const Register = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>{t("labels.email")}</FormLabel>
                           <FormControl>
                             <Input
                               type="email"
-                              placeholder="example@email.com"
+                              placeholder={t("placeholders.email")}
                               {...field}
                             />
                           </FormControl>
-                          <FormMessage/>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -132,15 +156,15 @@ const Register = () => {
                       name="dateOfBirth"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date of Birth</FormLabel>
+                          <FormLabel>{t("labels.date_of_birth")}</FormLabel>
                           <FormControl>
                             <Input
                               type="text"
-                              placeholder="dd-mm-yyyy"
+                              placeholder={t("placeholders.date_of_birth")}
                               {...field}
                             />
                           </FormControl>
-                          <FormMessage/>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -150,12 +174,12 @@ const Register = () => {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>{t("labels.password")}</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Input
                                 type={showPassword ? "text" : "password"}
-                                placeholder="********"
+                                placeholder={t("placeholders.password")}
                                 {...field}
                               />
                               <button
@@ -171,7 +195,7 @@ const Register = () => {
                               </button>
                             </div>
                           </FormControl>
-                          <FormMessage/>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -180,12 +204,12 @@ const Register = () => {
                       name="confirmPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Confirm Password</FormLabel>
+                          <FormLabel>{t("labels.confirm_password")}</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Input
                                 type={showPassword ? "text" : "password"}
-                                placeholder="********"
+                                placeholder={t("placeholders.confirm_password")}
                                 {...field}
                               />
                               <button
@@ -201,7 +225,7 @@ const Register = () => {
                               </button>
                             </div>
                           </FormControl>
-                          <FormMessage/>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -211,7 +235,7 @@ const Register = () => {
                       className="w-full"
                       loading={isLoading}
                     >
-                      Create Account
+                      {t("buttons.submit")}
                     </Button>
                   </form>
                 </Form>
@@ -222,9 +246,9 @@ const Register = () => {
             </Tabs>
           </div>
           <div className="text-center text-sm mt-6">
-            Already have an account?{" "}
+            {t("links.have_account")} {" "}
             <Link href="/login" className="text-primary">
-              Login
+              {t("links.login")}
             </Link>
           </div>
         </CardContent>

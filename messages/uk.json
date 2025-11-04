@@ -50,6 +50,7 @@
     "my_orders": "Мої замовлення",
     "training_request": "Запит на тренінг",
     "sign_in": "Увійти",
+    "sign_up": "Зареєструватися",
     "logout": "Вийти"
   },
   "HomePage": {
@@ -186,6 +187,170 @@
     "common": {
       "yes": "Так",
       "no": "Ні"
+    }
+  },
+  "MyLearning": {
+    "list": {
+      "error_loading": "Помилка завантаження курсів",
+      "retry": "Спробувати ще раз",
+      "showing": "Показано {count, plural, one {# курс} few {# курси} many {# курсів} other {# курсів}}",
+      "empty_title": "Немає записаних курсів",
+      "empty_subtitle": "Почніть навчання, записавшись на курс"
+    },
+    "item": {
+      "lifetime_access": "Довічний доступ",
+      "instructor_prefix": "Викладач: {name}",
+      "stats": {
+        "lesson_section": "{lessons} уроків • {sections} розділів",
+        "progress_label": "Прогрес",
+        "progress_value": "{value}% виконано"
+      },
+      "certificate": {
+        "not_available": "Н/Д",
+        "content_missing": "Не знайдено вмісту сертифіката. Спробуйте пізніше.",
+        "print_window_error": "Не вдалося відкрити вікно друку. Перевірте блокувальник спливаючих вікон.",
+        "generic_error": "Не вдалося завантажити сертифікат. Перевірте підключення і спробуйте ще раз.",
+        "popup_error": "Не вдалося відкрити нове вікно. Перевірте налаштування блокування спливаючих вікон.",
+        "view_error": "Не вдалося переглянути сертифікат. Перевірте підключення і спробуйте ще раз.",
+        "loading": "Завантаження...",
+        "download": "Завантажити та роздрукувати",
+        "view": "Переглянути сертифікат"
+      }
+    },
+    "details": {
+      "errors": {
+        "loading_title": "Помилка завантаження курсу",
+        "loading_description": "Сталася помилка під час завантаження курсу. Спробуйте пізніше.",
+        "not_found_title": "Курс не знайдено",
+        "not_found_description": "Не вдалося завантажити запитаний курс."
+      },
+      "player": {
+        "select_lesson": "Оберіть урок, щоб розпочати"
+      },
+      "tabs": {
+        "overview": "Огляд",
+        "resources": "Ресурси"
+      },
+      "overview": {
+        "title": "Про цей курс",
+        "no_description": "Опис відсутній"
+      },
+      "instructor": {
+        "title": "Ваш викладач",
+        "unknown_name": "Невідомий викладач",
+        "default_designation": "Викладач курсу",
+        "default_bio": "Досвідчений фахівець у своїй сфері"
+      },
+      "stats": {
+        "lessons": "Уроки",
+        "sections": "Розділи",
+        "level": "Рівень",
+        "difficulty": "Складність",
+        "default_level": "Початковий",
+        "default_difficulty": "Легкий"
+      },
+      "resources": {
+        "title": "Модулі курсу",
+        "module_count": "{count, plural, one {# модуль} few {# модулі} many {# модулів} other {# модулів}}",
+        "active": "Активний",
+        "lessons_completed": "{completed} з {total} уроків виконано",
+        "module_label": "Модуль {order}"
+      }
+    },
+    "sidebar": {
+      "title": "Зміст курсу",
+      "progress_label": "Прогрес: {value}%",
+      "progress_summary": "{completed}/{total} уроків",
+      "tests": {
+        "title": "Тести",
+        "start_button": "Розпочати тест",
+        "empty": "Для цього розділу немає тестів.",
+        "modal_title": "Розпочати тест",
+        "modal_description": "Ви впевнені, що хочете розпочати тест? Спробувати можна лише один раз."
+      }
+    }
+  },
+  "TestExam": {
+    "toast": {
+      "submit_error": "Під час надсилання тесту сталася помилка"
+    },
+    "summary": {
+      "questions": "{count, plural, one {# питання} few {# питання} many {# питань} other {# питань}}"
+    },
+    "buttons": {
+      "submitting": "Надсилання...",
+      "submit": "Надіслати тест"
+    }
+  },
+  "LearningHistory": {
+    "title": "Мої курси",
+    "description": "Відстежуйте свої завершені курси та сертифікати",
+    "table": {
+      "headers": {
+        "course_name": "Назва курсу",
+        "status": "Статус",
+        "enrolled_date": "Дата запису",
+        "progress": "Прогрес",
+        "action": "Дія"
+      },
+      "states": {
+        "error": "Не вдалося завантажити історію навчання"
+      },
+      "status": {
+        "unknown": "Невідомо",
+        "pending": "В очікуванні",
+        "completed": "Завершено",
+        "failed": "Неуспішно",
+        "cancelled": "Скасовано"
+      },
+      "progress": {
+        "completed": "Завершено",
+        "lessons": "{count, plural, one {# урок} few {# уроки} many {# уроків} other {# уроків}}"
+      },
+      "actions": {
+        "view_course": "Переглянути курс"
+      },
+      "not_available": "Н/Д"
+    }
+  },
+  "Orders": {
+    "table": {
+      "headers": {
+        "course_name": "Назва курсу",
+        "date": "Дата",
+        "amount": "Сума",
+        "status": "Статус",
+        "invoice": "Рахунок",
+        "action": "Дія"
+      },
+      "states": {
+        "error": "Не вдалося завантажити замовлення"
+      },
+      "status": {
+        "unknown": "Невідомо",
+        "pending": "В очікуванні",
+        "completed": "Завершено",
+        "processing": "Обробка",
+        "failed": "Невдало",
+        "cancelled": "Скасовано",
+        "refunded": "Повернено"
+      },
+      "amount": "₴ {value}",
+      "actions": {
+        "view_course": "Переглянути курс"
+      },
+      "invoice": {
+        "title": "Рахунок",
+        "none": "Немає рахунку",
+        "download": "Завантажити рахунок",
+        "meta": {
+          "order_id": "ID замовлення",
+          "date": "Дата",
+          "course": "Курс",
+          "amount": "Сума"
+        }
+      },
+      "not_available": "Н/Д"
     }
   },
   "CartPage": {

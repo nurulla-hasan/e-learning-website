@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import {
   useGetSingleTestQuery,
   useAttemptTestMutation,
@@ -12,6 +10,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Clock, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ExamData extends ITest {
   questions: IQuestion[];
@@ -21,6 +20,7 @@ interface ExamData extends ITest {
 const TestExamPage = () => {
   const { id } = useParams();
   const router = useRouter();
+  const t = useTranslations("TestExam");
   const { data, isLoading } = useGetSingleTestQuery(id);
   const [attemptTest, { isLoading: isSubmitting }] = useAttemptTestMutation();
 
@@ -28,7 +28,7 @@ const TestExamPage = () => {
 
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   // Extend IQuestion to include selectedOptions and shortAnswer
-  interface Answer extends Omit<IQuestion, 'options'> {
+  interface Answer extends Omit<IQuestion, "options"> {
     selectedOptions: string[];
     shortAnswer?: string;
   }
@@ -43,8 +43,9 @@ const TestExamPage = () => {
 
   const handleSubmit = useCallback(async () => {
     if (!testData) return;
-    
-    const totalTimeSpent = testData.timeLimit - Math.floor((timeLeft || 0) / 60);
+
+    const totalTimeSpent =
+      testData.timeLimit - Math.floor((timeLeft || 0) / 60);
     const payload = {
       testId: id,
       responses: answers,
@@ -55,17 +56,19 @@ const TestExamPage = () => {
       await attemptTest(payload).unwrap();
       router.push("/test-result");
     } catch (error: unknown) {
-      const errorMessage = error && 
-        typeof error === 'object' && 
-        'data' in error && 
-        error.data && 
-        typeof error.data === 'object' && 
-        'message' in error.data
-          ? String(error.data.message)
-          : "An error occurred while submitting the test";
-      SuccessToast(errorMessage);
+      const fallbackMessage = t("toast.submit_error");
+      const errorMessage =
+        error &&
+        typeof error === "object" &&
+        "data" in error &&
+        error.data &&
+        typeof error.data === "object" &&
+        "message" in error.data
+          ? String((error as { data?: { message?: string } }).data?.message)
+          : fallbackMessage;
+      SuccessToast(errorMessage || fallbackMessage);
     }
-  }, [testData, timeLeft, answers, id, attemptTest, router]);
+  }, [testData, timeLeft, answers, id, attemptTest, router, t]);
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -73,7 +76,7 @@ const TestExamPage = () => {
     }
     if (!timeLeft) return;
     const intervalId = setInterval(() => {
-      setTimeLeft(prev => prev ? prev - 1 : 0);
+      setTimeLeft((prev) => (prev ? prev - 1 : 0));
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -94,14 +97,14 @@ const TestExamPage = () => {
       newAnswers[existingAnswerIndex] = {
         ...answers[existingAnswerIndex],
         id: questionId,
-        type: questionType as 'MCQ' | 'TRUE_FALSE' | 'SHORT_ANSWER',
+        type: questionType as "MCQ" | "TRUE_FALSE" | "SHORT_ANSWER",
         selectedOptions,
         shortAnswer,
       };
     } else {
       newAnswers.push({
         id: questionId,
-        type: questionType as 'MCQ' | 'TRUE_FALSE' | 'SHORT_ANSWER',
+        type: questionType as "MCQ" | "TRUE_FALSE" | "SHORT_ANSWER",
         selectedOptions,
         shortAnswer,
       } as Answer);
@@ -109,11 +112,10 @@ const TestExamPage = () => {
     setAnswers(newAnswers);
   };
 
-
   if (isLoading) {
     return (
       <div className="h-screen flex flex-col justify-center items-center">
-        <Loader2 className="animate-spin"/>
+        <Loader2 className="animate-spin" />
       </div>
     );
   }
@@ -166,14 +168,18 @@ const TestExamPage = () => {
                 .padStart(2, "0")}`}</span>
             </div>
             <div className="text-center mb-4">
-              {testData?.questions?.length || 0} Questions
+              {t("summary.questions", {
+                count: testData?.questions?.length || 0,
+              })}
             </div>
             <Button
               className="w-full"
               onClick={handleSubmit}
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Submitting..." : "Submit Test"}
+              {isSubmitting
+                ? t("buttons.submitting")
+                : t("buttons.submit")}
             </Button>
           </Card>
         </div>

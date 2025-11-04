@@ -1,7 +1,7 @@
 "use client";
 
-import PageHeader from "@/components/common/PageHeader"
-import LearningCourseList from "@/components/learning/LearningCourseList"
+import PageHeader from "@/components/common/PageHeader";
+import LearningCourseList from "@/components/learning/LearningCourseList";
 import { useTranslations } from "next-intl";
 
 const MyLearningPage = () => {
@@ -15,7 +15,7 @@ const MyLearningPage = () => {
         <LearningCourseList />
       </main>
     </>
-  )
-}
+  );
+};
 
-export default MyLearningPage
+export default MyLearningPage;
