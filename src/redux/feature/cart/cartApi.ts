@@ -24,8 +24,8 @@ const cartApi = baseApi.injectEndpoints({
         try {
           const result = await queryFulfilled;
           dispatch(setCartLength(result?.data?.data?.length));
-        } catch (error) {
-          console.error("Error fetching cart:", error);
+        } catch {
+          // console.error("Error fetching cart:", error);
         }
       },
       providesTags: ["CART"],

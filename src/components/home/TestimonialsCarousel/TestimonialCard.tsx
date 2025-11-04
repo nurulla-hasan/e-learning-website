@@ -1,11 +1,17 @@
 import { Card } from "@/components/ui/card";
 import { StarRating } from "@/tools/StarRating";
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { Review } from "@/types/course.type";
 import { formatDate } from "@/lib/utils";
 
-const TestimonialCard = ({ testimonial, isActive }: { testimonial: Review; isActive: boolean }) => {
+const TestimonialCard = ({
+  testimonial,
+  isActive,
+}: {
+  testimonial: Review;
+  isActive: boolean;
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -37,7 +43,7 @@ const TestimonialCard = ({ testimonial, isActive }: { testimonial: Review; isAct
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+          <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 shrink-0">
             <Image
               src={testimonial.userImage || "/placeholder.svg"}
               alt={`${testimonial.userName} avatar`}
@@ -47,14 +53,17 @@ const TestimonialCard = ({ testimonial, isActive }: { testimonial: Review; isAct
             />
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900 text-sm md:text-base">{testimonial.userName}</h4>
-            <p className="text-gray-500 text-xs md:text-sm">{formatDate(testimonial.createdAt)}</p>
+            <h4 className="font-semibold text-gray-900 text-sm md:text-base">
+              {testimonial.userName}
+            </h4>
+            <p className="text-gray-500 text-xs md:text-sm">
+              {formatDate(testimonial.createdAt)}
+            </p>
           </div>
         </motion.div>
       </Card>
     </motion.div>
-  )
-}
-
+  );
+};
 
 export default TestimonialCard;

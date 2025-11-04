@@ -1,12 +1,14 @@
-import { MapPin, Mail, Phone } from "lucide-react"
+import { MapPin, Mail, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-const ContactInfo =() => {
-  const t = useTranslations('ContactPage');
+const ContactInfo = () => {
+  const t = useTranslations("ContactPage");
 
   return (
     <section className="">
-      <h1 className="text-3xl font-semibold text-foreground mb-4">{t("contact_info_title")}</h1>
+      <h1 className="text-3xl font-semibold text-foreground mb-4">
+        {t("contact_info_title")}
+      </h1>
       <p className="text-muted-foreground mb-12 mx-auto text-balance">
         {t("contact_info_subtitle")}
       </p>
@@ -17,8 +19,12 @@ const ContactInfo =() => {
           <div className="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center mb-4">
             <MapPin className="w-6 h-6 text-white" />
           </div>
-          <h3 className="font-semibold text-foreground mb-2">{t("location_title")}:</h3>
-          <p className="text-muted-foreground text-sm">620 Eighth St, Carlina, Delaware 19958</p>
+          <h3 className="font-semibold text-foreground mb-2">
+            {t("location_title")}:
+          </h3>
+          <p className="text-muted-foreground text-sm">
+            620 Eighth St, Carlina, Delaware 19958
+          </p>
         </div>
 
         {/* Email */}
@@ -26,7 +32,9 @@ const ContactInfo =() => {
           <div className="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center mb-4">
             <Mail className="w-6 h-6 text-white" />
           </div>
-          <h3 className="font-semibold text-foreground mb-2">{t("email_title")}:</h3>
+          <h3 className="font-semibold text-foreground mb-2">
+            {t("email_title")}:
+          </h3>
           <p className="text-muted-foreground text-sm">info@ourshop.com</p>
         </div>
 
@@ -35,13 +43,14 @@ const ContactInfo =() => {
           <div className="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center mb-4">
             <Phone className="w-6 h-6 text-white" />
           </div>
-          <h3 className="font-semibold text-foreground mb-2">{t("phone_title")}:</h3>
+          <h3 className="font-semibold text-foreground mb-2">
+            {t("phone_title")}:
+          </h3>
           <p className="text-muted-foreground text-sm">+374 440 555</p>
         </div>
       </div>
     </section>
-  )
-}
-
+  );
+};
 
 export default ContactInfo;

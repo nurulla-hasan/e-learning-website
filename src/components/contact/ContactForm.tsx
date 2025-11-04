@@ -33,8 +33,8 @@ const ContactForm = () => {
         message: "",
       });
       SuccessToast("Message sent successfully");
-    } catch (error) {
-      console.log(error);
+    } catch {
+      // console.log(error);
     }
   };
 

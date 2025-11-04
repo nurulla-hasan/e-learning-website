@@ -1,6 +1,5 @@
 import { baseApi } from "../baseApi";
 
-
 const recipeApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
 
@@ -72,7 +71,6 @@ const recipeApi = baseApi.injectEndpoints({
             },
             providesTags: ["REVIEW"],
         }),
-
 
         // GET COURSE BY ID WITHOUT AUTH
         getCourseById: builder.query({

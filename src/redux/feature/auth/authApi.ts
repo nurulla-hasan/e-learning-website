@@ -41,7 +41,7 @@ const authApi = baseApi.injectEndpoints({
           window.location.href = "/";
         } catch (error: unknown) {
           const err = error as { error?: { data?: { message?: string } } };
-          console.log(err);
+          // console.log(err);
           ErrorToast(err?.error?.data?.message || "Login failed.");
         }
       },

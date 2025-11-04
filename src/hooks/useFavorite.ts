@@ -22,10 +22,10 @@ const useFavorite = (initialState: boolean): UseFavoriteReturn => {
       if (isFavorite) {
         await removeFromBookmarkMutation(id);
       } else {
-        await addToBookmarkMutation({courseId: id});
+        await addToBookmarkMutation({ courseId: id });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      // console.log(error);
     }
   };
 

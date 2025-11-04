@@ -33,15 +33,13 @@ const FavoritesPage = () => {
   const t = useTranslations("Header");
   const title = t("favorites");
 
-const {data, isLoading, isError} = useGetBookmarkedCoursesQuery({})
+  const { data, isLoading, isError } = useGetBookmarkedCoursesQuery({});
 
   return (
     <>
-      <PageHeader title={title}/>
+      <PageHeader title={title} />
       {/* Main Content */}
-      <PageLayout
-        paddingSize="compact"
-      >
+      <PageLayout paddingSize="compact">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {isLoading ? (
             Array.from({ length: 6 }).map((_, index) => (
@@ -59,8 +57,7 @@ const {data, isLoading, isError} = useGetBookmarkedCoursesQuery({})
         </div>
       </PageLayout>
     </>
-  )
-}
+  );
+};
 
-
-export default FavoritesPage
+export default FavoritesPage;

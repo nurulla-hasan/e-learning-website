@@ -1,5 +1,5 @@
-import Cart from "@/components/cart/Cart"
-import PageHeader from "@/components/common/PageHeader"
+import Cart from "@/components/cart/Cart";
+import PageHeader from "@/components/common/PageHeader";
 import { getTranslations } from "next-intl/server";
 
 interface TProps {
@@ -15,11 +15,10 @@ const CartPage = async ({ params }: TProps) => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHeader title={title}/>
-      <Cart/>
+      <PageHeader title={title} />
+      <Cart />
     </div>
-  )
-}
+  );
+};
 
-
-export default CartPage
+export default CartPage;

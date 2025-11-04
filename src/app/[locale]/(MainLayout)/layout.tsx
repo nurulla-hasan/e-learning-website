@@ -1,20 +1,19 @@
-import Footer from "@/components/layout/Footer"
-import Navbar from "@/components/layout/Navbar"
-import React from "react"
-
+import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
+import React from "react";
 
 type TProps = {
-    children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
-const MainLayout = ({children} : TProps) => {
+const MainLayout = ({ children }: TProps) => {
   return (
     <>
-      <Navbar/>
+      <Navbar />
       {children}
-      <Footer/>
+      <Footer />
     </>
-  )
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;

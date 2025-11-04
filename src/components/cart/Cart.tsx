@@ -56,11 +56,10 @@ const Cart = () => {
         courseIds: cartItems.map((item) => item.courseId),
       });
       router.push("/checkout");
-    } catch (error) {
-      console.log(error);
+    } catch {
+      // console.log(error);
     }
   };
-
 
   return (
     <PageLayout
@@ -94,7 +93,7 @@ const Cart = () => {
                   <CardContent className="p-4">
                     <div className="flex flex-col sm:flex-row">
                       {/* Course Image */}
-                      <div className="relative sm:w-40 sm:h-32 w-full h-48 flex-shrink-0 max-w-sm mx-auto sm:mx-0">
+                      <div className="relative sm:w-40 sm:h-32 w-full h-48 shrink-0 max-w-sm mx-auto sm:mx-0">
                         <Image
                           src={course.courseThumbnail || "/placeholder.svg"}
                           alt={course.courseTitle}
@@ -109,7 +108,7 @@ const Cart = () => {
                       <div className="flex-1 p-3 sm:p-4 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-card-foreground text-sm sm:text-base leading-tight mb-1 break-words">
+                            <h3 className="font-semibold text-card-foreground text-sm sm:text-base leading-tight mb-1 warp-words">
                               {course.courseTitle}
                             </h3>
                             <p className="text-muted-foreground text-sm mb-2">
@@ -144,7 +143,7 @@ const Cart = () => {
                           </div>
 
                           {/* Price and Actions */}
-                          <div className="flex flex-col justify-between items-start md:items-end gap-3 md:gap-10 sm:gap-4 flex-shrink-0 h-full sm:h-auto">
+                          <div className="flex flex-col justify-between items-start md:items-end gap-3 md:gap-10 sm:gap-4 shrink-0 h-full sm:h-auto">
                             <div className="text-base sm:text-lg font-bold text-card-foreground text-center">
                               zł{" "}
                               {course.discountPrice
@@ -156,9 +155,7 @@ const Cart = () => {
                                 </span>
                               )}
                             </div>
-                            <RemoveButton
-                              courseId={course.courseId}
-                            />
+                            <RemoveButton courseId={course.courseId} />
                           </div>
                         </div>
                       </div>

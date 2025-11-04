@@ -53,8 +53,8 @@ const Checkout = () => {
       if (url) {
         window.location.href = url;
       }
-    } catch (error) {
-      console.log("payment error", error);
+    } catch {
+      // console.log("payment error", error);
     }
   };
 
@@ -130,7 +130,7 @@ const Checkout = () => {
                   <CardContent>
                     <div className="flex flex-col sm:flex-row gap-4">
                       {/* Order Icon */}
-                      <div className="flex-shrink-0">
+                      <div className="shrink-0">
                         <div className="w-full sm:w-20 h-20 bg-primary/10 rounded-lg flex items-center justify-center">
                           <BookOpen className="w-8 h-8 text-primary" />
                         </div>
@@ -159,7 +159,7 @@ const Checkout = () => {
                               key={ci.id}
                               className="flex items-start gap-3 p-3 rounded-lg border border-border"
                             >
-                              <div className="relative h-16 w-16 flex-shrink-0 rounded-md overflow-hidden bg-muted">
+                              <div className="relative h-16 w-16 shrink-0 rounded-md overflow-hidden bg-muted">
                                 <Image
                                   src={ci.courseThumbnail}
                                   alt={ci.courseTitle}
@@ -198,7 +198,7 @@ const Checkout = () => {
                       </div>
 
                       {/* Amount and Actions */}
-                      <div className="flex-shrink-0 flex flex-col justify-between text-right sm:text-left">
+                      <div className="shrink-0 flex flex-col justify-between text-right sm:text-left">
                         <div className="text-xl font-bold text-primary">
                           zł {order.totalAmount.toFixed(2)}
                         </div>

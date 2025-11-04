@@ -31,7 +31,6 @@ export interface IPopularCourse {
   updatedAt: string;
 }
 
-
 export interface Course {
   id: string;
   courseTitle: string;
@@ -50,7 +49,6 @@ export interface Course {
   totalDuration: number;
   isBookmarked: boolean;
 }
-
 
 export interface IFavoriteCourse {
   id: number;
@@ -104,7 +102,6 @@ export type ILearningCourse = {
   };
   isCompleted: boolean;
 };
-
 
 export type THistoryCourse = {
   id: string;

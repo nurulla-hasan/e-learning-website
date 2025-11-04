@@ -69,7 +69,7 @@ const CourseList = () => {
     isLoading,
     isError,
     setFilterParams,
-  } = useSmartFetchHook(useGetCoursesQuery, {limit:12});
+  } = useSmartFetchHook(useGetCoursesQuery, { limit: 12 });
 
   // Cast items to Course array for TypeScript
   const courses = items as Course[];
@@ -83,12 +83,12 @@ const CourseList = () => {
     if (selectedLevels.length > 0)
       params.courseLevel = selectedLevels.join(",");
     if (minRating > 0) params.rating = minRating;
-    if (sortBy === 'price-high') {
-      params.sortBy = 'price';
-      params.sortOrder = 'desc';
-    } else if (sortBy === 'price-low') {
-      params.sortBy = 'price';
-      params.sortOrder = 'asc';
+    if (sortBy === "price-high") {
+      params.sortBy = "price";
+      params.sortOrder = "desc";
+    } else if (sortBy === "price-low") {
+      params.sortBy = "price";
+      params.sortOrder = "asc";
     } else if (sortBy) {
       params.sortBy = sortBy;
     }

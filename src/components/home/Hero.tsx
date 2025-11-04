@@ -2,9 +2,9 @@
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
-const Hero = () =>{
+const Hero = () => {
   const router = useRouter();
-  const t = useTranslations('Hero');
+  const t = useTranslations("Hero");
 
   return (
     <div className="h-[calc(100vh-65px)] relative overflow-hidden">
@@ -58,7 +58,7 @@ const Hero = () =>{
         {/* <div className="absolute top-16 right-16 border border-cyan-400/30 rounded-lg p-2 backdrop-blur-sm">
           <div className="text-xs text-cyan-400 font-mono">E-Learning</div>
         </div> */}
-{/* 
+        {/* 
         <div className="absolute bottom-24 right-20 border border-cyan-300/30 rounded-lg p-3 backdrop-blur-sm">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
@@ -82,7 +82,10 @@ const Hero = () =>{
             </p>
 
             {/* CTA Button */}
-            <button onClick={()=> router.push("/courses")} className="group cursor-pointer bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-3 hover:gap-4">
+            <button
+              onClick={() => router.push("/courses")}
+              className="group cursor-pointer bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-3 hover:gap-4"
+            >
               {t("button")}
               <svg
                 className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
@@ -90,7 +93,12 @@ const Hero = () =>{
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </div>
@@ -109,8 +117,7 @@ const Hero = () =>{
         ></div>
       </div> */}
     </div>
-  )
-}
-
+  );
+};
 
 export default Hero;

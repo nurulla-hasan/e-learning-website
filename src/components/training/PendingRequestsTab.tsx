@@ -31,18 +31,17 @@ interface TrainingRequest {
   };
 }
 
-
 export default function PendingRequestsTab() {
   const t = useTranslations("TrainingRequest");
 
   const {
-      // currentPage,
-      // setCurrentPage,
-      // totalPages,
-      items,
-      isLoading,
-      isError,
-    } = useSmartFetchHook(useGetMyTrainingsRequestQuery);
+    // currentPage,
+    // setCurrentPage,
+    // totalPages,
+    items,
+    isLoading,
+    isError,
+  } = useSmartFetchHook(useGetMyTrainingsRequestQuery);
 
   if (isLoading) {
     return (
@@ -89,12 +88,20 @@ export default function PendingRequestsTab() {
       {items.map((item, index) => {
         // Type guard to ensure item is a valid training request
         const request = item as TrainingRequest;
-        if (!request || typeof request !== 'object' || !request.id || !request.course) {
+        if (
+          !request ||
+          typeof request !== "object" ||
+          !request.id ||
+          !request.course
+        ) {
           return null; // Skip invalid items
         }
 
         return (
-          <Card key={request?.id || index} className="hover:shadow-md transition-shadow">
+          <Card
+            key={request?.id || index}
+            className="hover:shadow-md transition-shadow"
+          >
             <CardContent>
               <div className="flex gap-4">
                 <div className="relative w-20 h-20 rounded-lg overflow-hidden">
@@ -117,7 +124,10 @@ export default function PendingRequestsTab() {
                         by {request.course.instructorName}
                       </p>
                     </div>
-                    <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
+                    <Badge
+                      variant="outline"
+                      className="bg-yellow-50 text-yellow-700 border-yellow-200"
+                    >
                       {request.status}
                     </Badge>
                   </div>
