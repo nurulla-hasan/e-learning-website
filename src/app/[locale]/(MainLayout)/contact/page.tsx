@@ -11,7 +11,7 @@ interface TProps {
 
 const ContactPage = async ({ params }: TProps) => {
   const { locale } = params;
-  const t = await getTranslations(locale);
+  const t = await getTranslations({ locale });
   const title = t("Header.contact");
 
   return (
