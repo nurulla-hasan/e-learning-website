@@ -480,6 +480,7 @@
         "amount": "Kwota",
         "status": "Status",
         "invoice": "Faktura",
+        "print": "Drukuj",
         "action": "Akcja"
       },
       "states": {

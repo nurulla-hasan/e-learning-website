@@ -1,0 +1,47 @@
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "My orders retrieved successfully",
+    "data": [
+        {
+            "id": "691eb54582b75e1e47b817e1",
+            "courseId": "69156f5eac2a9ef5ca1b3709",
+            "paymentStatus": "COMPLETED",
+            "enrolledAt": "2025-11-20T06:29:27.813Z",
+            "invoice": {
+                "Seller": "Super Admin",
+                "Email": "admin@gmail.com",
+                "NIP": "D54MFDU4R5",
+                "Address": "New work city",
+                "Buyer": "Tech Solutions Ltd.",
+                "Buyer Email": "contact@techsolutions.com",
+                "Buyer NIP": "US123456789",
+                "Buyer Address": "456 Business Ave, San Francisco, CA 94105",
+                "Invoice": "2/11/2025/LE",
+                "Invoice Date": "11/20/2025",
+                "Course(s) Purchased": "Learn English",
+                "Course ID(s)": "69156f5eac2a9ef5ca1b3709",
+                "Course(s) unit": "szt.",
+                "Number of Course(s)": 1,
+                "Course(s) Price(s) (ex VAT)": "220.00",
+                "Course(s) VAT Amount(s)": "44.00",
+                "Course(s) Price(s) (inc VAT)": "264.00",
+                "Course(s) Total (qty x unit ex VAT)": "1 x 220.00 = 220.00 (Learn English)",
+                "Total Amount (ex VAT)": "220.00",
+                "Total VAT amount": "44.00",
+                "Total Amount (inc VAT)": "264.00",
+                "Total Amount Payable": "264.00",
+                "Total amount in words": "two hundred sixty-four złoty and 00 groszy",
+                "Payment Method": "Pzrzelewy24 / Blik / Card",
+                "Company account number": "12 3456 7890 1234 5678 9012 3456",
+                "Signature of the person authorized to receive the vat invoice": "____________________",
+                "Signature of the person authorized to issue the vat invoice": "____________________"
+            },
+            "courseTitle": "Learn English",
+            "coursePrice": 280,
+            "courseLevel": "Beginner",
+            "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1763012406402_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+            "categoryName": "Własny testowy"
+        }
+    ]
+}

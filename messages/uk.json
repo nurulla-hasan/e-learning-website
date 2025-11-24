@@ -335,6 +335,7 @@
         "amount": "Сума",
         "status": "Статус",
         "invoice": "Рахунок",
+        "print": "Друк",
         "action": "Дія"
       },
       "states": {

@@ -257,6 +257,7 @@
         "amount": "Amount",
         "status": "Status",
         "invoice": "Invoice",
+        "print": "Print",
         "action": "Action"
       },
       "states": {
